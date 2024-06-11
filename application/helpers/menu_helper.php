@@ -136,12 +136,12 @@ function app_init_admin_sidebar_menu_items()
     }
 
     $CI->app_menu->add_sidebar_menu_item('projects', [
-        'name'     => _l('projects'),
-        'href'     => admin_url('projects'),
+        'name'     => 'Booking',
+       // 'href'     => admin_url('projects'),			// change by sourav
         'icon'     => 'fa-solid fa-chart-gantt',
         'position' => 30,
         'badge'    => [],
-    ]);
+    ]);		$CI->app_menu->add_sidebar_children_item('projects', [			//add by sourav            'slug'     => 'projects_packages',            'name'     => 'Packages',            'href'     => admin_url('packages'),            'position' => 1        ]);			$CI->app_menu->add_sidebar_children_item('projects', [			//add by sourav            'slug'     => 'projects_trips',            'name'     => 'Trip Booking',            'href'     => admin_url('projects'),            'position' => 2        ]);			$CI->app_menu->add_sidebar_children_item('projects', [			//add by sourav            'slug'     => 'projects_Train',            'name'     => 'Train Booking',            'href'     => admin_url('projects'),            'position' => 3        ]);			$CI->app_menu->add_sidebar_children_item('projects', [			//add by sourav            'slug'     => 'projects_Flight',            'name'     => 'Flight Booking',            'href'     => admin_url('projects'),            'position' => 4        ]);			$CI->app_menu->add_sidebar_children_item('projects', [			//add by sourav            'slug'     => 'projects_Hotel',            'name'     => 'Hotel Booking',            'href'     => admin_url('projects'),            'position' => 5        ]);			$CI->app_menu->add_sidebar_children_item('projects', [			//add by sourav            'slug'     => 'projects_Car',            'name'     => 'Car Booking',            'href'     => admin_url('projects'),            'position' => 6        ]);			$CI->app_menu->add_sidebar_children_item('projects', [			//add by sourav            'slug'     => 'projects_Extra',            'name'     => 'Extra Booking',            'href'     => admin_url('projects'),            'position' => 7        ]);
 
     $CI->app_menu->add_sidebar_menu_item('tasks', [
         'name'     => _l('als_tasks'),
