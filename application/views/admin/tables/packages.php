@@ -30,7 +30,7 @@ foreach ($rResult as $aRow) {
 
         $row[] = $_data;
 		
-		 $link = '<a href="' . admin_url('package/edit/' . $aRow['id']) . '">Edit</a> | <a href="' . admin_url('package/delete/' . $aRow['id']) . '">Delete</a>';
+		 $link = '<a href="' . admin_url('packages/package/' . $aRow['id']) . '">Edit</a> | <a href="' . admin_url('packages/delete/' . $aRow['id']) . '">Delete</a>';
 		$row[] = $link;
     }
 

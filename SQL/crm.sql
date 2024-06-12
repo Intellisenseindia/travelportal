@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Jun 12, 2024 at 09:25 AM
--- Server version: 8.2.0
--- PHP Version: 8.1.26
+-- Host: localhost:3306
+-- Generation Time: Jun 12, 2024 at 02:25 AM
+-- Server version: 10.6.17-MariaDB-cll-lve
+-- PHP Version: 8.1.16
 
 SET FOREIGN_KEY_CHECKS=0;
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `traveldb`
+-- Database: `crm`
 --
 
 -- --------------------------------------------------------
@@ -28,26 +28,24 @@ SET time_zone = "+00:00";
 -- Table structure for table `tblacc_accounts`
 --
 
-DROP TABLE IF EXISTS `tblacc_accounts`;
-CREATE TABLE IF NOT EXISTS `tblacc_accounts` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `key_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `number` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `parent_account` int DEFAULT NULL,
-  `account_type_id` int NOT NULL,
-  `account_detail_type_id` int NOT NULL,
+CREATE TABLE `tblacc_accounts` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `key_name` varchar(255) DEFAULT NULL,
+  `number` varchar(45) DEFAULT NULL,
+  `parent_account` int(11) DEFAULT NULL,
+  `account_type_id` int(11) NOT NULL,
+  `account_detail_type_id` int(11) NOT NULL,
   `balance` decimal(15,2) DEFAULT NULL,
   `balance_as_of` date DEFAULT NULL,
-  `description` text COLLATE utf8mb4_general_ci,
-  `default_account` int NOT NULL DEFAULT '0',
-  `active` int NOT NULL DEFAULT '1',
-  `access_token` text COLLATE utf8mb4_general_ci,
-  `account_id` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `plaid_status` tinyint NOT NULL DEFAULT '0' COMMENT '1=>verified, 0=>not verified',
-  `plaid_account_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=89 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `description` text DEFAULT NULL,
+  `default_account` int(11) NOT NULL DEFAULT 0,
+  `active` int(11) NOT NULL DEFAULT 1,
+  `access_token` text DEFAULT NULL,
+  `account_id` varchar(255) DEFAULT NULL,
+  `plaid_status` tinyint(5) NOT NULL DEFAULT 0 COMMENT '1=>verified, 0=>not verified',
+  `plaid_account_name` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tblacc_accounts`
@@ -149,30 +147,28 @@ INSERT INTO `tblacc_accounts` (`id`, `name`, `key_name`, `number`, `parent_accou
 -- Table structure for table `tblacc_account_history`
 --
 
-DROP TABLE IF EXISTS `tblacc_account_history`;
-CREATE TABLE IF NOT EXISTS `tblacc_account_history` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `account` int NOT NULL,
-  `debit` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `credit` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `description` text COLLATE utf8mb4_general_ci,
-  `rel_id` int DEFAULT NULL,
-  `rel_type` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
+CREATE TABLE `tblacc_account_history` (
+  `id` int(11) NOT NULL,
+  `account` int(11) NOT NULL,
+  `debit` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `credit` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `description` text DEFAULT NULL,
+  `rel_id` int(11) DEFAULT NULL,
+  `rel_type` varchar(45) DEFAULT NULL,
   `datecreated` datetime DEFAULT NULL,
-  `addedfrom` int DEFAULT NULL,
-  `customer` int DEFAULT NULL,
-  `reconcile` int NOT NULL DEFAULT '0',
-  `split` int NOT NULL DEFAULT '0',
-  `item` int DEFAULT NULL,
-  `paid` int NOT NULL DEFAULT '0',
+  `addedfrom` int(11) DEFAULT NULL,
+  `customer` int(11) DEFAULT NULL,
+  `reconcile` int(11) NOT NULL DEFAULT 0,
+  `split` int(11) NOT NULL DEFAULT 0,
+  `item` int(11) DEFAULT NULL,
+  `paid` int(1) NOT NULL DEFAULT 0,
   `date` date DEFAULT NULL,
-  `tax` int DEFAULT NULL,
-  `payslip_type` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `vendor` int DEFAULT NULL,
-  `itemable_id` int DEFAULT NULL,
-  `cleared` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `tax` int(11) DEFAULT NULL,
+  `payslip_type` varchar(45) DEFAULT NULL,
+  `vendor` int(11) DEFAULT NULL,
+  `itemable_id` int(11) DEFAULT NULL,
+  `cleared` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tblacc_account_history`
@@ -200,15 +196,13 @@ INSERT INTO `tblacc_account_history` (`id`, `account`, `debit`, `credit`, `descr
 -- Table structure for table `tblacc_account_type_details`
 --
 
-DROP TABLE IF EXISTS `tblacc_account_type_details`;
-CREATE TABLE IF NOT EXISTS `tblacc_account_type_details` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `account_type_id` int NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `note` text COLLATE utf8mb4_general_ci,
-  `statement_of_cash_flows` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+CREATE TABLE `tblacc_account_type_details` (
+  `id` int(11) NOT NULL,
+  `account_type_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `note` text DEFAULT NULL,
+  `statement_of_cash_flows` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -216,17 +210,15 @@ CREATE TABLE IF NOT EXISTS `tblacc_account_type_details` (
 -- Table structure for table `tblacc_banking_rules`
 --
 
-DROP TABLE IF EXISTS `tblacc_banking_rules`;
-CREATE TABLE IF NOT EXISTS `tblacc_banking_rules` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `transaction` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `following` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `then` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `payment_account` int DEFAULT NULL,
-  `deposit_to` int DEFAULT NULL,
-  `auto_add` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblacc_banking_rules` (
+  `id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `transaction` varchar(45) DEFAULT NULL,
+  `following` varchar(45) DEFAULT NULL,
+  `then` varchar(45) DEFAULT NULL,
+  `payment_account` int(11) DEFAULT NULL,
+  `deposit_to` int(11) DEFAULT NULL,
+  `auto_add` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -235,15 +227,13 @@ CREATE TABLE IF NOT EXISTS `tblacc_banking_rules` (
 -- Table structure for table `tblacc_banking_rule_details`
 --
 
-DROP TABLE IF EXISTS `tblacc_banking_rule_details`;
-CREATE TABLE IF NOT EXISTS `tblacc_banking_rule_details` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `rule_id` int NOT NULL,
-  `type` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `subtype` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `text` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `subtype_amount` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblacc_banking_rule_details` (
+  `id` int(11) NOT NULL,
+  `rule_id` int(11) NOT NULL,
+  `type` varchar(45) DEFAULT NULL,
+  `subtype` varchar(45) DEFAULT NULL,
+  `text` varchar(255) DEFAULT NULL,
+  `subtype_amount` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -252,14 +242,12 @@ CREATE TABLE IF NOT EXISTS `tblacc_banking_rule_details` (
 -- Table structure for table `tblacc_budgets`
 --
 
-DROP TABLE IF EXISTS `tblacc_budgets`;
-CREATE TABLE IF NOT EXISTS `tblacc_budgets` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `year` int NOT NULL,
-  `name` varchar(200) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `type` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `data_source` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblacc_budgets` (
+  `id` int(11) NOT NULL,
+  `year` int(11) NOT NULL,
+  `name` varchar(200) DEFAULT NULL,
+  `type` varchar(45) DEFAULT NULL,
+  `data_source` varchar(45) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -268,15 +256,13 @@ CREATE TABLE IF NOT EXISTS `tblacc_budgets` (
 -- Table structure for table `tblacc_budget_details`
 --
 
-DROP TABLE IF EXISTS `tblacc_budget_details`;
-CREATE TABLE IF NOT EXISTS `tblacc_budget_details` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `budget_id` int NOT NULL,
-  `month` int NOT NULL,
-  `year` int NOT NULL,
-  `account` int DEFAULT NULL,
-  `amount` decimal(15,2) NOT NULL DEFAULT '0.00',
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblacc_budget_details` (
+  `id` int(11) NOT NULL,
+  `budget_id` int(11) NOT NULL,
+  `month` int(11) NOT NULL,
+  `year` int(11) NOT NULL,
+  `account` int(11) DEFAULT NULL,
+  `amount` decimal(15,2) NOT NULL DEFAULT 0.00
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -285,14 +271,12 @@ CREATE TABLE IF NOT EXISTS `tblacc_budget_details` (
 -- Table structure for table `tblacc_expense_category_mappings`
 --
 
-DROP TABLE IF EXISTS `tblacc_expense_category_mappings`;
-CREATE TABLE IF NOT EXISTS `tblacc_expense_category_mappings` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `category_id` int NOT NULL,
-  `payment_account` int NOT NULL DEFAULT '0',
-  `deposit_to` int NOT NULL DEFAULT '0',
-  `preferred_payment_method` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblacc_expense_category_mappings` (
+  `id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL,
+  `payment_account` int(11) NOT NULL DEFAULT 0,
+  `deposit_to` int(11) NOT NULL DEFAULT 0,
+  `preferred_payment_method` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -301,14 +285,12 @@ CREATE TABLE IF NOT EXISTS `tblacc_expense_category_mappings` (
 -- Table structure for table `tblacc_item_automatics`
 --
 
-DROP TABLE IF EXISTS `tblacc_item_automatics`;
-CREATE TABLE IF NOT EXISTS `tblacc_item_automatics` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `item_id` int NOT NULL,
-  `inventory_asset_account` int NOT NULL DEFAULT '0',
-  `income_account` int NOT NULL DEFAULT '0',
-  `expense_account` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblacc_item_automatics` (
+  `id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
+  `inventory_asset_account` int(11) NOT NULL DEFAULT 0,
+  `income_account` int(11) NOT NULL DEFAULT 0,
+  `expense_account` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -317,16 +299,14 @@ CREATE TABLE IF NOT EXISTS `tblacc_item_automatics` (
 -- Table structure for table `tblacc_journal_entries`
 --
 
-DROP TABLE IF EXISTS `tblacc_journal_entries`;
-CREATE TABLE IF NOT EXISTS `tblacc_journal_entries` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `number` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_general_ci,
+CREATE TABLE `tblacc_journal_entries` (
+  `id` int(11) NOT NULL,
+  `number` varchar(45) DEFAULT NULL,
+  `description` text DEFAULT NULL,
   `journal_date` date DEFAULT NULL,
-  `amount` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `amount` decimal(15,2) NOT NULL DEFAULT 0.00,
   `datecreated` datetime DEFAULT NULL,
-  `addedfrom` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `addedfrom` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -335,17 +315,15 @@ CREATE TABLE IF NOT EXISTS `tblacc_journal_entries` (
 -- Table structure for table `tblacc_matched_transactions`
 --
 
-DROP TABLE IF EXISTS `tblacc_matched_transactions`;
-CREATE TABLE IF NOT EXISTS `tblacc_matched_transactions` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `account_history_id` int DEFAULT NULL,
-  `history_amount` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `rel_id` int DEFAULT NULL,
-  `rel_type` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `amount` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `company` int DEFAULT NULL,
-  `reconcile` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblacc_matched_transactions` (
+  `id` int(11) NOT NULL,
+  `account_history_id` int(11) DEFAULT NULL,
+  `history_amount` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `rel_id` int(11) DEFAULT NULL,
+  `rel_type` varchar(255) DEFAULT NULL,
+  `amount` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `company` int(11) DEFAULT NULL,
+  `reconcile` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -354,15 +332,13 @@ CREATE TABLE IF NOT EXISTS `tblacc_matched_transactions` (
 -- Table structure for table `tblacc_payment_mode_mappings`
 --
 
-DROP TABLE IF EXISTS `tblacc_payment_mode_mappings`;
-CREATE TABLE IF NOT EXISTS `tblacc_payment_mode_mappings` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `payment_mode_id` int NOT NULL,
-  `payment_account` int NOT NULL DEFAULT '0',
-  `deposit_to` int NOT NULL DEFAULT '0',
-  `expense_payment_account` int NOT NULL DEFAULT '0',
-  `expense_deposit_to` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblacc_payment_mode_mappings` (
+  `id` int(11) NOT NULL,
+  `payment_mode_id` int(11) NOT NULL,
+  `payment_account` int(11) NOT NULL DEFAULT 0,
+  `deposit_to` int(11) NOT NULL DEFAULT 0,
+  `expense_payment_account` int(11) NOT NULL DEFAULT 0,
+  `expense_deposit_to` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -371,17 +347,15 @@ CREATE TABLE IF NOT EXISTS `tblacc_payment_mode_mappings` (
 -- Table structure for table `tblacc_plaid_transaction_logs`
 --
 
-DROP TABLE IF EXISTS `tblacc_plaid_transaction_logs`;
-CREATE TABLE IF NOT EXISTS `tblacc_plaid_transaction_logs` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `bank_id` int DEFAULT NULL,
+CREATE TABLE `tblacc_plaid_transaction_logs` (
+  `id` int(11) NOT NULL,
+  `bank_id` int(11) DEFAULT NULL,
   `last_updated` date DEFAULT NULL,
-  `transaction_count` int DEFAULT NULL,
+  `transaction_count` int(11) DEFAULT NULL,
   `created_at` datetime DEFAULT NULL,
-  `addedFrom` int DEFAULT NULL,
-  `company` int DEFAULT NULL,
-  `status` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `addedFrom` int(11) DEFAULT NULL,
+  `company` int(11) DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -390,26 +364,24 @@ CREATE TABLE IF NOT EXISTS `tblacc_plaid_transaction_logs` (
 -- Table structure for table `tblacc_reconciles`
 --
 
-DROP TABLE IF EXISTS `tblacc_reconciles`;
-CREATE TABLE IF NOT EXISTS `tblacc_reconciles` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `account` int NOT NULL,
+CREATE TABLE `tblacc_reconciles` (
+  `id` int(11) NOT NULL,
+  `account` int(11) NOT NULL,
   `beginning_balance` decimal(15,2) NOT NULL,
   `ending_balance` decimal(15,2) NOT NULL,
   `ending_date` date NOT NULL,
   `expense_date` date DEFAULT NULL,
   `service_charge` decimal(15,2) DEFAULT NULL,
-  `expense_account` int DEFAULT NULL,
+  `expense_account` int(11) DEFAULT NULL,
   `income_date` date DEFAULT NULL,
   `interest_earned` decimal(15,2) DEFAULT NULL,
-  `income_account` int DEFAULT NULL,
-  `finish` int NOT NULL DEFAULT '0',
-  `opening_balance` int NOT NULL DEFAULT '0',
+  `income_account` int(11) DEFAULT NULL,
+  `finish` int(11) NOT NULL DEFAULT 0,
+  `opening_balance` int(11) NOT NULL DEFAULT 0,
   `debits_for_period` decimal(15,2) DEFAULT NULL,
   `credits_for_period` decimal(15,2) DEFAULT NULL,
   `dateadded` datetime DEFAULT NULL,
-  `addedfrom` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `addedfrom` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -418,15 +390,13 @@ CREATE TABLE IF NOT EXISTS `tblacc_reconciles` (
 -- Table structure for table `tblacc_tax_mappings`
 --
 
-DROP TABLE IF EXISTS `tblacc_tax_mappings`;
-CREATE TABLE IF NOT EXISTS `tblacc_tax_mappings` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `tax_id` int NOT NULL,
-  `payment_account` int NOT NULL DEFAULT '0',
-  `deposit_to` int NOT NULL DEFAULT '0',
-  `expense_payment_account` int NOT NULL DEFAULT '0',
-  `expense_deposit_to` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblacc_tax_mappings` (
+  `id` int(11) NOT NULL,
+  `tax_id` int(11) NOT NULL,
+  `payment_account` int(11) NOT NULL DEFAULT 0,
+  `deposit_to` int(11) NOT NULL DEFAULT 0,
+  `expense_payment_account` int(11) NOT NULL DEFAULT 0,
+  `expense_deposit_to` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -435,23 +405,21 @@ CREATE TABLE IF NOT EXISTS `tblacc_tax_mappings` (
 -- Table structure for table `tblacc_transaction_bankings`
 --
 
-DROP TABLE IF EXISTS `tblacc_transaction_bankings`;
-CREATE TABLE IF NOT EXISTS `tblacc_transaction_bankings` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tblacc_transaction_bankings` (
+  `id` int(11) NOT NULL,
   `date` date NOT NULL,
-  `withdrawals` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `deposits` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `payee` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_general_ci,
+  `withdrawals` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `deposits` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `payee` varchar(255) DEFAULT NULL,
+  `description` text DEFAULT NULL,
   `datecreated` datetime DEFAULT NULL,
-  `addedfrom` int DEFAULT NULL,
-  `transaction_id` varchar(150) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `bank_id` int DEFAULT NULL,
-  `status` tinyint NOT NULL DEFAULT '0' COMMENT '1=>posted, 2=>pending',
-  `matched` int NOT NULL DEFAULT '0',
-  `reconcile` int NOT NULL DEFAULT '0',
-  `adjusted` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `addedfrom` int(11) DEFAULT NULL,
+  `transaction_id` varchar(150) DEFAULT NULL,
+  `bank_id` int(11) DEFAULT NULL,
+  `status` tinyint(5) NOT NULL DEFAULT 0 COMMENT '1=>posted, 2=>pending',
+  `matched` int(11) NOT NULL DEFAULT 0,
+  `reconcile` int(11) NOT NULL DEFAULT 0,
+  `adjusted` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -460,17 +428,15 @@ CREATE TABLE IF NOT EXISTS `tblacc_transaction_bankings` (
 -- Table structure for table `tblacc_transfers`
 --
 
-DROP TABLE IF EXISTS `tblacc_transfers`;
-CREATE TABLE IF NOT EXISTS `tblacc_transfers` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `transfer_funds_from` int NOT NULL,
-  `transfer_funds_to` int NOT NULL,
+CREATE TABLE `tblacc_transfers` (
+  `id` int(11) NOT NULL,
+  `transfer_funds_from` int(11) NOT NULL,
+  `transfer_funds_to` int(11) NOT NULL,
   `transfer_amount` decimal(15,2) DEFAULT NULL,
-  `date` varchar(45) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `description` text COLLATE utf8mb4_general_ci,
+  `date` varchar(45) DEFAULT NULL,
+  `description` text DEFAULT NULL,
   `datecreated` datetime DEFAULT NULL,
-  `addedfrom` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `addedfrom` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -479,28 +445,92 @@ CREATE TABLE IF NOT EXISTS `tblacc_transfers` (
 -- Table structure for table `tblactivity_log`
 --
 
-DROP TABLE IF EXISTS `tblactivity_log`;
-CREATE TABLE IF NOT EXISTS `tblactivity_log` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE `tblactivity_log` (
+  `id` int(11) NOT NULL,
+  `description` longtext NOT NULL,
   `date` datetime NOT NULL,
-  `staffid` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `staffid` (`staffid`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `staffid` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblactivity_log`
 --
 
 INSERT INTO `tblactivity_log` (`id`, `description`, `date`, `staffid`) VALUES
-(1, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: ::1]', '2024-06-03 11:39:46', 'Pradip  Dutta'),
-(2, 'Failed Login Attempt [Email: prodip.dutta@gmail.com, Is Staff Member: Yes, IP: ::1]', '2024-06-08 19:49:01', NULL),
-(3, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: ::1]', '2024-06-08 19:49:10', 'Pradip  Dutta'),
-(4, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: ::1]', '2024-06-09 08:04:03', 'Pradip  Dutta'),
-(5, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: ::1]', '2024-06-11 11:58:52', 'Pradip  Dutta'),
-(6, 'Contract Deleted [3]', '2024-06-11 17:55:18', 'Pradip  Dutta'),
-(7, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: ::1]', '2024-06-12 11:21:52', 'Pradip  Dutta');
+(1, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.69.86.36]', '2024-04-12 00:55:52', 'Pradip  Dutta'),
+(2, 'New Currency Added [ID: 356]', '2024-04-12 01:21:16', 'Pradip  Dutta'),
+(3, 'Currency Updated [INR]', '2024-04-12 01:21:42', 'Pradip  Dutta'),
+(4, 'New Staff Member Added [ID: 2, Chiranjit Gayen]', '2024-04-12 01:31:14', 'Pradip  Dutta'),
+(5, 'Non Existing User Tried to Login [Email: talktochiranjit@gmail.com, Is Staff Member: No, IP: 162.158.48.102]', '2024-04-12 01:32:00', NULL),
+(6, 'User Successfully Logged In [User Id: 2, Is Staff Member: Yes, IP: 172.71.198.101]', '2024-04-12 01:33:41', 'Chiranjit Gayen'),
+(7, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.69.94.8]', '2024-04-13 01:43:20', 'Pradip  Dutta'),
+(8, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.69.95.107]', '2024-04-18 00:06:24', 'Pradip  Dutta'),
+(9, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 162.158.170.42]', '2024-04-18 12:48:20', 'Pradip  Dutta'),
+(10, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.70.218.63]', '2024-05-25 14:06:30', 'Pradip  Dutta'),
+(11, 'New Invoice Item Added [ID:1, Kashmir Tour Package]', '2024-05-25 16:59:43', 'Pradip  Dutta'),
+(12, 'Invoice Item Updated [ID: 1, Kashmir Tour Package]', '2024-05-25 17:01:49', 'Pradip  Dutta'),
+(13, 'Invoice Item Updated [ID: 1, Kashmir Tour Package]', '2024-05-25 17:02:03', 'Pradip  Dutta'),
+(14, 'New Client Created [ID: 1, From Staff: 1]', '2024-05-25 17:06:54', 'Pradip  Dutta'),
+(15, 'Contact Created [ID: 1]', '2024-05-25 17:09:30', 'Pradip  Dutta'),
+(16, 'Invoice Status Updated [Invoice Number: INV-000001, From: Draft To: Partially Paid]', '2024-05-25 17:13:25', 'Pradip  Dutta'),
+(17, 'Payment Recorded [ID:1, Invoice Number: INV-000001, Total: ₹10,000.00]', '2024-05-25 17:13:25', 'Pradip  Dutta'),
+(18, 'New Custom Field Added [Product Type]', '2024-05-25 17:20:20', 'Pradip  Dutta'),
+(19, 'Invoice Item Updated [ID: 1, Kashmir Tour Package]', '2024-05-25 17:20:49', 'Pradip  Dutta'),
+(20, 'Currency Deleted [2]', '2024-05-25 17:27:46', 'Pradip  Dutta'),
+(21, 'Currency Deleted [1]', '2024-05-25 17:27:50', 'Pradip  Dutta'),
+(22, 'Payment Mode Updated [ID: 1, Name:Bank]', '2024-05-25 17:31:16', 'Pradip  Dutta'),
+(23, 'Payment Mode Updated [ID: 1, Name:Bank]', '2024-05-25 17:31:28', 'Pradip  Dutta'),
+(24, 'New Payment Mode Added [ID: 2, Name:Cash]', '2024-05-25 17:32:39', 'Pradip  Dutta'),
+(25, 'Payment Mode Updated [ID: 1, Name:Bank]', '2024-05-25 17:32:46', 'Pradip  Dutta'),
+(26, 'New Payment Mode Added [ID: 3, Name:UPI]', '2024-05-25 17:32:56', 'Pradip  Dutta'),
+(27, 'New Tax Added [ID: 1, CGST]', '2024-05-25 17:34:13', 'Pradip  Dutta'),
+(28, 'New Tax Added [ID: 2, SGST]', '2024-05-25 17:34:28', 'Pradip  Dutta'),
+(29, 'Invoice Item Updated [ID: 1, Kashmir Tour Package]', '2024-05-25 17:58:12', 'Pradip  Dutta'),
+(30, 'Custom Field Updated [Product Type]', '2024-05-25 18:03:22', 'Pradip  Dutta'),
+(31, 'Invoice Item Updated [ID: 1, Kashmir Tour Package]', '2024-05-25 18:04:37', 'Pradip  Dutta'),
+(32, 'New Leads Source Added [SourceID: 3, Name: Direct Phone Enquiry]', '2024-05-25 18:13:45', 'Pradip  Dutta'),
+(33, 'New Leads Source Added [SourceID: 4, Name: Office Visit Enquiry]', '2024-05-25 18:14:36', 'Pradip  Dutta'),
+(34, 'Leads Source Deleted [SourceID: 1]', '2024-05-25 18:24:25', 'Pradip  Dutta'),
+(35, 'Leads Source Deleted [SourceID: 2]', '2024-05-25 18:24:34', 'Pradip  Dutta'),
+(36, 'New Lead Added [ID: 1]', '2024-05-25 18:27:10', 'Pradip  Dutta'),
+(37, 'Leads Status Updated [StatusID: 1, Name: Not a Customer]', '2024-05-25 18:32:18', 'Pradip  Dutta'),
+(38, 'New Leads Status Added [StatusID: 2, Name: Reference Customer]', '2024-05-25 18:33:30', 'Pradip  Dutta'),
+(39, 'Payment Mode Updated [ID: 1, Name:Bank]', '2024-05-25 18:36:43', 'Pradip  Dutta'),
+(40, 'Customer Info Updated [ID: 1]', '2024-05-25 18:38:03', 'Pradip  Dutta'),
+(41, 'Customer Info Updated [ID: 1]', '2024-05-25 18:39:53', 'Pradip  Dutta'),
+(42, 'Customer Info Updated [ID: 1]', '2024-05-25 18:40:33', 'Pradip  Dutta'),
+(43, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.69.179.181]', '2024-05-26 00:03:29', 'Pradip  Dutta'),
+(44, 'Items Group Created [Name: 05/06/24- Kashmir Tour]', '2024-05-26 00:19:58', 'Pradip  Dutta'),
+(45, 'Invoice Item Updated [ID: 1, Kashmir Tour Package]', '2024-05-26 00:20:24', 'Pradip  Dutta'),
+(46, 'New Client Created [ID: 2, From Staff: 1]', '2024-05-26 00:34:14', 'Pradip  Dutta'),
+(47, 'New Lead Added [ID: 2]', '2024-05-26 00:35:25', 'Pradip  Dutta'),
+(48, 'Customer Status Changed [ID: 1 Status(Active/Inactive): 0]', '2024-05-26 02:47:54', 'Pradip  Dutta'),
+(49, 'Customer Status Changed [ID: 1 Status(Active/Inactive): 1]', '2024-05-26 02:47:55', 'Pradip  Dutta'),
+(50, 'Contact Status Changed [ContactID: 1 Status(Active/Inactive): 0]', '2024-05-26 02:50:14', 'Pradip  Dutta'),
+(51, 'New Project Created [ID: 1]', '2024-05-26 03:42:34', 'Pradip  Dutta'),
+(52, 'Project Updated [ID: 1]', '2024-05-26 03:45:21', 'Pradip  Dutta'),
+(53, 'New Customer Group Created [ID:1, Name:05/06/24- Kashmir Tour]', '2024-05-26 04:28:26', 'Pradip  Dutta'),
+(54, 'New Customer Group Created [ID:2, Name:05/06/24- Pamjab Tour]', '2024-05-26 04:28:48', 'Pradip  Dutta'),
+(55, 'Customer Group Updated [ID:2]', '2024-05-26 04:29:02', 'Pradip  Dutta'),
+(56, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.71.242.53]', '2024-05-26 13:28:23', 'Pradip  Dutta'),
+(57, 'Invoice Status Updated [Invoice Number: INV-000002/05/2024, From: Unpaid To: Partially Paid]', '2024-05-26 13:46:46', 'Pradip  Dutta'),
+(58, 'Payment Recorded [ID:2, Invoice Number: INV-000002/05/2024, Total: ₹15,000.00]', '2024-05-26 13:46:46', 'Pradip  Dutta'),
+(59, 'Payment Recorded [ID:3, Invoice Number: INV-000002/05/2024, Total: ₹20,000.00]', '2024-05-26 13:48:46', 'Pradip  Dutta'),
+(60, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.71.198.103]', '2024-05-26 19:16:55', 'Pradip  Dutta'),
+(61, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.68.79.145]', '2024-06-01 01:27:54', 'Pradip  Dutta'),
+(62, 'Non Existing User Tried to Login [Email: prodip.dutta@gmail.com, Is Staff Member: No, IP: 172.69.86.80]', '2024-06-02 00:42:38', NULL),
+(63, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.69.86.122]', '2024-06-02 13:03:28', 'Pradip  Dutta'),
+(64, 'New Role Added [ID: 2.Tour Guide]', '2024-06-02 13:11:05', 'Pradip  Dutta'),
+(65, 'New Role Added [ID: 3.Receptionist]', '2024-06-02 13:15:15', 'Pradip  Dutta'),
+(66, 'Staff Member Updated [ID: 2, Chiranjit Gayen]', '2024-06-02 13:16:13', 'Pradip  Dutta'),
+(67, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.68.79.145]', '2024-06-03 18:42:10', 'Pradip  Dutta'),
+(68, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.71.202.172]', '2024-06-05 01:08:16', 'Pradip  Dutta'),
+(69, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.71.198.111]', '2024-06-09 01:29:06', 'Pradip  Dutta'),
+(70, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.68.79.181]', '2024-06-11 14:18:03', 'Pradip  Dutta'),
+(71, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.69.178.190]', '2024-06-11 16:56:28', 'Pradip  Dutta'),
+(72, 'Contract Deleted [1]', '2024-06-11 19:20:36', 'Pradip  Dutta'),
+(73, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.68.79.181]', '2024-06-12 11:22:03', 'Pradip  Dutta'),
+(74, 'User Successfully Logged In [User Id: 1, Is Staff Member: Yes, IP: 172.69.87.200]', '2024-06-12 14:17:38', 'Pradip  Dutta');
 
 -- --------------------------------------------------------
 
@@ -508,17 +538,15 @@ INSERT INTO `tblactivity_log` (`id`, `description`, `date`, `staffid`) VALUES
 -- Table structure for table `tblannouncements`
 --
 
-DROP TABLE IF EXISTS `tblannouncements`;
-CREATE TABLE IF NOT EXISTS `tblannouncements` (
-  `announcementid` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` mediumtext COLLATE utf8mb4_unicode_ci,
-  `showtousers` int NOT NULL,
-  `showtostaff` int NOT NULL,
-  `showname` int NOT NULL,
+CREATE TABLE `tblannouncements` (
+  `announcementid` int(11) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `message` mediumtext DEFAULT NULL,
+  `showtousers` int(11) NOT NULL,
+  `showtostaff` int(11) NOT NULL,
+  `showname` int(11) NOT NULL,
   `dateadded` datetime NOT NULL,
-  `userid` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`announcementid`)
+  `userid` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -527,54 +555,47 @@ CREATE TABLE IF NOT EXISTS `tblannouncements` (
 -- Table structure for table `tblclients`
 --
 
-DROP TABLE IF EXISTS `tblclients`;
-CREATE TABLE IF NOT EXISTS `tblclients` (
-  `userid` int NOT NULL AUTO_INCREMENT,
-  `company` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `vat` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phonenumber` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `country` int NOT NULL DEFAULT '0',
-  `city` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `zip` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `state` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+CREATE TABLE `tblclients` (
+  `userid` int(11) NOT NULL,
+  `company` varchar(191) DEFAULT NULL,
+  `vat` varchar(50) DEFAULT NULL,
+  `phonenumber` varchar(30) DEFAULT NULL,
+  `country` int(11) NOT NULL DEFAULT 0,
+  `city` varchar(100) DEFAULT NULL,
+  `zip` varchar(15) DEFAULT NULL,
+  `state` varchar(50) DEFAULT NULL,
+  `address` varchar(191) DEFAULT NULL,
+  `email` varchar(150) DEFAULT NULL,
   `datecreated` datetime NOT NULL,
-  `active` int NOT NULL DEFAULT '1',
-  `leadid` int DEFAULT NULL,
-  `billing_street` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_city` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_state` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_zip` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_country` int DEFAULT '0',
-  `shipping_street` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_city` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_state` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_zip` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_country` int DEFAULT '0',
-  `longitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `latitude` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `default_language` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `default_currency` int NOT NULL DEFAULT '0',
-  `show_primary_contact` int NOT NULL DEFAULT '0',
-  `stripe_id` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `registration_confirmed` int NOT NULL DEFAULT '1',
-  `addedfrom` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`userid`),
-  KEY `country` (`country`),
-  KEY `leadid` (`leadid`),
-  KEY `company` (`company`),
-  KEY `active` (`active`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `active` int(11) NOT NULL DEFAULT 1,
+  `leadid` int(11) DEFAULT NULL,
+  `billing_street` varchar(200) DEFAULT NULL,
+  `billing_city` varchar(100) DEFAULT NULL,
+  `billing_state` varchar(100) DEFAULT NULL,
+  `billing_zip` varchar(100) DEFAULT NULL,
+  `billing_country` int(11) DEFAULT 0,
+  `shipping_street` varchar(200) DEFAULT NULL,
+  `shipping_city` varchar(100) DEFAULT NULL,
+  `shipping_state` varchar(100) DEFAULT NULL,
+  `shipping_zip` varchar(100) DEFAULT NULL,
+  `shipping_country` int(11) DEFAULT 0,
+  `longitude` varchar(191) DEFAULT NULL,
+  `latitude` varchar(191) DEFAULT NULL,
+  `default_language` varchar(40) DEFAULT NULL,
+  `default_currency` int(11) NOT NULL DEFAULT 0,
+  `show_primary_contact` int(11) NOT NULL DEFAULT 0,
+  `stripe_id` varchar(40) DEFAULT NULL,
+  `registration_confirmed` int(11) NOT NULL DEFAULT 1,
+  `addedfrom` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblclients`
 --
 
 INSERT INTO `tblclients` (`userid`, `company`, `vat`, `phonenumber`, `country`, `city`, `zip`, `state`, `address`, `email`, `datecreated`, `active`, `leadid`, `billing_street`, `billing_city`, `billing_state`, `billing_zip`, `billing_country`, `shipping_street`, `shipping_city`, `shipping_state`, `shipping_zip`, `shipping_country`, `longitude`, `latitude`, `default_language`, `default_currency`, `show_primary_contact`, `stripe_id`, `registration_confirmed`, `addedfrom`) VALUES
-(1, 'Sanjay Sharma', '', '98316849752', 0, 'Kanchrapara', '743193', 'West Bengal', 'Charapole', 'sanjaysharma@gmail.com', '2024-05-25 17:06:54', 1, NULL, 'Charapole', 'Kanchrapara', 'West Bengal', '743193', 102, '', '', '', '', 0, NULL, NULL, NULL, 0, 0, NULL, 1, 1),
-(2, 'Sourav Mondal', NULL, '986521163214', 102, 'Howraha', '9521141', 'WB', 'Howraha', '', '2024-05-26 00:34:14', 1, NULL, 'Howraha', 'Howraha', 'WB', '9521141', 102, '', '', '', '', 102, NULL, NULL, NULL, 0, 0, NULL, 1, 1),
-(5, 'test1', NULL, '09845877564', 0, NULL, NULL, NULL, NULL, 'test1@gmail.com', '2024-05-27 23:01:15', 1, NULL, '', '', '', '', 102, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, 3, 0, NULL, 1, 1);
+(1, 'Sanjay Sharma', '', '98316849752', 102, 'Kanchrapara', '743193', 'West Bengal', 'Charapole', '', '2024-05-25 17:06:54', 1, NULL, 'Charapole', 'Kanchrapara', 'West Bengal', '743193', 102, '', '', '', '', 0, NULL, NULL, NULL, 0, 0, NULL, 1, 1),
+(2, 'Sourav Mondal', NULL, '986521163214', 102, 'Howraha', '9521141', 'WB', 'Howraha', '', '2024-05-26 00:34:14', 1, NULL, 'Howraha', 'Howraha', 'WB', '9521141', 102, '', '', '', '', 102, NULL, NULL, NULL, 0, 0, NULL, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -582,22 +603,17 @@ INSERT INTO `tblclients` (`userid`, `company`, `vat`, `phonenumber`, `country`, 
 -- Table structure for table `tblconsents`
 --
 
-DROP TABLE IF EXISTS `tblconsents`;
-CREATE TABLE IF NOT EXISTS `tblconsents` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `action` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE `tblconsents` (
+  `id` int(11) NOT NULL,
+  `action` varchar(10) NOT NULL,
   `date` datetime NOT NULL,
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `contact_id` int NOT NULL DEFAULT '0',
-  `lead_id` int NOT NULL DEFAULT '0',
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `opt_in_purpose_description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `purpose_id` int NOT NULL,
-  `staff_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `purpose_id` (`purpose_id`),
-  KEY `contact_id` (`contact_id`),
-  KEY `lead_id` (`lead_id`)
+  `ip` varchar(40) NOT NULL,
+  `contact_id` int(11) NOT NULL DEFAULT 0,
+  `lead_id` int(11) NOT NULL DEFAULT 0,
+  `description` mediumtext DEFAULT NULL,
+  `opt_in_purpose_description` mediumtext DEFAULT NULL,
+  `purpose_id` int(11) NOT NULL,
+  `staff_name` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -606,14 +622,12 @@ CREATE TABLE IF NOT EXISTS `tblconsents` (
 -- Table structure for table `tblconsent_purposes`
 --
 
-DROP TABLE IF EXISTS `tblconsent_purposes`;
-CREATE TABLE IF NOT EXISTS `tblconsent_purposes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
+CREATE TABLE `tblconsent_purposes` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` mediumtext DEFAULT NULL,
   `date_created` datetime NOT NULL,
-  `last_updated` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `last_updated` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -622,52 +636,43 @@ CREATE TABLE IF NOT EXISTS `tblconsent_purposes` (
 -- Table structure for table `tblcontacts`
 --
 
-DROP TABLE IF EXISTS `tblcontacts`;
-CREATE TABLE IF NOT EXISTS `tblcontacts` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `userid` int NOT NULL,
-  `is_primary` int NOT NULL DEFAULT '1',
-  `firstname` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lastname` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phonenumber` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+CREATE TABLE `tblcontacts` (
+  `id` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `is_primary` int(11) NOT NULL DEFAULT 1,
+  `firstname` varchar(191) NOT NULL,
+  `lastname` varchar(191) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `phonenumber` varchar(100) NOT NULL,
+  `title` varchar(100) DEFAULT NULL,
   `datecreated` datetime NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `new_pass_key` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `new_pass_key` varchar(32) DEFAULT NULL,
   `new_pass_key_requested` datetime DEFAULT NULL,
   `email_verified_at` datetime DEFAULT NULL,
-  `email_verification_key` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email_verification_key` varchar(32) DEFAULT NULL,
   `email_verification_sent_at` datetime DEFAULT NULL,
-  `last_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `last_ip` varchar(40) DEFAULT NULL,
   `last_login` datetime DEFAULT NULL,
   `last_password_change` datetime DEFAULT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
-  `profile_image` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `direction` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `invoice_emails` tinyint(1) NOT NULL DEFAULT '1',
-  `estimate_emails` tinyint(1) NOT NULL DEFAULT '1',
-  `credit_note_emails` tinyint(1) NOT NULL DEFAULT '1',
-  `contract_emails` tinyint(1) NOT NULL DEFAULT '1',
-  `task_emails` tinyint(1) NOT NULL DEFAULT '1',
-  `project_emails` tinyint(1) NOT NULL DEFAULT '1',
-  `ticket_emails` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  KEY `userid` (`userid`),
-  KEY `firstname` (`firstname`),
-  KEY `lastname` (`lastname`),
-  KEY `email` (`email`),
-  KEY `is_primary` (`is_primary`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  `profile_image` varchar(191) DEFAULT NULL,
+  `direction` varchar(3) DEFAULT NULL,
+  `invoice_emails` tinyint(1) NOT NULL DEFAULT 1,
+  `estimate_emails` tinyint(1) NOT NULL DEFAULT 1,
+  `credit_note_emails` tinyint(1) NOT NULL DEFAULT 1,
+  `contract_emails` tinyint(1) NOT NULL DEFAULT 1,
+  `task_emails` tinyint(1) NOT NULL DEFAULT 1,
+  `project_emails` tinyint(1) NOT NULL DEFAULT 1,
+  `ticket_emails` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblcontacts`
 --
 
 INSERT INTO `tblcontacts` (`id`, `userid`, `is_primary`, `firstname`, `lastname`, `email`, `phonenumber`, `title`, `datecreated`, `password`, `new_pass_key`, `new_pass_key_requested`, `email_verified_at`, `email_verification_key`, `email_verification_sent_at`, `last_ip`, `last_login`, `last_password_change`, `active`, `profile_image`, `direction`, `invoice_emails`, `estimate_emails`, `credit_note_emails`, `contract_emails`, `task_emails`, `project_emails`, `ticket_emails`) VALUES
-(1, 1, 1, 'Tumpa', 'Sharma', 'tumpa@gmail.com', '+919831548311', '', '2024-05-25 17:09:29', '$2a$08$wChHxu0AYC6KNRBnOeOsGudcRbrV9VUW5ATEQQG25Pf7XuYrCqUI.', NULL, NULL, '2024-05-25 17:09:29', NULL, NULL, NULL, NULL, NULL, 1, NULL, '', 1, 0, 1, 1, 0, 0, 0),
-(4, 5, 1, 'test1', '', 'test1@gmail.com', '09845877564', NULL, '2024-05-27 23:01:15', NULL, NULL, NULL, '2024-05-27 23:01:15', NULL, NULL, NULL, NULL, NULL, 1, NULL, NULL, 1, 0, 1, 1, 0, 0, 0),
-(5, 1, 0, 'Test secend', 'User', 'Testsecend@gmail.com', '99898766778', NULL, '2024-05-31 20:26:19', '$2a$08$9pNxZyRiPA57FTZb82ohjOdqufh1RGi54Zw9ykT3K/TTKpnt1HpOy', NULL, NULL, '2024-05-31 20:26:19', NULL, NULL, NULL, NULL, NULL, 1, NULL, '', 1, 1, 1, 1, 0, 0, 0);
+(1, 1, 1, 'Tumpa', 'Sharma', 'tumpa@gmail.com', '+919831548311', '', '2024-05-25 17:09:29', '$2a$08$wChHxu0AYC6KNRBnOeOsGudcRbrV9VUW5ATEQQG25Pf7XuYrCqUI.', NULL, NULL, '2024-05-25 17:09:29', NULL, NULL, NULL, NULL, NULL, 0, NULL, '', 1, 1, 1, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -675,13 +680,11 @@ INSERT INTO `tblcontacts` (`id`, `userid`, `is_primary`, `firstname`, `lastname`
 -- Table structure for table `tblcontact_permissions`
 --
 
-DROP TABLE IF EXISTS `tblcontact_permissions`;
-CREATE TABLE IF NOT EXISTS `tblcontact_permissions` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `permission_id` int NOT NULL,
-  `userid` int NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblcontact_permissions` (
+  `id` int(11) NOT NULL,
+  `permission_id` int(11) NOT NULL,
+  `userid` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblcontact_permissions`
@@ -691,12 +694,9 @@ INSERT INTO `tblcontact_permissions` (`id`, `permission_id`, `userid`) VALUES
 (1, 1, 1),
 (2, 2, 1),
 (3, 3, 1),
-(13, 1, 4),
-(14, 2, 4),
-(15, 3, 4),
-(16, 1, 5),
-(17, 2, 5),
-(18, 3, 5);
+(4, 4, 1),
+(5, 5, 1),
+(6, 6, 1);
 
 -- --------------------------------------------------------
 
@@ -704,39 +704,35 @@ INSERT INTO `tblcontact_permissions` (`id`, `permission_id`, `userid`) VALUES
 -- Table structure for table `tblcontracts`
 --
 
-DROP TABLE IF EXISTS `tblcontracts`;
-CREATE TABLE IF NOT EXISTS `tblcontracts` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `content` longtext COLLATE utf8mb4_unicode_ci,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `subject` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `client` int NOT NULL,
+CREATE TABLE `tblcontracts` (
+  `id` int(11) NOT NULL,
+  `content` longtext DEFAULT NULL,
+  `description` mediumtext DEFAULT NULL,
+  `subject` varchar(191) DEFAULT NULL,
+  `client` int(11) NOT NULL,
   `datestart` date DEFAULT NULL,
   `dateend` date DEFAULT NULL,
-  `contract_type` int DEFAULT NULL,
-  `project_id` int DEFAULT NULL,
-  `addedfrom` int NOT NULL,
+  `contract_type` int(11) DEFAULT NULL,
+  `project_id` int(11) DEFAULT NULL,
+  `addedfrom` int(11) NOT NULL,
   `dateadded` datetime NOT NULL,
-  `isexpirynotified` int NOT NULL DEFAULT '0',
+  `isexpirynotified` int(11) NOT NULL DEFAULT 0,
   `contract_value` decimal(15,2) DEFAULT NULL,
-  `trash` tinyint(1) DEFAULT '0',
-  `not_visible_to_client` tinyint(1) NOT NULL DEFAULT '0',
-  `hash` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `signed` tinyint(1) NOT NULL DEFAULT '0',
-  `signature` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `marked_as_signed` tinyint(1) NOT NULL DEFAULT '0',
-  `acceptance_firstname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `acceptance_lastname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `acceptance_email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `trash` tinyint(1) DEFAULT 0,
+  `not_visible_to_client` tinyint(1) NOT NULL DEFAULT 0,
+  `hash` varchar(32) DEFAULT NULL,
+  `signed` tinyint(1) NOT NULL DEFAULT 0,
+  `signature` varchar(40) DEFAULT NULL,
+  `marked_as_signed` tinyint(1) NOT NULL DEFAULT 0,
+  `acceptance_firstname` varchar(50) DEFAULT NULL,
+  `acceptance_lastname` varchar(50) DEFAULT NULL,
+  `acceptance_email` varchar(100) DEFAULT NULL,
   `acceptance_date` datetime DEFAULT NULL,
-  `acceptance_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `short_link` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `acceptance_ip` varchar(40) DEFAULT NULL,
+  `short_link` varchar(100) DEFAULT NULL,
   `last_sent_at` datetime DEFAULT NULL,
-  `contacts_sent_to` mediumtext COLLATE utf8mb4_unicode_ci,
-  `last_sign_reminder_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `client` (`client`),
-  KEY `contract_type` (`contract_type`)
+  `contacts_sent_to` mediumtext DEFAULT NULL,
+  `last_sign_reminder_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -745,11 +741,9 @@ CREATE TABLE IF NOT EXISTS `tblcontracts` (
 -- Table structure for table `tblcontracts_types`
 --
 
-DROP TABLE IF EXISTS `tblcontracts_types`;
-CREATE TABLE IF NOT EXISTS `tblcontracts_types` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblcontracts_types` (
+  `id` int(11) NOT NULL,
+  `name` longtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -758,14 +752,12 @@ CREATE TABLE IF NOT EXISTS `tblcontracts_types` (
 -- Table structure for table `tblcontract_comments`
 --
 
-DROP TABLE IF EXISTS `tblcontract_comments`;
-CREATE TABLE IF NOT EXISTS `tblcontract_comments` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `content` longtext COLLATE utf8mb4_unicode_ci,
-  `contract_id` int NOT NULL,
-  `staffid` int NOT NULL,
-  `dateadded` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblcontract_comments` (
+  `id` int(11) NOT NULL,
+  `content` longtext DEFAULT NULL,
+  `contract_id` int(11) NOT NULL,
+  `staffid` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -774,10 +766,9 @@ CREATE TABLE IF NOT EXISTS `tblcontract_comments` (
 -- Table structure for table `tblcontract_renewals`
 --
 
-DROP TABLE IF EXISTS `tblcontract_renewals`;
-CREATE TABLE IF NOT EXISTS `tblcontract_renewals` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `contractid` int NOT NULL,
+CREATE TABLE `tblcontract_renewals` (
+  `id` int(11) NOT NULL,
+  `contractid` int(11) NOT NULL,
   `old_start_date` date NOT NULL,
   `new_start_date` date NOT NULL,
   `old_end_date` date DEFAULT NULL,
@@ -785,10 +776,9 @@ CREATE TABLE IF NOT EXISTS `tblcontract_renewals` (
   `old_value` decimal(15,2) DEFAULT NULL,
   `new_value` decimal(15,2) DEFAULT NULL,
   `date_renewed` datetime NOT NULL,
-  `renewed_by` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `renewed_by_staff_id` int NOT NULL DEFAULT '0',
-  `is_on_old_expiry_notified` int DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `renewed_by` varchar(100) NOT NULL,
+  `renewed_by_staff_id` int(11) NOT NULL DEFAULT 0,
+  `is_on_old_expiry_notified` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -797,19 +787,17 @@ CREATE TABLE IF NOT EXISTS `tblcontract_renewals` (
 -- Table structure for table `tblcountries`
 --
 
-DROP TABLE IF EXISTS `tblcountries`;
-CREATE TABLE IF NOT EXISTS `tblcountries` (
-  `country_id` int NOT NULL AUTO_INCREMENT,
-  `iso2` char(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `short_name` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `long_name` varchar(80) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '',
-  `iso3` char(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `numcode` varchar(6) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `un_member` varchar(12) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `calling_code` varchar(8) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `cctld` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`country_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblcountries` (
+  `country_id` int(11) NOT NULL,
+  `iso2` char(2) DEFAULT NULL,
+  `short_name` varchar(80) NOT NULL DEFAULT '',
+  `long_name` varchar(80) NOT NULL DEFAULT '',
+  `iso3` char(3) DEFAULT NULL,
+  `numcode` varchar(6) DEFAULT NULL,
+  `un_member` varchar(12) DEFAULT NULL,
+  `calling_code` varchar(8) DEFAULT NULL,
+  `cctld` varchar(5) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblcountries`
@@ -1073,48 +1061,43 @@ INSERT INTO `tblcountries` (`country_id`, `iso2`, `short_name`, `long_name`, `is
 -- Table structure for table `tblcreditnotes`
 --
 
-DROP TABLE IF EXISTS `tblcreditnotes`;
-CREATE TABLE IF NOT EXISTS `tblcreditnotes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `clientid` int NOT NULL,
-  `deleted_customer_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `number` int NOT NULL,
-  `prefix` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `number_format` int NOT NULL DEFAULT '1',
+CREATE TABLE `tblcreditnotes` (
+  `id` int(11) NOT NULL,
+  `clientid` int(11) NOT NULL,
+  `deleted_customer_name` varchar(100) DEFAULT NULL,
+  `number` int(11) NOT NULL,
+  `prefix` varchar(50) DEFAULT NULL,
+  `number_format` int(11) NOT NULL DEFAULT 1,
   `datecreated` datetime NOT NULL,
   `date` date NOT NULL,
-  `adminnote` mediumtext COLLATE utf8mb4_unicode_ci,
-  `terms` mediumtext COLLATE utf8mb4_unicode_ci,
-  `clientnote` mediumtext COLLATE utf8mb4_unicode_ci,
-  `currency` int NOT NULL,
+  `adminnote` mediumtext DEFAULT NULL,
+  `terms` mediumtext DEFAULT NULL,
+  `clientnote` mediumtext DEFAULT NULL,
+  `currency` int(11) NOT NULL,
   `subtotal` decimal(15,2) NOT NULL,
-  `total_tax` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `total_tax` decimal(15,2) NOT NULL DEFAULT 0.00,
   `total` decimal(15,2) NOT NULL,
   `adjustment` decimal(15,2) DEFAULT NULL,
-  `addedfrom` int DEFAULT NULL,
-  `status` int DEFAULT '1',
-  `project_id` int NOT NULL DEFAULT '0',
-  `discount_percent` decimal(15,2) DEFAULT '0.00',
-  `discount_total` decimal(15,2) DEFAULT '0.00',
-  `discount_type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `billing_street` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_city` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_state` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_zip` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_country` int DEFAULT NULL,
-  `shipping_street` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_city` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_state` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_zip` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_country` int DEFAULT NULL,
+  `addedfrom` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT 1,
+  `project_id` int(11) NOT NULL DEFAULT 0,
+  `discount_percent` decimal(15,2) DEFAULT 0.00,
+  `discount_total` decimal(15,2) DEFAULT 0.00,
+  `discount_type` varchar(30) NOT NULL,
+  `billing_street` varchar(200) DEFAULT NULL,
+  `billing_city` varchar(100) DEFAULT NULL,
+  `billing_state` varchar(100) DEFAULT NULL,
+  `billing_zip` varchar(100) DEFAULT NULL,
+  `billing_country` int(11) DEFAULT NULL,
+  `shipping_street` varchar(200) DEFAULT NULL,
+  `shipping_city` varchar(100) DEFAULT NULL,
+  `shipping_state` varchar(100) DEFAULT NULL,
+  `shipping_zip` varchar(100) DEFAULT NULL,
+  `shipping_country` int(11) DEFAULT NULL,
   `include_shipping` tinyint(1) NOT NULL,
-  `show_shipping_on_credit_note` tinyint(1) NOT NULL DEFAULT '1',
-  `show_quantity_as` int NOT NULL DEFAULT '1',
-  `reference_no` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `currency` (`currency`),
-  KEY `clientid` (`clientid`),
-  KEY `project_id` (`project_id`)
+  `show_shipping_on_credit_note` tinyint(1) NOT NULL DEFAULT 1,
+  `show_quantity_as` int(11) NOT NULL DEFAULT 1,
+  `reference_no` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1123,17 +1106,15 @@ CREATE TABLE IF NOT EXISTS `tblcreditnotes` (
 -- Table structure for table `tblcreditnote_refunds`
 --
 
-DROP TABLE IF EXISTS `tblcreditnote_refunds`;
-CREATE TABLE IF NOT EXISTS `tblcreditnote_refunds` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `credit_note_id` int NOT NULL,
-  `staff_id` int NOT NULL,
+CREATE TABLE `tblcreditnote_refunds` (
+  `id` int(11) NOT NULL,
+  `credit_note_id` int(11) NOT NULL,
+  `staff_id` int(11) NOT NULL,
   `refunded_on` date NOT NULL,
-  `payment_mode` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `note` mediumtext COLLATE utf8mb4_unicode_ci,
+  `payment_mode` varchar(40) NOT NULL,
+  `note` mediumtext DEFAULT NULL,
   `amount` decimal(15,2) NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `created_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1142,16 +1123,14 @@ CREATE TABLE IF NOT EXISTS `tblcreditnote_refunds` (
 -- Table structure for table `tblcredits`
 --
 
-DROP TABLE IF EXISTS `tblcredits`;
-CREATE TABLE IF NOT EXISTS `tblcredits` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `invoice_id` int NOT NULL,
-  `credit_id` int NOT NULL,
-  `staff_id` int NOT NULL,
+CREATE TABLE `tblcredits` (
+  `id` int(11) NOT NULL,
+  `invoice_id` int(11) NOT NULL,
+  `credit_id` int(11) NOT NULL,
+  `staff_id` int(11) NOT NULL,
   `date` date NOT NULL,
   `date_applied` datetime NOT NULL,
-  `amount` decimal(15,2) NOT NULL,
-  PRIMARY KEY (`id`)
+  `amount` decimal(15,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1160,17 +1139,15 @@ CREATE TABLE IF NOT EXISTS `tblcredits` (
 -- Table structure for table `tblcurrencies`
 --
 
-DROP TABLE IF EXISTS `tblcurrencies`;
-CREATE TABLE IF NOT EXISTS `tblcurrencies` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `symbol` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `decimal_separator` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `thousand_separator` varchar(5) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `placement` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `isdefault` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblcurrencies` (
+  `id` int(11) NOT NULL,
+  `symbol` varchar(10) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `decimal_separator` varchar(5) DEFAULT NULL,
+  `thousand_separator` varchar(5) DEFAULT NULL,
+  `placement` varchar(10) DEFAULT NULL,
+  `isdefault` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblcurrencies`
@@ -1185,13 +1162,18 @@ INSERT INTO `tblcurrencies` (`id`, `symbol`, `name`, `decimal_separator`, `thous
 -- Table structure for table `tblcustomers_groups`
 --
 
-DROP TABLE IF EXISTS `tblcustomers_groups`;
-CREATE TABLE IF NOT EXISTS `tblcustomers_groups` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblcustomers_groups` (
+  `id` int(11) NOT NULL,
+  `name` varchar(191) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tblcustomers_groups`
+--
+
+INSERT INTO `tblcustomers_groups` (`id`, `name`) VALUES
+(1, '05/06/24- Kashmir Tour'),
+(2, '10/09/24- Pamjab Tour');
 
 -- --------------------------------------------------------
 
@@ -1199,21 +1181,11 @@ CREATE TABLE IF NOT EXISTS `tblcustomers_groups` (
 -- Table structure for table `tblcustomer_admins`
 --
 
-DROP TABLE IF EXISTS `tblcustomer_admins`;
-CREATE TABLE IF NOT EXISTS `tblcustomer_admins` (
-  `staff_id` int NOT NULL,
-  `customer_id` int NOT NULL,
-  `date_assigned` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  KEY `customer_id` (`customer_id`),
-  KEY `staff_id` (`staff_id`)
+CREATE TABLE `tblcustomer_admins` (
+  `staff_id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `date_assigned` mediumtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `tblcustomer_admins`
---
-
-INSERT INTO `tblcustomer_admins` (`staff_id`, `customer_id`, `date_assigned`) VALUES
-(1, 1, '2024-05-27 15:55:03');
 
 -- --------------------------------------------------------
 
@@ -1221,15 +1193,11 @@ INSERT INTO `tblcustomer_admins` (`staff_id`, `customer_id`, `date_assigned`) VA
 -- Table structure for table `tblcustomer_groups`
 --
 
-DROP TABLE IF EXISTS `tblcustomer_groups`;
-CREATE TABLE IF NOT EXISTS `tblcustomer_groups` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `groupid` int NOT NULL,
-  `customer_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `groupid` (`groupid`),
-  KEY `customer_id` (`customer_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblcustomer_groups` (
+  `id` int(11) NOT NULL,
+  `groupid` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -1237,28 +1205,33 @@ CREATE TABLE IF NOT EXISTS `tblcustomer_groups` (
 -- Table structure for table `tblcustomfields`
 --
 
-DROP TABLE IF EXISTS `tblcustomfields`;
-CREATE TABLE IF NOT EXISTS `tblcustomfields` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `fieldto` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `required` tinyint(1) NOT NULL DEFAULT '0',
-  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `options` longtext COLLATE utf8mb4_unicode_ci,
-  `display_inline` tinyint(1) NOT NULL DEFAULT '0',
-  `field_order` int DEFAULT '0',
-  `active` int NOT NULL DEFAULT '1',
-  `show_on_pdf` int NOT NULL DEFAULT '0',
-  `show_on_ticket_form` tinyint(1) NOT NULL DEFAULT '0',
-  `only_admin` tinyint(1) NOT NULL DEFAULT '0',
-  `show_on_table` tinyint(1) NOT NULL DEFAULT '0',
-  `show_on_client_portal` int NOT NULL DEFAULT '0',
-  `disalow_client_to_edit` int NOT NULL DEFAULT '0',
-  `bs_column` int NOT NULL DEFAULT '12',
-  `default_value` mediumtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblcustomfields` (
+  `id` int(11) NOT NULL,
+  `fieldto` varchar(30) DEFAULT NULL,
+  `name` varchar(150) NOT NULL,
+  `slug` varchar(150) NOT NULL,
+  `required` tinyint(1) NOT NULL DEFAULT 0,
+  `type` varchar(20) NOT NULL,
+  `options` longtext DEFAULT NULL,
+  `display_inline` tinyint(1) NOT NULL DEFAULT 0,
+  `field_order` int(11) DEFAULT 0,
+  `active` int(11) NOT NULL DEFAULT 1,
+  `show_on_pdf` int(11) NOT NULL DEFAULT 0,
+  `show_on_ticket_form` tinyint(1) NOT NULL DEFAULT 0,
+  `only_admin` tinyint(1) NOT NULL DEFAULT 0,
+  `show_on_table` tinyint(1) NOT NULL DEFAULT 0,
+  `show_on_client_portal` int(11) NOT NULL DEFAULT 0,
+  `disalow_client_to_edit` int(11) NOT NULL DEFAULT 0,
+  `bs_column` int(11) NOT NULL DEFAULT 12,
+  `default_value` mediumtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tblcustomfields`
+--
+
+INSERT INTO `tblcustomfields` (`id`, `fieldto`, `name`, `slug`, `required`, `type`, `options`, `display_inline`, `field_order`, `active`, `show_on_pdf`, `show_on_ticket_form`, `only_admin`, `show_on_table`, `show_on_client_portal`, `disalow_client_to_edit`, `bs_column`, `default_value`) VALUES
+(1, 'items', 'Product Type', 'items_product_type', 1, 'select', 'Packaged tour,Flight,Train,Passport,Hotel', 0, 0, 1, 1, 0, 0, 1, 1, 0, 12, '');
 
 -- --------------------------------------------------------
 
@@ -1266,18 +1239,22 @@ CREATE TABLE IF NOT EXISTS `tblcustomfields` (
 -- Table structure for table `tblcustomfieldsvalues`
 --
 
-DROP TABLE IF EXISTS `tblcustomfieldsvalues`;
-CREATE TABLE IF NOT EXISTS `tblcustomfieldsvalues` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `relid` int NOT NULL,
-  `fieldid` int NOT NULL,
-  `fieldto` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `relid` (`relid`),
-  KEY `fieldto` (`fieldto`),
-  KEY `fieldid` (`fieldid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblcustomfieldsvalues` (
+  `id` int(11) NOT NULL,
+  `relid` int(11) NOT NULL,
+  `fieldid` int(11) NOT NULL,
+  `fieldto` varchar(15) NOT NULL,
+  `value` mediumtext NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tblcustomfieldsvalues`
+--
+
+INSERT INTO `tblcustomfieldsvalues` (`id`, `relid`, `fieldid`, `fieldto`, `value`) VALUES
+(1, 1, 1, 'items_pr', 'Packaged tour'),
+(2, 1, 1, 'items', 'Packaged tour'),
+(3, 2, 1, 'items', 'Packaged tour');
 
 -- --------------------------------------------------------
 
@@ -1285,22 +1262,19 @@ CREATE TABLE IF NOT EXISTS `tblcustomfieldsvalues` (
 -- Table structure for table `tbldepartments`
 --
 
-DROP TABLE IF EXISTS `tbldepartments`;
-CREATE TABLE IF NOT EXISTS `tbldepartments` (
-  `departmentid` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `imap_username` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email_from_header` tinyint(1) NOT NULL DEFAULT '0',
-  `host` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` longtext COLLATE utf8mb4_unicode_ci,
-  `encryption` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `folder` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'INBOX',
-  `delete_after_import` int NOT NULL DEFAULT '0',
-  `calendar_id` longtext COLLATE utf8mb4_unicode_ci,
-  `hidefromclient` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`departmentid`),
-  KEY `name` (`name`)
+CREATE TABLE `tbldepartments` (
+  `departmentid` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `imap_username` varchar(191) DEFAULT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `email_from_header` tinyint(1) NOT NULL DEFAULT 0,
+  `host` varchar(150) DEFAULT NULL,
+  `password` longtext DEFAULT NULL,
+  `encryption` varchar(3) DEFAULT NULL,
+  `folder` varchar(191) NOT NULL DEFAULT 'INBOX',
+  `delete_after_import` int(11) NOT NULL DEFAULT 0,
+  `calendar_id` longtext DEFAULT NULL,
+  `hidefromclient` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1309,16 +1283,11 @@ CREATE TABLE IF NOT EXISTS `tbldepartments` (
 -- Table structure for table `tbldismissed_announcements`
 --
 
-DROP TABLE IF EXISTS `tbldismissed_announcements`;
-CREATE TABLE IF NOT EXISTS `tbldismissed_announcements` (
-  `dismissedannouncementid` int NOT NULL AUTO_INCREMENT,
-  `announcementid` int NOT NULL,
-  `staff` int NOT NULL,
-  `userid` int NOT NULL,
-  PRIMARY KEY (`dismissedannouncementid`),
-  KEY `announcementid` (`announcementid`),
-  KEY `staff` (`staff`),
-  KEY `userid` (`userid`)
+CREATE TABLE `tbldismissed_announcements` (
+  `dismissedannouncementid` int(11) NOT NULL,
+  `announcementid` int(11) NOT NULL,
+  `staff` int(11) NOT NULL,
+  `userid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -1327,13 +1296,11 @@ CREATE TABLE IF NOT EXISTS `tbldismissed_announcements` (
 -- Table structure for table `tblemaillists`
 --
 
-DROP TABLE IF EXISTS `tblemaillists`;
-CREATE TABLE IF NOT EXISTS `tblemaillists` (
-  `listid` int NOT NULL AUTO_INCREMENT,
-  `name` mediumtext COLLATE utf8mb4_general_ci NOT NULL,
-  `creator` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `datecreated` datetime NOT NULL,
-  PRIMARY KEY (`listid`)
+CREATE TABLE `tblemaillists` (
+  `listid` int(11) NOT NULL,
+  `name` mediumtext NOT NULL,
+  `creator` varchar(100) NOT NULL,
+  `datecreated` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -1342,22 +1309,20 @@ CREATE TABLE IF NOT EXISTS `tblemaillists` (
 -- Table structure for table `tblemailtemplates`
 --
 
-DROP TABLE IF EXISTS `tblemailtemplates`;
-CREATE TABLE IF NOT EXISTS `tblemailtemplates` (
-  `emailtemplateid` int NOT NULL AUTO_INCREMENT,
-  `type` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `language` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subject` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fromname` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fromemail` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `plaintext` int NOT NULL DEFAULT '0',
-  `active` tinyint NOT NULL DEFAULT '0',
-  `order` int NOT NULL,
-  PRIMARY KEY (`emailtemplateid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2133 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblemailtemplates` (
+  `emailtemplateid` int(11) NOT NULL,
+  `type` longtext NOT NULL,
+  `slug` varchar(100) NOT NULL,
+  `language` varchar(40) DEFAULT NULL,
+  `name` longtext NOT NULL,
+  `subject` longtext NOT NULL,
+  `message` longtext NOT NULL,
+  `fromname` longtext NOT NULL,
+  `fromemail` varchar(100) DEFAULT NULL,
+  `plaintext` int(11) NOT NULL DEFAULT 0,
+  `active` tinyint(4) NOT NULL DEFAULT 0,
+  `order` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblemailtemplates`
@@ -3511,66 +3476,59 @@ INSERT INTO `tblemailtemplates` (`emailtemplateid`, `type`, `slug`, `language`, 
 -- Table structure for table `tblestimates`
 --
 
-DROP TABLE IF EXISTS `tblestimates`;
-CREATE TABLE IF NOT EXISTS `tblestimates` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `sent` tinyint(1) NOT NULL DEFAULT '0',
+CREATE TABLE `tblestimates` (
+  `id` int(11) NOT NULL,
+  `sent` tinyint(1) NOT NULL DEFAULT 0,
   `datesend` datetime DEFAULT NULL,
-  `clientid` int NOT NULL,
-  `deleted_customer_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `project_id` int NOT NULL DEFAULT '0',
-  `number` int NOT NULL,
-  `prefix` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `number_format` int NOT NULL DEFAULT '0',
-  `hash` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `clientid` int(11) NOT NULL,
+  `deleted_customer_name` varchar(100) DEFAULT NULL,
+  `project_id` int(11) NOT NULL DEFAULT 0,
+  `number` int(11) NOT NULL,
+  `prefix` varchar(50) DEFAULT NULL,
+  `number_format` int(11) NOT NULL DEFAULT 0,
+  `hash` varchar(32) DEFAULT NULL,
   `datecreated` datetime NOT NULL,
   `date` date NOT NULL,
   `expirydate` date DEFAULT NULL,
-  `currency` int NOT NULL,
+  `currency` int(11) NOT NULL,
   `subtotal` decimal(15,2) NOT NULL,
-  `total_tax` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `total_tax` decimal(15,2) NOT NULL DEFAULT 0.00,
   `total` decimal(15,2) NOT NULL,
   `adjustment` decimal(15,2) DEFAULT NULL,
-  `addedfrom` int NOT NULL,
-  `status` int NOT NULL DEFAULT '1',
-  `clientnote` mediumtext COLLATE utf8mb4_unicode_ci,
-  `adminnote` mediumtext COLLATE utf8mb4_unicode_ci,
-  `discount_percent` decimal(15,2) DEFAULT '0.00',
-  `discount_total` decimal(15,2) DEFAULT '0.00',
-  `discount_type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `invoiceid` int DEFAULT NULL,
+  `addedfrom` int(11) NOT NULL,
+  `status` int(11) NOT NULL DEFAULT 1,
+  `clientnote` mediumtext DEFAULT NULL,
+  `adminnote` mediumtext DEFAULT NULL,
+  `discount_percent` decimal(15,2) DEFAULT 0.00,
+  `discount_total` decimal(15,2) DEFAULT 0.00,
+  `discount_type` varchar(30) DEFAULT NULL,
+  `invoiceid` int(11) DEFAULT NULL,
   `invoiced_date` datetime DEFAULT NULL,
-  `terms` mediumtext COLLATE utf8mb4_unicode_ci,
-  `reference_no` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `sale_agent` int NOT NULL DEFAULT '0',
-  `billing_street` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_city` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_state` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_zip` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_country` int DEFAULT NULL,
-  `shipping_street` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_city` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_state` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_zip` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_country` int DEFAULT NULL,
+  `terms` mediumtext DEFAULT NULL,
+  `reference_no` varchar(100) DEFAULT NULL,
+  `sale_agent` int(11) NOT NULL DEFAULT 0,
+  `billing_street` varchar(200) DEFAULT NULL,
+  `billing_city` varchar(100) DEFAULT NULL,
+  `billing_state` varchar(100) DEFAULT NULL,
+  `billing_zip` varchar(100) DEFAULT NULL,
+  `billing_country` int(11) DEFAULT NULL,
+  `shipping_street` varchar(200) DEFAULT NULL,
+  `shipping_city` varchar(100) DEFAULT NULL,
+  `shipping_state` varchar(100) DEFAULT NULL,
+  `shipping_zip` varchar(100) DEFAULT NULL,
+  `shipping_country` int(11) DEFAULT NULL,
   `include_shipping` tinyint(1) NOT NULL,
-  `show_shipping_on_estimate` tinyint(1) NOT NULL DEFAULT '1',
-  `show_quantity_as` int NOT NULL DEFAULT '1',
-  `pipeline_order` int DEFAULT '1',
-  `is_expiry_notified` int NOT NULL DEFAULT '0',
-  `acceptance_firstname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `acceptance_lastname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `acceptance_email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `show_shipping_on_estimate` tinyint(1) NOT NULL DEFAULT 1,
+  `show_quantity_as` int(11) NOT NULL DEFAULT 1,
+  `pipeline_order` int(11) DEFAULT 1,
+  `is_expiry_notified` int(11) NOT NULL DEFAULT 0,
+  `acceptance_firstname` varchar(50) DEFAULT NULL,
+  `acceptance_lastname` varchar(50) DEFAULT NULL,
+  `acceptance_email` varchar(100) DEFAULT NULL,
   `acceptance_date` datetime DEFAULT NULL,
-  `acceptance_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `signature` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `short_link` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `clientid` (`clientid`),
-  KEY `currency` (`currency`),
-  KEY `project_id` (`project_id`),
-  KEY `sale_agent` (`sale_agent`),
-  KEY `status` (`status`)
+  `acceptance_ip` varchar(40) DEFAULT NULL,
+  `signature` varchar(40) DEFAULT NULL,
+  `short_link` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3579,19 +3537,17 @@ CREATE TABLE IF NOT EXISTS `tblestimates` (
 -- Table structure for table `tblestimate_requests`
 --
 
-DROP TABLE IF EXISTS `tblestimate_requests`;
-CREATE TABLE IF NOT EXISTS `tblestimate_requests` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `submission` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE `tblestimate_requests` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `submission` longtext NOT NULL,
   `last_status_change` datetime DEFAULT NULL,
   `date_estimated` datetime DEFAULT NULL,
-  `from_form_id` int DEFAULT NULL,
-  `assigned` int DEFAULT NULL,
-  `status` int DEFAULT NULL,
-  `default_language` int NOT NULL,
-  `date_added` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  `from_form_id` int(11) DEFAULT NULL,
+  `assigned` int(11) DEFAULT NULL,
+  `status` int(11) DEFAULT NULL,
+  `default_language` int(11) NOT NULL,
+  `date_added` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3600,28 +3556,26 @@ CREATE TABLE IF NOT EXISTS `tblestimate_requests` (
 -- Table structure for table `tblestimate_request_forms`
 --
 
-DROP TABLE IF EXISTS `tblestimate_request_forms`;
-CREATE TABLE IF NOT EXISTS `tblestimate_request_forms` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `form_key` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `form_data` longtext COLLATE utf8mb4_unicode_ci,
-  `recaptcha` int DEFAULT NULL,
-  `status` int NOT NULL,
-  `submit_btn_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `submit_btn_bg_color` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '#84c529',
-  `submit_btn_text_color` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '#ffffff',
-  `success_submit_msg` mediumtext COLLATE utf8mb4_unicode_ci,
-  `submit_action` int DEFAULT '0',
-  `submit_redirect_url` longtext COLLATE utf8mb4_unicode_ci,
-  `language` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+CREATE TABLE `tblestimate_request_forms` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `form_key` varchar(32) NOT NULL,
+  `type` varchar(100) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `form_data` longtext DEFAULT NULL,
+  `recaptcha` int(11) DEFAULT NULL,
+  `status` int(11) NOT NULL,
+  `submit_btn_name` varchar(100) DEFAULT NULL,
+  `submit_btn_bg_color` varchar(10) DEFAULT '#84c529',
+  `submit_btn_text_color` varchar(10) DEFAULT '#ffffff',
+  `success_submit_msg` mediumtext DEFAULT NULL,
+  `submit_action` int(11) DEFAULT 0,
+  `submit_redirect_url` longtext DEFAULT NULL,
+  `language` varchar(100) DEFAULT NULL,
   `dateadded` datetime DEFAULT NULL,
-  `notify_type` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `notify_ids` longtext COLLATE utf8mb4_unicode_ci,
-  `responsible` int DEFAULT NULL,
-  `notify_request_submitted` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `notify_type` varchar(100) DEFAULT NULL,
+  `notify_ids` longtext DEFAULT NULL,
+  `responsible` int(11) DEFAULT NULL,
+  `notify_request_submitted` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3630,15 +3584,13 @@ CREATE TABLE IF NOT EXISTS `tblestimate_request_forms` (
 -- Table structure for table `tblestimate_request_status`
 --
 
-DROP TABLE IF EXISTS `tblestimate_request_status`;
-CREATE TABLE IF NOT EXISTS `tblestimate_request_status` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `statusorder` int DEFAULT NULL,
-  `color` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `flag` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblestimate_request_status` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `statusorder` int(11) DEFAULT NULL,
+  `color` varchar(10) DEFAULT NULL,
+  `flag` varchar(30) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblestimate_request_status`
@@ -3655,20 +3607,18 @@ INSERT INTO `tblestimate_request_status` (`id`, `name`, `statusorder`, `color`, 
 -- Table structure for table `tblevents`
 --
 
-DROP TABLE IF EXISTS `tblevents`;
-CREATE TABLE IF NOT EXISTS `tblevents` (
-  `eventid` int NOT NULL AUTO_INCREMENT,
-  `title` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `userid` int NOT NULL,
+CREATE TABLE `tblevents` (
+  `eventid` int(11) NOT NULL,
+  `title` longtext NOT NULL,
+  `description` mediumtext DEFAULT NULL,
+  `userid` int(11) NOT NULL,
   `start` datetime NOT NULL,
   `end` datetime DEFAULT NULL,
-  `public` int NOT NULL DEFAULT '0',
-  `color` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `isstartnotified` tinyint(1) NOT NULL DEFAULT '0',
-  `reminder_before` int NOT NULL DEFAULT '0',
-  `reminder_before_type` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`eventid`)
+  `public` int(11) NOT NULL DEFAULT 0,
+  `color` varchar(10) DEFAULT NULL,
+  `isstartnotified` tinyint(1) NOT NULL DEFAULT 0,
+  `reminder_before` int(11) NOT NULL DEFAULT 0,
+  `reminder_before_type` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3677,40 +3627,34 @@ CREATE TABLE IF NOT EXISTS `tblevents` (
 -- Table structure for table `tblexpenses`
 --
 
-DROP TABLE IF EXISTS `tblexpenses`;
-CREATE TABLE IF NOT EXISTS `tblexpenses` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `category` int NOT NULL,
-  `currency` int NOT NULL,
+CREATE TABLE `tblexpenses` (
+  `id` int(11) NOT NULL,
+  `category` int(11) NOT NULL,
+  `currency` int(11) NOT NULL,
   `amount` decimal(15,2) NOT NULL,
-  `tax` int DEFAULT NULL,
-  `tax2` int NOT NULL DEFAULT '0',
-  `reference_no` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `note` mediumtext COLLATE utf8mb4_unicode_ci,
-  `expense_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `clientid` int NOT NULL,
-  `project_id` int NOT NULL DEFAULT '0',
-  `billable` int DEFAULT '0',
-  `invoiceid` int DEFAULT NULL,
-  `paymentmode` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `tax` int(11) DEFAULT NULL,
+  `tax2` int(11) NOT NULL DEFAULT 0,
+  `reference_no` varchar(100) DEFAULT NULL,
+  `note` mediumtext DEFAULT NULL,
+  `expense_name` varchar(191) DEFAULT NULL,
+  `clientid` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL DEFAULT 0,
+  `billable` int(11) DEFAULT 0,
+  `invoiceid` int(11) DEFAULT NULL,
+  `paymentmode` varchar(50) DEFAULT NULL,
   `date` date NOT NULL,
-  `recurring_type` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `repeat_every` int DEFAULT NULL,
-  `recurring` int NOT NULL DEFAULT '0',
-  `cycles` int NOT NULL DEFAULT '0',
-  `total_cycles` int NOT NULL DEFAULT '0',
-  `custom_recurring` int NOT NULL DEFAULT '0',
+  `recurring_type` varchar(10) DEFAULT NULL,
+  `repeat_every` int(11) DEFAULT NULL,
+  `recurring` int(11) NOT NULL DEFAULT 0,
+  `cycles` int(11) NOT NULL DEFAULT 0,
+  `total_cycles` int(11) NOT NULL DEFAULT 0,
+  `custom_recurring` int(11) NOT NULL DEFAULT 0,
   `last_recurring_date` date DEFAULT NULL,
   `create_invoice_billable` tinyint(1) DEFAULT NULL,
   `send_invoice_to_customer` tinyint(1) NOT NULL,
-  `recurring_from` int DEFAULT NULL,
+  `recurring_from` int(11) DEFAULT NULL,
   `dateadded` datetime NOT NULL,
-  `addedfrom` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `clientid` (`clientid`),
-  KEY `project_id` (`project_id`),
-  KEY `category` (`category`),
-  KEY `currency` (`currency`)
+  `addedfrom` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3719,12 +3663,10 @@ CREATE TABLE IF NOT EXISTS `tblexpenses` (
 -- Table structure for table `tblexpenses_categories`
 --
 
-DROP TABLE IF EXISTS `tblexpenses_categories`;
-CREATE TABLE IF NOT EXISTS `tblexpenses_categories` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblexpenses_categories` (
+  `id` int(11) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `description` mediumtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3733,25 +3675,21 @@ CREATE TABLE IF NOT EXISTS `tblexpenses_categories` (
 -- Table structure for table `tblfiles`
 --
 
-DROP TABLE IF EXISTS `tblfiles`;
-CREATE TABLE IF NOT EXISTS `tblfiles` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `rel_id` int NOT NULL,
-  `rel_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `file_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `filetype` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visible_to_customer` int NOT NULL DEFAULT '0',
-  `attachment_key` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `external` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `external_link` mediumtext COLLATE utf8mb4_unicode_ci,
-  `thumbnail_link` mediumtext COLLATE utf8mb4_unicode_ci COMMENT 'For external usage',
-  `staffid` int NOT NULL,
-  `contact_id` int DEFAULT '0',
-  `task_comment_id` int NOT NULL DEFAULT '0',
-  `dateadded` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `rel_id` (`rel_id`),
-  KEY `rel_type` (`rel_type`)
+CREATE TABLE `tblfiles` (
+  `id` int(11) NOT NULL,
+  `rel_id` int(11) NOT NULL,
+  `rel_type` varchar(20) NOT NULL,
+  `file_name` varchar(191) NOT NULL,
+  `filetype` varchar(40) DEFAULT NULL,
+  `visible_to_customer` int(11) NOT NULL DEFAULT 0,
+  `attachment_key` varchar(32) DEFAULT NULL,
+  `external` varchar(40) DEFAULT NULL,
+  `external_link` mediumtext DEFAULT NULL,
+  `thumbnail_link` mediumtext DEFAULT NULL COMMENT 'For external usage',
+  `staffid` int(11) NOT NULL,
+  `contact_id` int(11) DEFAULT 0,
+  `task_comment_id` int(11) NOT NULL DEFAULT 0,
+  `dateadded` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3760,15 +3698,13 @@ CREATE TABLE IF NOT EXISTS `tblfiles` (
 -- Table structure for table `tblfilters`
 --
 
-DROP TABLE IF EXISTS `tblfilters`;
-CREATE TABLE IF NOT EXISTS `tblfilters` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `builder` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `staff_id` int UNSIGNED NOT NULL,
-  `identifier` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `is_shared` tinyint UNSIGNED NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblfilters` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `builder` mediumtext NOT NULL,
+  `staff_id` int(10) UNSIGNED NOT NULL,
+  `identifier` varchar(191) NOT NULL,
+  `is_shared` tinyint(3) UNSIGNED NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3777,14 +3713,11 @@ CREATE TABLE IF NOT EXISTS `tblfilters` (
 -- Table structure for table `tblfilter_defaults`
 --
 
-DROP TABLE IF EXISTS `tblfilter_defaults`;
-CREATE TABLE IF NOT EXISTS `tblfilter_defaults` (
-  `filter_id` int UNSIGNED NOT NULL,
-  `staff_id` int NOT NULL,
-  `identifier` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `view` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  KEY `filter_id` (`filter_id`),
-  KEY `staff_id` (`staff_id`)
+CREATE TABLE `tblfilter_defaults` (
+  `filter_id` int(10) UNSIGNED NOT NULL,
+  `staff_id` int(11) NOT NULL,
+  `identifier` varchar(191) NOT NULL,
+  `view` varchar(191) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3793,15 +3726,13 @@ CREATE TABLE IF NOT EXISTS `tblfilter_defaults` (
 -- Table structure for table `tblform_questions`
 --
 
-DROP TABLE IF EXISTS `tblform_questions`;
-CREATE TABLE IF NOT EXISTS `tblform_questions` (
-  `questionid` int NOT NULL AUTO_INCREMENT,
-  `rel_id` int NOT NULL,
-  `rel_type` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `question` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `required` tinyint(1) NOT NULL DEFAULT '0',
-  `question_order` int NOT NULL,
-  PRIMARY KEY (`questionid`)
+CREATE TABLE `tblform_questions` (
+  `questionid` int(11) NOT NULL,
+  `rel_id` int(11) NOT NULL,
+  `rel_type` varchar(20) DEFAULT NULL,
+  `question` longtext NOT NULL,
+  `required` tinyint(1) NOT NULL DEFAULT 0,
+  `question_order` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3810,12 +3741,10 @@ CREATE TABLE IF NOT EXISTS `tblform_questions` (
 -- Table structure for table `tblform_question_box`
 --
 
-DROP TABLE IF EXISTS `tblform_question_box`;
-CREATE TABLE IF NOT EXISTS `tblform_question_box` (
-  `boxid` int NOT NULL AUTO_INCREMENT,
-  `boxtype` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `questionid` int NOT NULL,
-  PRIMARY KEY (`boxid`)
+CREATE TABLE `tblform_question_box` (
+  `boxid` int(11) NOT NULL,
+  `boxtype` varchar(10) NOT NULL,
+  `questionid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3824,13 +3753,11 @@ CREATE TABLE IF NOT EXISTS `tblform_question_box` (
 -- Table structure for table `tblform_question_box_description`
 --
 
-DROP TABLE IF EXISTS `tblform_question_box_description`;
-CREATE TABLE IF NOT EXISTS `tblform_question_box_description` (
-  `questionboxdescriptionid` int NOT NULL AUTO_INCREMENT,
-  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `boxid` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `questionid` int NOT NULL,
-  PRIMARY KEY (`questionboxdescriptionid`)
+CREATE TABLE `tblform_question_box_description` (
+  `questionboxdescriptionid` int(11) NOT NULL,
+  `description` longtext NOT NULL,
+  `boxid` longtext NOT NULL,
+  `questionid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3839,17 +3766,15 @@ CREATE TABLE IF NOT EXISTS `tblform_question_box_description` (
 -- Table structure for table `tblform_results`
 --
 
-DROP TABLE IF EXISTS `tblform_results`;
-CREATE TABLE IF NOT EXISTS `tblform_results` (
-  `resultid` int NOT NULL AUTO_INCREMENT,
-  `boxid` int NOT NULL,
-  `boxdescriptionid` int DEFAULT NULL,
-  `rel_id` int NOT NULL,
-  `rel_type` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `questionid` int NOT NULL,
-  `answer` mediumtext COLLATE utf8mb4_unicode_ci,
-  `resultsetid` int NOT NULL,
-  PRIMARY KEY (`resultid`)
+CREATE TABLE `tblform_results` (
+  `resultid` int(11) NOT NULL,
+  `boxid` int(11) NOT NULL,
+  `boxdescriptionid` int(11) DEFAULT NULL,
+  `rel_id` int(11) NOT NULL,
+  `rel_type` varchar(20) DEFAULT NULL,
+  `questionid` int(11) NOT NULL,
+  `answer` mediumtext DEFAULT NULL,
+  `resultsetid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3858,18 +3783,16 @@ CREATE TABLE IF NOT EXISTS `tblform_results` (
 -- Table structure for table `tblgdpr_requests`
 --
 
-DROP TABLE IF EXISTS `tblgdpr_requests`;
-CREATE TABLE IF NOT EXISTS `tblgdpr_requests` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `clientid` int NOT NULL DEFAULT '0',
-  `contact_id` int NOT NULL DEFAULT '0',
-  `lead_id` int NOT NULL DEFAULT '0',
-  `request_type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `status` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+CREATE TABLE `tblgdpr_requests` (
+  `id` int(11) NOT NULL,
+  `clientid` int(11) NOT NULL DEFAULT 0,
+  `contact_id` int(11) NOT NULL DEFAULT 0,
+  `lead_id` int(11) NOT NULL DEFAULT 0,
+  `request_type` varchar(191) DEFAULT NULL,
+  `status` varchar(40) DEFAULT NULL,
   `request_date` datetime NOT NULL,
-  `request_from` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`)
+  `request_from` varchar(150) DEFAULT NULL,
+  `description` mediumtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -3878,22 +3801,19 @@ CREATE TABLE IF NOT EXISTS `tblgdpr_requests` (
 -- Table structure for table `tblgoals`
 --
 
-DROP TABLE IF EXISTS `tblgoals`;
-CREATE TABLE IF NOT EXISTS `tblgoals` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `subject` varchar(191) COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text COLLATE utf8mb4_general_ci NOT NULL,
+CREATE TABLE `tblgoals` (
+  `id` int(11) NOT NULL,
+  `subject` varchar(191) NOT NULL,
+  `description` text NOT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
-  `goal_type` int NOT NULL,
-  `contract_type` int NOT NULL DEFAULT '0',
-  `achievement` int NOT NULL,
-  `notify_when_fail` tinyint(1) NOT NULL DEFAULT '1',
-  `notify_when_achieve` tinyint(1) NOT NULL DEFAULT '1',
-  `notified` int NOT NULL DEFAULT '0',
-  `staff_id` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `staff_id` (`staff_id`)
+  `goal_type` int(11) NOT NULL,
+  `contract_type` int(11) NOT NULL DEFAULT 0,
+  `achievement` int(11) NOT NULL,
+  `notify_when_fail` tinyint(1) NOT NULL DEFAULT 1,
+  `notify_when_achieve` tinyint(1) NOT NULL DEFAULT 1,
+  `notified` int(11) NOT NULL DEFAULT 0,
+  `staff_id` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -3902,21 +3822,17 @@ CREATE TABLE IF NOT EXISTS `tblgoals` (
 -- Table structure for table `tblinvoicepaymentrecords`
 --
 
-DROP TABLE IF EXISTS `tblinvoicepaymentrecords`;
-CREATE TABLE IF NOT EXISTS `tblinvoicepaymentrecords` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `invoiceid` int NOT NULL,
+CREATE TABLE `tblinvoicepaymentrecords` (
+  `id` int(11) NOT NULL,
+  `invoiceid` int(11) NOT NULL,
   `amount` decimal(15,2) NOT NULL,
-  `paymentmode` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `paymentmethod` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `paymentmode` varchar(40) DEFAULT NULL,
+  `paymentmethod` varchar(191) DEFAULT NULL,
   `date` date NOT NULL,
   `daterecorded` datetime NOT NULL,
-  `note` mediumtext COLLATE utf8mb4_unicode_ci,
-  `transactionid` longtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`),
-  KEY `invoiceid` (`invoiceid`),
-  KEY `paymentmethod` (`paymentmethod`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `note` mediumtext DEFAULT NULL,
+  `transactionid` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblinvoicepaymentrecords`
@@ -3933,70 +3849,62 @@ INSERT INTO `tblinvoicepaymentrecords` (`id`, `invoiceid`, `amount`, `paymentmod
 -- Table structure for table `tblinvoices`
 --
 
-DROP TABLE IF EXISTS `tblinvoices`;
-CREATE TABLE IF NOT EXISTS `tblinvoices` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `sent` tinyint(1) NOT NULL DEFAULT '0',
+CREATE TABLE `tblinvoices` (
+  `id` int(11) NOT NULL,
+  `sent` tinyint(1) NOT NULL DEFAULT 0,
   `datesend` datetime DEFAULT NULL,
-  `clientid` int NOT NULL,
-  `deleted_customer_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `number` int NOT NULL,
-  `prefix` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `number_format` int NOT NULL DEFAULT '0',
+  `clientid` int(11) NOT NULL,
+  `deleted_customer_name` varchar(100) DEFAULT NULL,
+  `number` int(11) NOT NULL,
+  `prefix` varchar(50) DEFAULT NULL,
+  `number_format` int(11) NOT NULL DEFAULT 0,
   `datecreated` datetime NOT NULL,
   `date` date NOT NULL,
   `duedate` date DEFAULT NULL,
-  `currency` int NOT NULL,
+  `currency` int(11) NOT NULL,
   `subtotal` decimal(15,2) NOT NULL,
-  `total_tax` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `total_tax` decimal(15,2) NOT NULL DEFAULT 0.00,
   `total` decimal(15,2) NOT NULL,
   `adjustment` decimal(15,2) DEFAULT NULL,
-  `addedfrom` int DEFAULT NULL,
-  `hash` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` int DEFAULT '1',
-  `clientnote` mediumtext COLLATE utf8mb4_unicode_ci,
-  `adminnote` mediumtext COLLATE utf8mb4_unicode_ci,
+  `addedfrom` int(11) DEFAULT NULL,
+  `hash` varchar(32) NOT NULL,
+  `status` int(11) DEFAULT 1,
+  `clientnote` mediumtext DEFAULT NULL,
+  `adminnote` mediumtext DEFAULT NULL,
   `last_overdue_reminder` date DEFAULT NULL,
   `last_due_reminder` date DEFAULT NULL,
-  `cancel_overdue_reminders` int NOT NULL DEFAULT '0',
-  `allowed_payment_modes` longtext COLLATE utf8mb4_unicode_ci,
-  `token` longtext COLLATE utf8mb4_unicode_ci,
-  `discount_percent` decimal(15,2) DEFAULT '0.00',
-  `discount_total` decimal(15,2) DEFAULT '0.00',
-  `discount_type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `recurring` int NOT NULL DEFAULT '0',
-  `recurring_type` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `custom_recurring` tinyint(1) NOT NULL DEFAULT '0',
-  `cycles` int NOT NULL DEFAULT '0',
-  `total_cycles` int NOT NULL DEFAULT '0',
-  `is_recurring_from` int DEFAULT NULL,
+  `cancel_overdue_reminders` int(11) NOT NULL DEFAULT 0,
+  `allowed_payment_modes` longtext DEFAULT NULL,
+  `token` longtext DEFAULT NULL,
+  `discount_percent` decimal(15,2) DEFAULT 0.00,
+  `discount_total` decimal(15,2) DEFAULT 0.00,
+  `discount_type` varchar(30) NOT NULL,
+  `recurring` int(11) NOT NULL DEFAULT 0,
+  `recurring_type` varchar(10) DEFAULT NULL,
+  `custom_recurring` tinyint(1) NOT NULL DEFAULT 0,
+  `cycles` int(11) NOT NULL DEFAULT 0,
+  `total_cycles` int(11) NOT NULL DEFAULT 0,
+  `is_recurring_from` int(11) DEFAULT NULL,
   `last_recurring_date` date DEFAULT NULL,
-  `terms` mediumtext COLLATE utf8mb4_unicode_ci,
-  `sale_agent` int NOT NULL DEFAULT '0',
-  `billing_street` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_city` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_state` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_zip` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_country` int DEFAULT NULL,
-  `shipping_street` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_city` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_state` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_zip` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `shipping_country` int DEFAULT NULL,
+  `terms` mediumtext DEFAULT NULL,
+  `sale_agent` int(11) NOT NULL DEFAULT 0,
+  `billing_street` varchar(200) DEFAULT NULL,
+  `billing_city` varchar(100) DEFAULT NULL,
+  `billing_state` varchar(100) DEFAULT NULL,
+  `billing_zip` varchar(100) DEFAULT NULL,
+  `billing_country` int(11) DEFAULT NULL,
+  `shipping_street` varchar(200) DEFAULT NULL,
+  `shipping_city` varchar(100) DEFAULT NULL,
+  `shipping_state` varchar(100) DEFAULT NULL,
+  `shipping_zip` varchar(100) DEFAULT NULL,
+  `shipping_country` int(11) DEFAULT NULL,
   `include_shipping` tinyint(1) NOT NULL,
-  `show_shipping_on_invoice` tinyint(1) NOT NULL DEFAULT '1',
-  `show_quantity_as` int NOT NULL DEFAULT '1',
-  `project_id` int DEFAULT '0',
-  `subscription_id` int NOT NULL DEFAULT '0',
-  `short_link` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `currency` (`currency`),
-  KEY `clientid` (`clientid`),
-  KEY `project_id` (`project_id`),
-  KEY `sale_agent` (`sale_agent`),
-  KEY `total` (`total`),
-  KEY `status` (`status`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `show_shipping_on_invoice` tinyint(1) NOT NULL DEFAULT 1,
+  `show_quantity_as` int(11) NOT NULL DEFAULT 1,
+  `project_id` int(11) DEFAULT 0,
+  `subscription_id` int(11) NOT NULL DEFAULT 0,
+  `short_link` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblinvoices`
@@ -4012,23 +3920,17 @@ INSERT INTO `tblinvoices` (`id`, `sent`, `datesend`, `clientid`, `deleted_custom
 -- Table structure for table `tblitemable`
 --
 
-DROP TABLE IF EXISTS `tblitemable`;
-CREATE TABLE IF NOT EXISTS `tblitemable` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `rel_id` int NOT NULL,
-  `rel_type` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `long_description` longtext COLLATE utf8mb4_unicode_ci,
+CREATE TABLE `tblitemable` (
+  `id` int(11) NOT NULL,
+  `rel_id` int(11) NOT NULL,
+  `rel_type` varchar(15) NOT NULL,
+  `description` longtext NOT NULL,
+  `long_description` longtext DEFAULT NULL,
   `qty` decimal(15,2) NOT NULL,
   `rate` decimal(15,2) NOT NULL,
-  `unit` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `item_order` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `rel_id` (`rel_id`),
-  KEY `rel_type` (`rel_type`),
-  KEY `qty` (`qty`),
-  KEY `rate` (`rate`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `unit` varchar(40) DEFAULT NULL,
+  `item_order` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblitemable`
@@ -4036,8 +3938,7 @@ CREATE TABLE IF NOT EXISTS `tblitemable` (
 
 INSERT INTO `tblitemable` (`id`, `rel_id`, `rel_type`, `description`, `long_description`, `qty`, `rate`, `unit`, `item_order`) VALUES
 (1, 1, 'invoice', 'Kashmir Tour Package', 'Srinagar Houseboat StayShikara Ride at Dal LakeMughal Gardens – Shalimar Bagh & Nishat Bagh.Tulip Gardens during the bloom time.Avantipur Ruins & Martand Sun TempleOrientation Tour of Aru Valley, Betaab Valley & Chandanwari.Kashmiri Cricket Bat FactoryComplimentary value add on - Gondola Ride at Gulmarg (Phase 1) (Tickets subject to availability as limited inventory)Srinagar as hub is a land only[JD] package', 1.00, 25000.00, '1', 1),
-(2, 2, 'invoice', 'Kashmir Tour Package', 'Srinagar Houseboat StayShikara Ride at Dal LakeMughal Gardens   <br />\r\n– Shalimar Bagh & Nishat Bagh.  <br />\r\nTulip Gardens during the bloom time.Avantipur Ruins & Martand Sun TempleOrientation Tour of Aru Valley, Betaab Valley & Chandanwari.Kashmiri Cricket Bat FactoryComplimentary value add on   <br />\r\n- Gondola Ride at Gulmarg (Phase 1) (Tickets subject to availability as limited inventory)Srinagar as hub is a land only[JD] package', 2.00, 25000.00, '1', 1),
-(3, 1, 'credit_note', 'Kashmir Tour Package', 'Srinagar Houseboat StayShikara Ride at Dal LakeMughal Gardens   <br />\r\n– Shalimar Bagh & Nishat Bagh.  <br />\r\nTulip Gardens during the bloom time.Avantipur Ruins & Martand Sun TempleOrientation Tour of Aru Valley, Betaab Valley & Chandanwari.Kashmiri Cricket Bat FactoryComplimentary value add on   <br />\r\n- Gondola Ride at Gulmarg (Phase 1) (Tickets subject to availability as limited inventory)Srinagar as hub is a land only[JD] package', 1.00, 250.00, '1', 1);
+(2, 2, 'invoice', 'Kashmir Tour Package', 'Srinagar Houseboat StayShikara Ride at Dal LakeMughal Gardens   <br />\r\n– Shalimar Bagh & Nishat Bagh.  <br />\r\nTulip Gardens during the bloom time.Avantipur Ruins & Martand Sun TempleOrientation Tour of Aru Valley, Betaab Valley & Chandanwari.Kashmiri Cricket Bat FactoryComplimentary value add on   <br />\r\n- Gondola Ride at Gulmarg (Phase 1) (Tickets subject to availability as limited inventory)Srinagar as hub is a land only[JD] package', 2.00, 25000.00, '1', 1);
 
 -- --------------------------------------------------------
 
@@ -4045,21 +3946,16 @@ INSERT INTO `tblitemable` (`id`, `rel_id`, `rel_type`, `description`, `long_desc
 -- Table structure for table `tblitems`
 --
 
-DROP TABLE IF EXISTS `tblitems`;
-CREATE TABLE IF NOT EXISTS `tblitems` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `long_description` mediumtext COLLATE utf8mb4_unicode_ci,
+CREATE TABLE `tblitems` (
+  `id` int(11) NOT NULL,
+  `description` longtext NOT NULL,
+  `long_description` mediumtext DEFAULT NULL,
   `rate` decimal(15,2) NOT NULL,
-  `tax` int DEFAULT NULL,
-  `tax2` int DEFAULT NULL,
-  `unit` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `group_id` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `tax` (`tax`),
-  KEY `tax2` (`tax2`),
-  KEY `group_id` (`group_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `tax` int(11) DEFAULT NULL,
+  `tax2` int(11) DEFAULT NULL,
+  `unit` varchar(40) DEFAULT NULL,
+  `group_id` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblitems`
@@ -4074,12 +3970,10 @@ INSERT INTO `tblitems` (`id`, `description`, `long_description`, `rate`, `tax`, 
 -- Table structure for table `tblitems_groups`
 --
 
-DROP TABLE IF EXISTS `tblitems_groups`;
-CREATE TABLE IF NOT EXISTS `tblitems_groups` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblitems_groups` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblitems_groups`
@@ -4094,18 +3988,14 @@ INSERT INTO `tblitems_groups` (`id`, `name`) VALUES
 -- Table structure for table `tblitem_tax`
 --
 
-DROP TABLE IF EXISTS `tblitem_tax`;
-CREATE TABLE IF NOT EXISTS `tblitem_tax` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `itemid` int NOT NULL,
-  `rel_id` int NOT NULL,
-  `rel_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE `tblitem_tax` (
+  `id` int(11) NOT NULL,
+  `itemid` int(11) NOT NULL,
+  `rel_id` int(11) NOT NULL,
+  `rel_type` varchar(20) NOT NULL,
   `taxrate` decimal(15,2) NOT NULL,
-  `taxname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `itemid` (`itemid`),
-  KEY `rel_id` (`rel_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `taxname` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblitem_tax`
@@ -4113,9 +4003,7 @@ CREATE TABLE IF NOT EXISTS `tblitem_tax` (
 
 INSERT INTO `tblitem_tax` (`id`, `itemid`, `rel_id`, `rel_type`, `taxrate`, `taxname`) VALUES
 (1, 1, 1, 'invoice', 9.00, 'CGST'),
-(2, 1, 1, 'invoice', 9.00, 'SGST'),
-(5, 3, 1, 'credit_note', 9.00, 'CGST'),
-(6, 3, 1, 'credit_note', 9.00, 'SGST');
+(2, 1, 1, 'invoice', 9.00, 'SGST');
 
 -- --------------------------------------------------------
 
@@ -4123,14 +4011,12 @@ INSERT INTO `tblitem_tax` (`id`, `itemid`, `rel_id`, `rel_type`, `taxrate`, `tax
 -- Table structure for table `tblknowedge_base_article_feedback`
 --
 
-DROP TABLE IF EXISTS `tblknowedge_base_article_feedback`;
-CREATE TABLE IF NOT EXISTS `tblknowedge_base_article_feedback` (
-  `articleanswerid` int NOT NULL AUTO_INCREMENT,
-  `articleid` int NOT NULL,
-  `answer` int NOT NULL,
-  `ip` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `date` datetime NOT NULL,
-  PRIMARY KEY (`articleanswerid`)
+CREATE TABLE `tblknowedge_base_article_feedback` (
+  `articleanswerid` int(11) NOT NULL,
+  `articleid` int(11) NOT NULL,
+  `answer` int(11) NOT NULL,
+  `ip` varchar(40) NOT NULL,
+  `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -4139,18 +4025,16 @@ CREATE TABLE IF NOT EXISTS `tblknowedge_base_article_feedback` (
 -- Table structure for table `tblknowledge_base`
 --
 
-DROP TABLE IF EXISTS `tblknowledge_base`;
-CREATE TABLE IF NOT EXISTS `tblknowledge_base` (
-  `articleid` int NOT NULL AUTO_INCREMENT,
-  `articlegroup` int NOT NULL,
-  `subject` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `active` tinyint NOT NULL,
+CREATE TABLE `tblknowledge_base` (
+  `articleid` int(11) NOT NULL,
+  `articlegroup` int(11) NOT NULL,
+  `subject` longtext NOT NULL,
+  `description` mediumtext NOT NULL,
+  `slug` longtext NOT NULL,
+  `active` tinyint(4) NOT NULL,
   `datecreated` datetime NOT NULL,
-  `article_order` int NOT NULL DEFAULT '0',
-  `staff_article` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`articleid`)
+  `article_order` int(11) NOT NULL DEFAULT 0,
+  `staff_article` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -4159,16 +4043,14 @@ CREATE TABLE IF NOT EXISTS `tblknowledge_base` (
 -- Table structure for table `tblknowledge_base_groups`
 --
 
-DROP TABLE IF EXISTS `tblknowledge_base_groups`;
-CREATE TABLE IF NOT EXISTS `tblknowledge_base_groups` (
-  `groupid` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `group_slug` mediumtext COLLATE utf8mb4_unicode_ci,
-  `description` longtext COLLATE utf8mb4_unicode_ci,
-  `active` tinyint NOT NULL,
-  `color` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '#28B8DA',
-  `group_order` int DEFAULT '0',
-  PRIMARY KEY (`groupid`)
+CREATE TABLE `tblknowledge_base_groups` (
+  `groupid` int(11) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `group_slug` mediumtext DEFAULT NULL,
+  `description` longtext DEFAULT NULL,
+  `active` tinyint(4) NOT NULL,
+  `color` varchar(10) DEFAULT '#28B8DA',
+  `group_order` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -4177,54 +4059,42 @@ CREATE TABLE IF NOT EXISTS `tblknowledge_base_groups` (
 -- Table structure for table `tblleads`
 --
 
-DROP TABLE IF EXISTS `tblleads`;
-CREATE TABLE IF NOT EXISTS `tblleads` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `hash` varchar(65) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `title` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `company` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `country` int NOT NULL DEFAULT '0',
-  `zip` varchar(15) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `city` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `state` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `assigned` int NOT NULL DEFAULT '0',
+CREATE TABLE `tblleads` (
+  `id` int(11) NOT NULL,
+  `hash` varchar(65) DEFAULT NULL,
+  `name` varchar(191) NOT NULL,
+  `title` varchar(100) DEFAULT NULL,
+  `company` varchar(191) DEFAULT NULL,
+  `description` mediumtext DEFAULT NULL,
+  `country` int(11) NOT NULL DEFAULT 0,
+  `zip` varchar(15) DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `state` varchar(50) DEFAULT NULL,
+  `address` varchar(100) DEFAULT NULL,
+  `assigned` int(11) NOT NULL DEFAULT 0,
   `dateadded` datetime NOT NULL,
-  `from_form_id` int NOT NULL DEFAULT '0',
-  `status` int NOT NULL,
-  `source` int NOT NULL,
+  `from_form_id` int(11) NOT NULL DEFAULT 0,
+  `status` int(11) NOT NULL,
+  `source` int(11) NOT NULL,
   `lastcontact` datetime DEFAULT NULL,
   `dateassigned` date DEFAULT NULL,
   `last_status_change` datetime DEFAULT NULL,
-  `addedfrom` int NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `website` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `leadorder` int DEFAULT '1',
-  `phonenumber` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `addedfrom` int(11) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `website` varchar(150) DEFAULT NULL,
+  `leadorder` int(11) DEFAULT 1,
+  `phonenumber` varchar(50) DEFAULT NULL,
   `date_converted` datetime DEFAULT NULL,
-  `lost` tinyint(1) NOT NULL DEFAULT '0',
-  `junk` int NOT NULL DEFAULT '0',
-  `last_lead_status` int NOT NULL DEFAULT '0',
-  `is_imported_from_email_integration` tinyint(1) NOT NULL DEFAULT '0',
-  `email_integration_uid` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `is_public` tinyint(1) NOT NULL DEFAULT '0',
-  `default_language` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `client_id` int NOT NULL DEFAULT '0',
-  `lead_value` decimal(15,2) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `name` (`name`),
-  KEY `company` (`company`),
-  KEY `email` (`email`),
-  KEY `assigned` (`assigned`),
-  KEY `status` (`status`),
-  KEY `source` (`source`),
-  KEY `lastcontact` (`lastcontact`),
-  KEY `dateadded` (`dateadded`),
-  KEY `leadorder` (`leadorder`),
-  KEY `from_form_id` (`from_form_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `lost` tinyint(1) NOT NULL DEFAULT 0,
+  `junk` int(11) NOT NULL DEFAULT 0,
+  `last_lead_status` int(11) NOT NULL DEFAULT 0,
+  `is_imported_from_email_integration` tinyint(1) NOT NULL DEFAULT 0,
+  `email_integration_uid` varchar(30) DEFAULT NULL,
+  `is_public` tinyint(1) NOT NULL DEFAULT 0,
+  `default_language` varchar(40) DEFAULT NULL,
+  `client_id` int(11) NOT NULL DEFAULT 0,
+  `lead_value` decimal(15,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblleads`
@@ -4232,7 +4102,7 @@ CREATE TABLE IF NOT EXISTS `tblleads` (
 
 INSERT INTO `tblleads` (`id`, `hash`, `name`, `title`, `company`, `description`, `country`, `zip`, `city`, `state`, `address`, `assigned`, `dateadded`, `from_form_id`, `status`, `source`, `lastcontact`, `dateassigned`, `last_status_change`, `addedfrom`, `email`, `website`, `leadorder`, `phonenumber`, `date_converted`, `lost`, `junk`, `last_lead_status`, `is_imported_from_email_integration`, `email_integration_uid`, `is_public`, `default_language`, `client_id`, `lead_value`) VALUES
 (1, '27e1e2b19541e983dd311851096538e4-6a4d9bff223a2b3043ec0198f9b8cd5c', 'Prosun', '', '', '', 102, '', '', '', '', 1, '2024-05-25 18:27:10', 0, 1, 3, '2024-05-25 18:27:10', NULL, '2024-05-25 18:33:41', 1, '', '', 1, '45678637986', NULL, 0, 0, 0, 0, NULL, 0, NULL, 0, 0.00),
-(2, 'baf83c83b7abe7b6b75a0aa4bd8a54c3-c46dbeb769541d5543a5caa594ec6b41', 'Arijit', '', '', '', 102, '', 'fbhdfbfbn ', 'ghntghtf', 'gvbfbdfbd', 2, '2024-05-26 00:35:25', 0, 1, 4, '2024-05-26 00:35:25', '2024-05-26', '2024-05-31 20:32:30', 1, '', '', 1, '86578687863786', NULL, 0, 0, 0, 0, NULL, 0, NULL, 0, 0.00);
+(2, 'baf83c83b7abe7b6b75a0aa4bd8a54c3-c46dbeb769541d5543a5caa594ec6b41', 'Arijit', '', '', '', 102, '', 'fbhdfbfbn ', 'ghntghtf', 'gvbfbdfbd', 2, '2024-05-26 00:35:25', 0, 2, 4, '2024-05-26 00:35:25', '2024-05-26', NULL, 1, '', '', 1, '86578687863786', NULL, 0, 0, 0, 0, NULL, 0, NULL, 0, 0.00);
 
 -- --------------------------------------------------------
 
@@ -4240,30 +4110,28 @@ INSERT INTO `tblleads` (`id`, `hash`, `name`, `title`, `company`, `description`,
 -- Table structure for table `tblleads_email_integration`
 --
 
-DROP TABLE IF EXISTS `tblleads_email_integration`;
-CREATE TABLE IF NOT EXISTS `tblleads_email_integration` (
-  `id` int NOT NULL AUTO_INCREMENT COMMENT 'the ID always must be 1',
-  `active` int NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `imap_server` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `check_every` int NOT NULL DEFAULT '5',
-  `responsible` int NOT NULL,
-  `lead_source` int NOT NULL,
-  `lead_status` int NOT NULL,
-  `encryption` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `folder` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_run` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `notify_lead_imported` tinyint(1) NOT NULL DEFAULT '1',
-  `notify_lead_contact_more_times` tinyint(1) NOT NULL DEFAULT '1',
-  `notify_type` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `notify_ids` longtext COLLATE utf8mb4_unicode_ci,
-  `mark_public` int NOT NULL DEFAULT '0',
-  `only_loop_on_unseen_emails` tinyint(1) NOT NULL DEFAULT '1',
-  `delete_after_import` int NOT NULL DEFAULT '0',
-  `create_task_if_customer` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblleads_email_integration` (
+  `id` int(11) NOT NULL COMMENT 'the ID always must be 1',
+  `active` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `imap_server` varchar(100) NOT NULL,
+  `password` longtext NOT NULL,
+  `check_every` int(11) NOT NULL DEFAULT 5,
+  `responsible` int(11) NOT NULL,
+  `lead_source` int(11) NOT NULL,
+  `lead_status` int(11) NOT NULL,
+  `encryption` varchar(3) DEFAULT NULL,
+  `folder` varchar(100) NOT NULL,
+  `last_run` varchar(50) DEFAULT NULL,
+  `notify_lead_imported` tinyint(1) NOT NULL DEFAULT 1,
+  `notify_lead_contact_more_times` tinyint(1) NOT NULL DEFAULT 1,
+  `notify_type` varchar(20) DEFAULT NULL,
+  `notify_ids` longtext DEFAULT NULL,
+  `mark_public` int(11) NOT NULL DEFAULT 0,
+  `only_loop_on_unseen_emails` tinyint(1) NOT NULL DEFAULT 1,
+  `delete_after_import` int(11) NOT NULL DEFAULT 0,
+  `create_task_if_customer` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblleads_email_integration`
@@ -4278,13 +4146,10 @@ INSERT INTO `tblleads_email_integration` (`id`, `active`, `email`, `imap_server`
 -- Table structure for table `tblleads_sources`
 --
 
-DROP TABLE IF EXISTS `tblleads_sources`;
-CREATE TABLE IF NOT EXISTS `tblleads_sources` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblleads_sources` (
+  `id` int(11) NOT NULL,
+  `name` varchar(150) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblleads_sources`
@@ -4300,16 +4165,13 @@ INSERT INTO `tblleads_sources` (`id`, `name`) VALUES
 -- Table structure for table `tblleads_status`
 --
 
-DROP TABLE IF EXISTS `tblleads_status`;
-CREATE TABLE IF NOT EXISTS `tblleads_status` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `statusorder` int DEFAULT NULL,
-  `color` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '#28B8DA',
-  `isdefault` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblleads_status` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `statusorder` int(11) DEFAULT NULL,
+  `color` varchar(10) DEFAULT '#28B8DA',
+  `isdefault` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblleads_status`
@@ -4325,18 +4187,16 @@ INSERT INTO `tblleads_status` (`id`, `name`, `statusorder`, `color`, `isdefault`
 -- Table structure for table `tbllead_activity_log`
 --
 
-DROP TABLE IF EXISTS `tbllead_activity_log`;
-CREATE TABLE IF NOT EXISTS `tbllead_activity_log` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `leadid` int NOT NULL,
-  `description` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `additional_data` mediumtext COLLATE utf8mb4_unicode_ci,
+CREATE TABLE `tbllead_activity_log` (
+  `id` int(11) NOT NULL,
+  `leadid` int(11) NOT NULL,
+  `description` longtext NOT NULL,
+  `additional_data` mediumtext DEFAULT NULL,
   `date` datetime NOT NULL,
-  `staffid` int NOT NULL,
-  `full_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `custom_activity` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `staffid` int(11) NOT NULL,
+  `full_name` varchar(100) DEFAULT NULL,
+  `custom_activity` tinyint(1) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbllead_activity_log`
@@ -4347,8 +4207,7 @@ INSERT INTO `tbllead_activity_log` (`id`, `leadid`, `description`, `additional_d
 (2, 1, 'not_lead_activity_status_updated', 'a:3:{i:0;s:13:\"Pradip  Dutta\";i:1;s:14:\"Not a Customer\";i:2;s:18:\"Reference Customer\";}', '2024-05-25 18:33:38', 1, 'Pradip  Dutta', 0),
 (3, 1, 'not_lead_activity_status_updated', 'a:3:{i:0;s:13:\"Pradip  Dutta\";i:1;s:18:\"Reference Customer\";i:2;s:14:\"Not a Customer\";}', '2024-05-25 18:33:41', 1, 'Pradip  Dutta', 0),
 (4, 2, 'not_lead_activity_created', '', '2024-05-26 00:35:25', 1, 'Pradip  Dutta', 0),
-(5, 2, 'not_lead_activity_assigned_to', 'a:2:{i:0;s:13:\"Pradip  Dutta\";i:1;s:100:\"<a href=\"https://digitalupmove.com/projects/crm/admin/profile/2\" target=\"_blank\">Chiranjit Gayen</a>\";}', '2024-05-26 00:35:26', 1, 'Pradip  Dutta', 0),
-(6, 2, 'not_lead_activity_status_updated', 'a:3:{i:0;s:13:\"Pradip  Dutta\";i:1;s:18:\"Reference Customer\";i:2;s:14:\"Not a Customer\";}', '2024-05-31 20:32:30', 1, 'Pradip  Dutta', 0);
+(5, 2, 'not_lead_activity_assigned_to', 'a:2:{i:0;s:13:\"Pradip  Dutta\";i:1;s:100:\"<a href=\"https://digitalupmove.com/projects/crm/admin/profile/2\" target=\"_blank\">Chiranjit Gayen</a>\";}', '2024-05-26 00:35:26', 1, 'Pradip  Dutta', 0);
 
 -- --------------------------------------------------------
 
@@ -4356,15 +4215,13 @@ INSERT INTO `tbllead_activity_log` (`id`, `leadid`, `description`, `additional_d
 -- Table structure for table `tbllead_integration_emails`
 --
 
-DROP TABLE IF EXISTS `tbllead_integration_emails`;
-CREATE TABLE IF NOT EXISTS `tbllead_integration_emails` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `subject` longtext COLLATE utf8mb4_unicode_ci,
-  `body` longtext COLLATE utf8mb4_unicode_ci,
+CREATE TABLE `tbllead_integration_emails` (
+  `id` int(11) NOT NULL,
+  `subject` longtext DEFAULT NULL,
+  `body` longtext DEFAULT NULL,
   `dateadded` datetime NOT NULL,
-  `leadid` int NOT NULL,
-  `emailid` int NOT NULL,
-  PRIMARY KEY (`id`)
+  `leadid` int(11) NOT NULL,
+  `emailid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -4373,13 +4230,11 @@ CREATE TABLE IF NOT EXISTS `tbllead_integration_emails` (
 -- Table structure for table `tbllistemails`
 --
 
-DROP TABLE IF EXISTS `tbllistemails`;
-CREATE TABLE IF NOT EXISTS `tbllistemails` (
-  `emailid` int NOT NULL AUTO_INCREMENT,
-  `listid` int NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `dateadded` datetime NOT NULL,
-  PRIMARY KEY (`emailid`)
+CREATE TABLE `tbllistemails` (
+  `emailid` int(11) NOT NULL,
+  `listid` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `dateadded` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -4388,13 +4243,11 @@ CREATE TABLE IF NOT EXISTS `tbllistemails` (
 -- Table structure for table `tblmaillistscustomfields`
 --
 
-DROP TABLE IF EXISTS `tblmaillistscustomfields`;
-CREATE TABLE IF NOT EXISTS `tblmaillistscustomfields` (
-  `customfieldid` int NOT NULL AUTO_INCREMENT,
-  `listid` int NOT NULL,
-  `fieldname` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
-  `fieldslug` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`customfieldid`)
+CREATE TABLE `tblmaillistscustomfields` (
+  `customfieldid` int(11) NOT NULL,
+  `listid` int(11) NOT NULL,
+  `fieldname` varchar(150) NOT NULL,
+  `fieldslug` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -4403,16 +4256,12 @@ CREATE TABLE IF NOT EXISTS `tblmaillistscustomfields` (
 -- Table structure for table `tblmaillistscustomfieldvalues`
 --
 
-DROP TABLE IF EXISTS `tblmaillistscustomfieldvalues`;
-CREATE TABLE IF NOT EXISTS `tblmaillistscustomfieldvalues` (
-  `customfieldvalueid` int NOT NULL AUTO_INCREMENT,
-  `listid` int NOT NULL,
-  `customfieldid` int NOT NULL,
-  `emailid` int NOT NULL,
-  `value` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`customfieldvalueid`),
-  KEY `listid` (`listid`),
-  KEY `customfieldid` (`customfieldid`)
+CREATE TABLE `tblmaillistscustomfieldvalues` (
+  `customfieldvalueid` int(11) NOT NULL,
+  `listid` int(11) NOT NULL,
+  `customfieldid` int(11) NOT NULL,
+  `emailid` int(11) NOT NULL,
+  `value` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -4421,20 +4270,18 @@ CREATE TABLE IF NOT EXISTS `tblmaillistscustomfieldvalues` (
 -- Table structure for table `tblmail_queue`
 --
 
-DROP TABLE IF EXISTS `tblmail_queue`;
-CREATE TABLE IF NOT EXISTS `tblmail_queue` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `engine` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cc` mediumtext COLLATE utf8mb4_unicode_ci,
-  `bcc` mediumtext COLLATE utf8mb4_unicode_ci,
-  `message` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `alt_message` longtext COLLATE utf8mb4_unicode_ci,
-  `status` enum('pending','sending','sent','failed') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+CREATE TABLE `tblmail_queue` (
+  `id` int(11) NOT NULL,
+  `engine` varchar(40) DEFAULT NULL,
+  `email` varchar(191) NOT NULL,
+  `cc` mediumtext DEFAULT NULL,
+  `bcc` mediumtext DEFAULT NULL,
+  `message` longtext NOT NULL,
+  `alt_message` longtext DEFAULT NULL,
+  `status` enum('pending','sending','sent','failed') DEFAULT NULL,
   `date` datetime DEFAULT NULL,
-  `headers` mediumtext COLLATE utf8mb4_unicode_ci,
-  `attachments` longtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`)
+  `headers` mediumtext DEFAULT NULL,
+  `attachments` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -4443,9 +4290,8 @@ CREATE TABLE IF NOT EXISTS `tblmail_queue` (
 -- Table structure for table `tblmigrations`
 --
 
-DROP TABLE IF EXISTS `tblmigrations`;
-CREATE TABLE IF NOT EXISTS `tblmigrations` (
-  `version` bigint NOT NULL
+CREATE TABLE `tblmigrations` (
+  `version` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -4461,20 +4307,18 @@ INSERT INTO `tblmigrations` (`version`) VALUES
 -- Table structure for table `tblmilestones`
 --
 
-DROP TABLE IF EXISTS `tblmilestones`;
-CREATE TABLE IF NOT EXISTS `tblmilestones` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `description_visible_to_customer` tinyint(1) DEFAULT '0',
+CREATE TABLE `tblmilestones` (
+  `id` int(11) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `description` mediumtext DEFAULT NULL,
+  `description_visible_to_customer` tinyint(1) DEFAULT 0,
   `start_date` date DEFAULT NULL,
   `due_date` date NOT NULL,
-  `project_id` int NOT NULL,
-  `color` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `milestone_order` int NOT NULL DEFAULT '0',
+  `project_id` int(11) NOT NULL,
+  `color` varchar(10) DEFAULT NULL,
+  `milestone_order` int(11) NOT NULL DEFAULT 0,
   `datecreated` date NOT NULL,
-  `hide_from_customer` int DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `hide_from_customer` int(11) DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -4483,14 +4327,12 @@ CREATE TABLE IF NOT EXISTS `tblmilestones` (
 -- Table structure for table `tblmodules`
 --
 
-DROP TABLE IF EXISTS `tblmodules`;
-CREATE TABLE IF NOT EXISTS `tblmodules` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `module_name` varchar(55) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `installed_version` varchar(11) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblmodules` (
+  `id` int(11) NOT NULL,
+  `module_name` varchar(55) NOT NULL,
+  `installed_version` varchar(11) NOT NULL,
+  `active` tinyint(1) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblmodules`
@@ -4504,8 +4346,8 @@ INSERT INTO `tblmodules` (`id`, `module_name`, `installed_version`, `active`) VA
 (5, 'surveys', '2.3.0', 0),
 (6, 'theme_style', '2.3.0', 0),
 (7, 'accounting', '1.1.6', 1),
-(9, 'whatsapp_api', '1.2.7', 1),
-(10, 'customtables', '1.0.0', 0);
+(8, 'customtables', '1.0.0', 0),
+(9, 'whatsapp_api', '1.2.7', 1);
 
 -- --------------------------------------------------------
 
@@ -4513,14 +4355,12 @@ INSERT INTO `tblmodules` (`id`, `module_name`, `installed_version`, `active`) VA
 -- Table structure for table `tblnewsfeed_comment_likes`
 --
 
-DROP TABLE IF EXISTS `tblnewsfeed_comment_likes`;
-CREATE TABLE IF NOT EXISTS `tblnewsfeed_comment_likes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `postid` int NOT NULL,
-  `commentid` int NOT NULL,
-  `userid` int NOT NULL,
-  `dateliked` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblnewsfeed_comment_likes` (
+  `id` int(11) NOT NULL,
+  `postid` int(11) NOT NULL,
+  `commentid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `dateliked` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -4529,16 +4369,14 @@ CREATE TABLE IF NOT EXISTS `tblnewsfeed_comment_likes` (
 -- Table structure for table `tblnewsfeed_posts`
 --
 
-DROP TABLE IF EXISTS `tblnewsfeed_posts`;
-CREATE TABLE IF NOT EXISTS `tblnewsfeed_posts` (
-  `postid` int NOT NULL AUTO_INCREMENT,
-  `creator` int NOT NULL,
+CREATE TABLE `tblnewsfeed_posts` (
+  `postid` int(11) NOT NULL,
+  `creator` int(11) NOT NULL,
   `datecreated` datetime NOT NULL,
-  `visibility` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `pinned` int NOT NULL,
-  `datepinned` datetime DEFAULT NULL,
-  PRIMARY KEY (`postid`)
+  `visibility` varchar(100) NOT NULL,
+  `content` mediumtext NOT NULL,
+  `pinned` int(11) NOT NULL,
+  `datepinned` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -4547,14 +4385,12 @@ CREATE TABLE IF NOT EXISTS `tblnewsfeed_posts` (
 -- Table structure for table `tblnewsfeed_post_comments`
 --
 
-DROP TABLE IF EXISTS `tblnewsfeed_post_comments`;
-CREATE TABLE IF NOT EXISTS `tblnewsfeed_post_comments` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `content` mediumtext COLLATE utf8mb4_unicode_ci,
-  `userid` int NOT NULL,
-  `postid` int NOT NULL,
-  `dateadded` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblnewsfeed_post_comments` (
+  `id` int(11) NOT NULL,
+  `content` mediumtext DEFAULT NULL,
+  `userid` int(11) NOT NULL,
+  `postid` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -4563,13 +4399,11 @@ CREATE TABLE IF NOT EXISTS `tblnewsfeed_post_comments` (
 -- Table structure for table `tblnewsfeed_post_likes`
 --
 
-DROP TABLE IF EXISTS `tblnewsfeed_post_likes`;
-CREATE TABLE IF NOT EXISTS `tblnewsfeed_post_likes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `postid` int NOT NULL,
-  `userid` int NOT NULL,
-  `dateliked` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblnewsfeed_post_likes` (
+  `id` int(11) NOT NULL,
+  `postid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL,
+  `dateliked` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -4578,18 +4412,14 @@ CREATE TABLE IF NOT EXISTS `tblnewsfeed_post_likes` (
 -- Table structure for table `tblnotes`
 --
 
-DROP TABLE IF EXISTS `tblnotes`;
-CREATE TABLE IF NOT EXISTS `tblnotes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `rel_id` int NOT NULL,
-  `rel_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
+CREATE TABLE `tblnotes` (
+  `id` int(11) NOT NULL,
+  `rel_id` int(11) NOT NULL,
+  `rel_type` varchar(20) NOT NULL,
+  `description` mediumtext DEFAULT NULL,
   `date_contacted` datetime DEFAULT NULL,
-  `addedfrom` int NOT NULL,
-  `dateadded` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `rel_id` (`rel_id`),
-  KEY `rel_type` (`rel_type`)
+  `addedfrom` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -4598,22 +4428,20 @@ CREATE TABLE IF NOT EXISTS `tblnotes` (
 -- Table structure for table `tblnotifications`
 --
 
-DROP TABLE IF EXISTS `tblnotifications`;
-CREATE TABLE IF NOT EXISTS `tblnotifications` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `isread` int NOT NULL DEFAULT '0',
-  `isread_inline` tinyint(1) NOT NULL DEFAULT '0',
+CREATE TABLE `tblnotifications` (
+  `id` int(11) NOT NULL,
+  `isread` int(11) NOT NULL DEFAULT 0,
+  `isread_inline` tinyint(1) NOT NULL DEFAULT 0,
   `date` datetime NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `fromuserid` int NOT NULL,
-  `fromclientid` int NOT NULL DEFAULT '0',
-  `from_fullname` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `touserid` int NOT NULL,
-  `fromcompany` int DEFAULT NULL,
-  `link` longtext COLLATE utf8mb4_unicode_ci,
-  `additional_data` mediumtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `description` mediumtext NOT NULL,
+  `fromuserid` int(11) NOT NULL,
+  `fromclientid` int(11) NOT NULL DEFAULT 0,
+  `from_fullname` varchar(100) NOT NULL,
+  `touserid` int(11) NOT NULL,
+  `fromcompany` int(11) DEFAULT NULL,
+  `link` longtext DEFAULT NULL,
+  `additional_data` mediumtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblnotifications`
@@ -4629,15 +4457,12 @@ INSERT INTO `tblnotifications` (`id`, `isread`, `isread_inline`, `date`, `descri
 -- Table structure for table `tbloptions`
 --
 
-DROP TABLE IF EXISTS `tbloptions`;
-CREATE TABLE IF NOT EXISTS `tbloptions` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `autoload` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=555 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tbloptions` (
+  `id` int(11) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `value` longtext NOT NULL,
+  `autoload` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbloptions`
@@ -4863,7 +4688,7 @@ INSERT INTO `tbloptions` (`id`, `name`, `value`, `autoload`) VALUES
 (215, 'task_biillable_checked_on_creation', '1', 1),
 (216, 'predefined_clientnote_credit_note', '', 1),
 (217, 'predefined_terms_credit_note', '', 1),
-(218, 'next_credit_note_number', '2', 1),
+(218, 'next_credit_note_number', '1', 1),
 (219, 'credit_note_prefix', 'CN-', 1),
 (220, 'credit_note_number_decrement_on_delete', '1', 1),
 (221, 'pdf_format_credit_note', 'A4-PORTRAIT', 1),
@@ -5188,7 +5013,7 @@ INSERT INTO `tbloptions` (`id`, `name`, `value`, `autoload`) VALUES
 (540, 'acc_pur_payment_payment_account', '16', 1),
 (541, 'acc_pur_payment_deposit_to', '37', 1),
 (546, 'leads_show_columns', '[\"0\",\"1\",\"2\",\"5\",\"9\",\"10\",\"12\"]', 1),
-(547, 'clients_show_columns', '[\"0\",\"1\",\"2\",\"5\",\"13\",\"3\",\"6\"]', 1),
+(547, 'clients_show_columns', '[\"0\",\"1\",\"2\",\"5\",\"13\",\"3\",\"6\",\"8\"]', 1),
 (549, 'invoices_show_columns', '[\"0\",\"5\",\"4\",\"8\",\"3\",\"1\",\"9\",\"6\"]', 1),
 (550, 'whatsapp_api_enabled', '1', 1);
 
@@ -5198,25 +5023,20 @@ INSERT INTO `tbloptions` (`id`, `name`, `value`, `autoload`) VALUES
 -- Table structure for table `tblpackages`
 --
 
-DROP TABLE IF EXISTS `tblpackages`;
-CREATE TABLE IF NOT EXISTS `tblpackages` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tblpackages` (
+  `id` int(11) NOT NULL,
   `package_name` varchar(200) NOT NULL,
-  `addedfrom` int NOT NULL,
-  `dateadded` date NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `addedfrom` int(11) NOT NULL,
+  `dateadded` date NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `tblpackages`
 --
 
 INSERT INTO `tblpackages` (`id`, `package_name`, `addedfrom`, `dateadded`) VALUES
-(1, 'Bangalore', 0, '0000-00-00'),
-(2, 'Kolkata', 0, '0000-00-00'),
-(4, 'Howrah1', 0, '0000-00-00'),
-(5, 'Delhi', 0, '0000-00-00'),
-(6, 'Hydrabad', 1, '2024-06-11');
+(2, 'Kerala tour', 0, '0000-00-00'),
+(3, 'Sikkim tour', 1, '2024-06-11');
 
 -- --------------------------------------------------------
 
@@ -5224,16 +5044,14 @@ INSERT INTO `tblpackages` (`id`, `package_name`, `addedfrom`, `dateadded`) VALUE
 -- Table structure for table `tblpayment_attempts`
 --
 
-DROP TABLE IF EXISTS `tblpayment_attempts`;
-CREATE TABLE IF NOT EXISTS `tblpayment_attempts` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `reference` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `invoice_id` int NOT NULL,
+CREATE TABLE `tblpayment_attempts` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `reference` varchar(100) NOT NULL,
+  `invoice_id` int(11) NOT NULL,
   `amount` double NOT NULL,
   `fee` double NOT NULL,
-  `payment_gateway` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `created_at` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  `payment_gateway` varchar(100) NOT NULL,
+  `created_at` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5242,18 +5060,16 @@ CREATE TABLE IF NOT EXISTS `tblpayment_attempts` (
 -- Table structure for table `tblpayment_modes`
 --
 
-DROP TABLE IF EXISTS `tblpayment_modes`;
-CREATE TABLE IF NOT EXISTS `tblpayment_modes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `show_on_pdf` int NOT NULL DEFAULT '0',
-  `invoices_only` int NOT NULL DEFAULT '0',
-  `expenses_only` int NOT NULL DEFAULT '0',
-  `selected_by_default` int NOT NULL DEFAULT '1',
-  `active` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblpayment_modes` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` mediumtext DEFAULT NULL,
+  `show_on_pdf` int(11) NOT NULL DEFAULT 0,
+  `invoices_only` int(11) NOT NULL DEFAULT 0,
+  `expenses_only` int(11) NOT NULL DEFAULT 0,
+  `selected_by_default` int(11) NOT NULL DEFAULT 1,
+  `active` tinyint(1) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblpayment_modes`
@@ -5270,13 +5086,10 @@ INSERT INTO `tblpayment_modes` (`id`, `name`, `description`, `show_on_pdf`, `inv
 -- Table structure for table `tblpinned_projects`
 --
 
-DROP TABLE IF EXISTS `tblpinned_projects`;
-CREATE TABLE IF NOT EXISTS `tblpinned_projects` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `project_id` int NOT NULL,
-  `staff_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `project_id` (`project_id`)
+CREATE TABLE `tblpinned_projects` (
+  `id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `staff_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5285,21 +5098,19 @@ CREATE TABLE IF NOT EXISTS `tblpinned_projects` (
 -- Table structure for table `tblprojectdiscussioncomments`
 --
 
-DROP TABLE IF EXISTS `tblprojectdiscussioncomments`;
-CREATE TABLE IF NOT EXISTS `tblprojectdiscussioncomments` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `discussion_id` int NOT NULL,
-  `discussion_type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `parent` int DEFAULT NULL,
+CREATE TABLE `tblprojectdiscussioncomments` (
+  `id` int(11) NOT NULL,
+  `discussion_id` int(11) NOT NULL,
+  `discussion_type` varchar(10) NOT NULL,
+  `parent` int(11) DEFAULT NULL,
   `created` datetime NOT NULL,
   `modified` datetime DEFAULT NULL,
-  `content` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `staff_id` int NOT NULL,
-  `contact_id` int DEFAULT '0',
-  `fullname` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `file_name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `file_mime_type` varchar(70) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `content` mediumtext NOT NULL,
+  `staff_id` int(11) NOT NULL,
+  `contact_id` int(11) DEFAULT 0,
+  `fullname` varchar(191) DEFAULT NULL,
+  `file_name` varchar(191) DEFAULT NULL,
+  `file_mime_type` varchar(70) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5308,18 +5119,16 @@ CREATE TABLE IF NOT EXISTS `tblprojectdiscussioncomments` (
 -- Table structure for table `tblprojectdiscussions`
 --
 
-DROP TABLE IF EXISTS `tblprojectdiscussions`;
-CREATE TABLE IF NOT EXISTS `tblprojectdiscussions` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `project_id` int NOT NULL,
-  `subject` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `show_to_customer` tinyint(1) NOT NULL DEFAULT '0',
+CREATE TABLE `tblprojectdiscussions` (
+  `id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `subject` varchar(191) NOT NULL,
+  `description` mediumtext NOT NULL,
+  `show_to_customer` tinyint(1) NOT NULL DEFAULT 0,
   `datecreated` datetime NOT NULL,
   `last_activity` datetime DEFAULT NULL,
-  `staff_id` int NOT NULL DEFAULT '0',
-  `contact_id` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  `staff_id` int(11) NOT NULL DEFAULT 0,
+  `contact_id` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5328,30 +5137,26 @@ CREATE TABLE IF NOT EXISTS `tblprojectdiscussions` (
 -- Table structure for table `tblprojects`
 --
 
-DROP TABLE IF EXISTS `tblprojects`;
-CREATE TABLE IF NOT EXISTS `tblprojects` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `status` int NOT NULL DEFAULT '0',
-  `clientid` int NOT NULL,
-  `billing_type` int NOT NULL,
+CREATE TABLE `tblprojects` (
+  `id` int(11) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `description` mediumtext DEFAULT NULL,
+  `status` int(11) NOT NULL DEFAULT 0,
+  `clientid` int(11) NOT NULL,
+  `billing_type` int(11) NOT NULL,
   `start_date` date NOT NULL,
   `deadline` date DEFAULT NULL,
   `project_created` date NOT NULL,
   `date_finished` datetime DEFAULT NULL,
-  `progress` int DEFAULT '0',
-  `progress_from_tasks` int NOT NULL DEFAULT '1',
+  `progress` int(11) DEFAULT 0,
+  `progress_from_tasks` int(11) NOT NULL DEFAULT 1,
   `project_cost` decimal(15,2) DEFAULT NULL,
   `project_rate_per_hour` decimal(15,2) DEFAULT NULL,
   `estimated_hours` decimal(15,2) DEFAULT NULL,
-  `addedfrom` int NOT NULL,
-  `contact_notification` int DEFAULT '1',
-  `notify_contacts` mediumtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`),
-  KEY `clientid` (`clientid`),
-  KEY `name` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `addedfrom` int(11) NOT NULL,
+  `contact_notification` int(11) DEFAULT 1,
+  `notify_contacts` mediumtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblprojects`
@@ -5366,19 +5171,17 @@ INSERT INTO `tblprojects` (`id`, `name`, `description`, `status`, `clientid`, `b
 -- Table structure for table `tblproject_activity`
 --
 
-DROP TABLE IF EXISTS `tblproject_activity`;
-CREATE TABLE IF NOT EXISTS `tblproject_activity` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `project_id` int NOT NULL,
-  `staff_id` int NOT NULL DEFAULT '0',
-  `contact_id` int NOT NULL DEFAULT '0',
-  `fullname` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visible_to_customer` int NOT NULL DEFAULT '0',
-  `description_key` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Language file key',
-  `additional_data` mediumtext COLLATE utf8mb4_unicode_ci,
-  `dateadded` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblproject_activity` (
+  `id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `staff_id` int(11) NOT NULL DEFAULT 0,
+  `contact_id` int(11) NOT NULL DEFAULT 0,
+  `fullname` varchar(100) DEFAULT NULL,
+  `visible_to_customer` int(11) NOT NULL DEFAULT 0,
+  `description_key` varchar(191) NOT NULL COMMENT 'Language file key',
+  `additional_data` mediumtext DEFAULT NULL,
+  `dateadded` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblproject_activity`
@@ -5395,24 +5198,22 @@ INSERT INTO `tblproject_activity` (`id`, `project_id`, `staff_id`, `contact_id`,
 -- Table structure for table `tblproject_files`
 --
 
-DROP TABLE IF EXISTS `tblproject_files`;
-CREATE TABLE IF NOT EXISTS `tblproject_files` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `file_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `original_file_name` longtext COLLATE utf8mb4_unicode_ci,
-  `subject` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `filetype` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+CREATE TABLE `tblproject_files` (
+  `id` int(11) NOT NULL,
+  `file_name` varchar(191) NOT NULL,
+  `original_file_name` longtext DEFAULT NULL,
+  `subject` varchar(191) DEFAULT NULL,
+  `description` mediumtext DEFAULT NULL,
+  `filetype` varchar(50) DEFAULT NULL,
   `dateadded` datetime NOT NULL,
   `last_activity` datetime DEFAULT NULL,
-  `project_id` int NOT NULL,
-  `visible_to_customer` tinyint(1) DEFAULT '0',
-  `staffid` int NOT NULL,
-  `contact_id` int NOT NULL DEFAULT '0',
-  `external` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `external_link` mediumtext COLLATE utf8mb4_unicode_ci,
-  `thumbnail_link` mediumtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`)
+  `project_id` int(11) NOT NULL,
+  `visible_to_customer` tinyint(1) DEFAULT 0,
+  `staffid` int(11) NOT NULL,
+  `contact_id` int(11) NOT NULL DEFAULT 0,
+  `external` varchar(40) DEFAULT NULL,
+  `external_link` mediumtext DEFAULT NULL,
+  `thumbnail_link` mediumtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5421,15 +5222,11 @@ CREATE TABLE IF NOT EXISTS `tblproject_files` (
 -- Table structure for table `tblproject_members`
 --
 
-DROP TABLE IF EXISTS `tblproject_members`;
-CREATE TABLE IF NOT EXISTS `tblproject_members` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `project_id` int NOT NULL,
-  `staff_id` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `project_id` (`project_id`),
-  KEY `staff_id` (`staff_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblproject_members` (
+  `id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `staff_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblproject_members`
@@ -5444,13 +5241,11 @@ INSERT INTO `tblproject_members` (`id`, `project_id`, `staff_id`) VALUES
 -- Table structure for table `tblproject_notes`
 --
 
-DROP TABLE IF EXISTS `tblproject_notes`;
-CREATE TABLE IF NOT EXISTS `tblproject_notes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `project_id` int NOT NULL,
-  `content` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `staff_id` int NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblproject_notes` (
+  `id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `content` mediumtext NOT NULL,
+  `staff_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5459,15 +5254,12 @@ CREATE TABLE IF NOT EXISTS `tblproject_notes` (
 -- Table structure for table `tblproject_settings`
 --
 
-DROP TABLE IF EXISTS `tblproject_settings`;
-CREATE TABLE IF NOT EXISTS `tblproject_settings` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `project_id` int NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` mediumtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`),
-  KEY `project_id` (`project_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblproject_settings` (
+  `id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `value` mediumtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblproject_settings`
@@ -5500,53 +5292,50 @@ INSERT INTO `tblproject_settings` (`id`, `project_id`, `name`, `value`) VALUES
 -- Table structure for table `tblproposals`
 --
 
-DROP TABLE IF EXISTS `tblproposals`;
-CREATE TABLE IF NOT EXISTS `tblproposals` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `subject` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `content` longtext COLLATE utf8mb4_unicode_ci,
-  `addedfrom` int NOT NULL,
+CREATE TABLE `tblproposals` (
+  `id` int(11) NOT NULL,
+  `subject` varchar(191) DEFAULT NULL,
+  `content` longtext DEFAULT NULL,
+  `addedfrom` int(11) NOT NULL,
   `datecreated` datetime NOT NULL,
   `total` decimal(15,2) DEFAULT NULL,
   `subtotal` decimal(15,2) NOT NULL,
-  `total_tax` decimal(15,2) NOT NULL DEFAULT '0.00',
+  `total_tax` decimal(15,2) NOT NULL DEFAULT 0.00,
   `adjustment` decimal(15,2) DEFAULT NULL,
   `discount_percent` decimal(15,2) NOT NULL,
   `discount_total` decimal(15,2) NOT NULL,
-  `discount_type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `show_quantity_as` int NOT NULL DEFAULT '1',
-  `currency` int NOT NULL,
+  `discount_type` varchar(30) DEFAULT NULL,
+  `show_quantity_as` int(11) NOT NULL DEFAULT 1,
+  `currency` int(11) NOT NULL,
   `open_till` date DEFAULT NULL,
   `date` date NOT NULL,
-  `rel_id` int DEFAULT NULL,
-  `rel_type` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `assigned` int DEFAULT NULL,
-  `hash` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `proposal_to` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `project_id` int DEFAULT NULL,
-  `country` int NOT NULL DEFAULT '0',
-  `zip` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `state` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `city` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `address` varchar(200) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `phone` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `allow_comments` tinyint(1) NOT NULL DEFAULT '1',
-  `status` int NOT NULL,
-  `estimate_id` int DEFAULT NULL,
-  `invoice_id` int DEFAULT NULL,
+  `rel_id` int(11) DEFAULT NULL,
+  `rel_type` varchar(40) DEFAULT NULL,
+  `assigned` int(11) DEFAULT NULL,
+  `hash` varchar(32) NOT NULL,
+  `proposal_to` varchar(191) DEFAULT NULL,
+  `project_id` int(11) DEFAULT NULL,
+  `country` int(11) NOT NULL DEFAULT 0,
+  `zip` varchar(50) DEFAULT NULL,
+  `state` varchar(100) DEFAULT NULL,
+  `city` varchar(100) DEFAULT NULL,
+  `address` varchar(200) DEFAULT NULL,
+  `email` varchar(150) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
+  `allow_comments` tinyint(1) NOT NULL DEFAULT 1,
+  `status` int(11) NOT NULL,
+  `estimate_id` int(11) DEFAULT NULL,
+  `invoice_id` int(11) DEFAULT NULL,
   `date_converted` datetime DEFAULT NULL,
-  `pipeline_order` int DEFAULT '1',
-  `is_expiry_notified` int NOT NULL DEFAULT '0',
-  `acceptance_firstname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `acceptance_lastname` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `acceptance_email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pipeline_order` int(11) DEFAULT 1,
+  `is_expiry_notified` int(11) NOT NULL DEFAULT 0,
+  `acceptance_firstname` varchar(50) DEFAULT NULL,
+  `acceptance_lastname` varchar(50) DEFAULT NULL,
+  `acceptance_email` varchar(100) DEFAULT NULL,
   `acceptance_date` datetime DEFAULT NULL,
-  `acceptance_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `signature` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `short_link` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `status` (`status`)
+  `acceptance_ip` varchar(40) DEFAULT NULL,
+  `signature` varchar(40) DEFAULT NULL,
+  `short_link` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5555,14 +5344,12 @@ CREATE TABLE IF NOT EXISTS `tblproposals` (
 -- Table structure for table `tblproposal_comments`
 --
 
-DROP TABLE IF EXISTS `tblproposal_comments`;
-CREATE TABLE IF NOT EXISTS `tblproposal_comments` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `content` longtext COLLATE utf8mb4_unicode_ci,
-  `proposalid` int NOT NULL,
-  `staffid` int NOT NULL,
-  `dateadded` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblproposal_comments` (
+  `id` int(11) NOT NULL,
+  `content` longtext DEFAULT NULL,
+  `proposalid` int(11) NOT NULL,
+  `staffid` int(11) NOT NULL,
+  `dateadded` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5571,13 +5358,11 @@ CREATE TABLE IF NOT EXISTS `tblproposal_comments` (
 -- Table structure for table `tblrelated_items`
 --
 
-DROP TABLE IF EXISTS `tblrelated_items`;
-CREATE TABLE IF NOT EXISTS `tblrelated_items` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `rel_id` int NOT NULL,
-  `rel_type` varchar(30) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `item_id` int NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblrelated_items` (
+  `id` int(11) NOT NULL,
+  `rel_id` int(11) NOT NULL,
+  `rel_type` varchar(30) NOT NULL,
+  `item_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5586,21 +5371,16 @@ CREATE TABLE IF NOT EXISTS `tblrelated_items` (
 -- Table structure for table `tblreminders`
 --
 
-DROP TABLE IF EXISTS `tblreminders`;
-CREATE TABLE IF NOT EXISTS `tblreminders` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
+CREATE TABLE `tblreminders` (
+  `id` int(11) NOT NULL,
+  `description` mediumtext DEFAULT NULL,
   `date` datetime NOT NULL,
-  `isnotified` int NOT NULL DEFAULT '0',
-  `rel_id` int NOT NULL,
-  `staff` int NOT NULL,
-  `rel_type` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notify_by_email` int NOT NULL DEFAULT '1',
-  `creator` int NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `rel_id` (`rel_id`),
-  KEY `rel_type` (`rel_type`),
-  KEY `staff` (`staff`)
+  `isnotified` int(11) NOT NULL DEFAULT 0,
+  `rel_id` int(11) NOT NULL,
+  `staff` int(11) NOT NULL,
+  `rel_type` varchar(40) NOT NULL,
+  `notify_by_email` int(11) NOT NULL DEFAULT 1,
+  `creator` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5609,20 +5389,20 @@ CREATE TABLE IF NOT EXISTS `tblreminders` (
 -- Table structure for table `tblroles`
 --
 
-DROP TABLE IF EXISTS `tblroles`;
-CREATE TABLE IF NOT EXISTS `tblroles` (
-  `roleid` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `permissions` longtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`roleid`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblroles` (
+  `roleid` int(11) NOT NULL,
+  `name` varchar(150) NOT NULL,
+  `permissions` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblroles`
 --
 
 INSERT INTO `tblroles` (`roleid`, `name`, `permissions`) VALUES
-(1, 'Employee', NULL);
+(1, 'Employee', NULL),
+(2, 'Tour Guide', 'a:0:{}'),
+(3, 'Receptionist', 'a:5:{s:9:\"contracts\";a:3:{i:0;s:8:\"view_own\";i:1;s:6:\"create\";i:2;s:4:\"edit\";}s:9:\"customers\";a:2:{i:0;s:6:\"create\";i:1;s:4:\"edit\";}s:8:\"expenses\";a:3:{i:0;s:8:\"view_own\";i:1;s:6:\"create\";i:2;s:4:\"edit\";}s:8:\"invoices\";a:3:{i:0;s:8:\"view_own\";i:1;s:6:\"create\";i:2;s:4:\"edit\";}s:9:\"proposals\";a:3:{i:0;s:8:\"view_own\";i:1;s:6:\"create\";i:2;s:4:\"edit\";}}');
 
 -- --------------------------------------------------------
 
@@ -5630,18 +5410,16 @@ INSERT INTO `tblroles` (`roleid`, `name`, `permissions`) VALUES
 -- Table structure for table `tblsales_activity`
 --
 
-DROP TABLE IF EXISTS `tblsales_activity`;
-CREATE TABLE IF NOT EXISTS `tblsales_activity` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `rel_type` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `rel_id` int NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `additional_data` mediumtext COLLATE utf8mb4_unicode_ci,
-  `staffid` varchar(11) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `full_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `date` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tblsales_activity` (
+  `id` int(11) NOT NULL,
+  `rel_type` varchar(20) DEFAULT NULL,
+  `rel_id` int(11) NOT NULL,
+  `description` mediumtext NOT NULL,
+  `additional_data` mediumtext DEFAULT NULL,
+  `staffid` varchar(11) DEFAULT NULL,
+  `full_name` varchar(100) DEFAULT NULL,
+  `date` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblsales_activity`
@@ -5662,17 +5440,15 @@ INSERT INTO `tblsales_activity` (`id`, `rel_type`, `rel_id`, `description`, `add
 -- Table structure for table `tblscheduled_emails`
 --
 
-DROP TABLE IF EXISTS `tblscheduled_emails`;
-CREATE TABLE IF NOT EXISTS `tblscheduled_emails` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `rel_id` int NOT NULL,
-  `rel_type` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE `tblscheduled_emails` (
+  `id` int(11) NOT NULL,
+  `rel_id` int(11) NOT NULL,
+  `rel_type` varchar(15) NOT NULL,
   `scheduled_at` datetime NOT NULL,
-  `contacts` varchar(197) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `cc` mediumtext COLLATE utf8mb4_unicode_ci,
-  `attach_pdf` tinyint(1) NOT NULL DEFAULT '1',
-  `template` varchar(197) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `contacts` varchar(197) NOT NULL,
+  `cc` mediumtext DEFAULT NULL,
+  `attach_pdf` tinyint(1) NOT NULL DEFAULT 1,
+  `template` varchar(197) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5681,11 +5457,9 @@ CREATE TABLE IF NOT EXISTS `tblscheduled_emails` (
 -- Table structure for table `tblservices`
 --
 
-DROP TABLE IF EXISTS `tblservices`;
-CREATE TABLE IF NOT EXISTS `tblservices` (
-  `serviceid` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`serviceid`)
+CREATE TABLE `tblservices` (
+  `serviceid` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5694,14 +5468,11 @@ CREATE TABLE IF NOT EXISTS `tblservices` (
 -- Table structure for table `tblsessions`
 --
 
-DROP TABLE IF EXISTS `tblsessions`;
-CREATE TABLE IF NOT EXISTS `tblsessions` (
-  `id` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `timestamp` int UNSIGNED NOT NULL DEFAULT '0',
-  `data` blob NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `ci_sessions_timestamp` (`timestamp`)
+CREATE TABLE `tblsessions` (
+  `id` varchar(128) NOT NULL,
+  `ip_address` varchar(45) NOT NULL,
+  `timestamp` int(10) UNSIGNED NOT NULL DEFAULT 0,
+  `data` blob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -5709,162 +5480,90 @@ CREATE TABLE IF NOT EXISTS `tblsessions` (
 --
 
 INSERT INTO `tblsessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES
-('02arpusla0ccn9c77mag4rpgini7b7sq', '::1', 1716871849, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363837313834393b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f616c6c5f636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('03c4jmioshf6a4ti79jj4oikg2o68p31', '::1', 1716887949, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363838373934393b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('08rivijeo1t28hhg461g8e6n60na601g', '::1', 1716872372, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363837323337323b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f616c6c5f636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('11jq83ocofmaf67o3752j8sl1p1ndirr', '::1', 1717413038, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373431333033383b5f707265765f75726c7c733a33353a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('12v24f3vq0mil2pdq2ld69j9v1r7p276', '::1', 1717151555, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373135313535353b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('0374f4fp46nhisnrmcpgp77ap9aj0f2r', '172.71.202.102', 1717419562, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373431393536323b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
+('0ar1iq2jitsi52mmo6p760q6rg9uv41a', '172.68.79.145', 1717215057, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373231353035373b5f707265765f75726c7c733a35323a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('0c6vdb81dlci85jqi8ctq7883r62fa5u', '172.68.79.161', 1718108094, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130383039343b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('0evjte5b28pc5r0ibduorsgc2umhi5fi', '172.69.179.65', 1717316213, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373331363231333b5f707265765f75726c7c733a36313a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f70726f6a656374732f70726f6a656374223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('0kkqej2mqspfeipabusna3ck94okqf4f', '172.69.95.131', 1717315273, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373331353237333b5f707265765f75726c7c733a36313a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f696e766f696365732f696e766f696365223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
 ('1c8v0ni6q7hj13cbdkst3edn7j5s5oiv', '172.71.118.91', 1716711092, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363731313039323b5f707265765f75726c7c733a35383a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f696e766f6963655f6974656d73223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('1q49j62fhs725cc5pfemcdkgcqcdk6ou', '::1', 1717910939, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373931303933353b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('218adulp65ajgrqgm5qiuvkd2k02emmj', '::1', 1716821643, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363832313634333b5f707265765f75726c7c733a35323a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e742f31223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('25bs49lvklrun3f48gnrgp3trtjcllgm', '::1', 1717143885, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134333838353b5f707265765f75726c7c733a34393a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f696e766f6963655f6974656d73223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
-('27s1cumnk2k7vfr2t34glrtbvlso2rd8', '::1', 1716805288, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363830353238383b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('2fv4691rmfa9ut2rlfqrdise81gsrp09', '::1', 1716804139, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363830343133393b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('2opv8k09eauo6redlutq50khqfaon83h', '::1', 1716807008, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363830373030383b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('2t9fmbkm0uqv9bhf1qattfbntdq4o4lt', '::1', 1716888206, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363838373934393b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('2vcmk6877jt62eat0ttdapfd9387ebbn', '::1', 1716822545, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363832323534353b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('32bqgmo4jooeh9o31dn5ho7g0kdt3lne', '::1', 1717910935, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373931303933353b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f70726f6a65637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('3bavbbv1sf9730lq91nfqnpkcq67bcou', '::1', 1717153123, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373135333132333b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('3ec01bgoo8teijgdnvbqbdn3aun8m3ll', '::1', 1718095878, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383039353837383b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('3r0baelk9d6ag2jtfc3d18q2qdojecqo', '::1', 1717144504, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134343530343b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f6d6f64756c6573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
-('409m6dfpmbgaf7oivifodea21bbhs8qj', '::1', 1717085653, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373038353635333b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('4538n85q8jalv3ts1m1vevdh5c0pbujn', '::1', 1717145623, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134353632333b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('467p2nmjkkujk1vk5it04osr51db4ul3', '::1', 1717152771, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373135323737313b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('4peehqhartot7k4665irbe4q478ncehe', '::1', 1718175322, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383137353332323b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('4q1pv8d24pnige92febfuof13f6ueg7b', '::1', 1717268403, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373236383430323b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f61757468656e7469636174696f6e223b),
-('51hn1ug17fg4dqmjfg49i9rufvh96m8u', '::1', 1718108617, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130383631373b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('56sc6on1rieucpletchu3cauvpa349h2', '::1', 1717909010, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373930393031303b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f70726f6a65637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('5ege8069derhtp99spro99m6ro6t8egq', '::1', 1718101484, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130313438343b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('5jsp6d3c1btcn7dcc9uobbl0q3f65fpg', '::1', 1717869897, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373836393839373b5f707265765f75726c7c733a35343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f70726f6a656374732f70726f6a6563742f31223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('641psd6u5q7tvtte1k2lltu2lqsrermn', '::1', 1717142050, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134323035303b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('6542bv3tkcp3rlbpolbcita5eneh8b4q', '::1', 1717151887, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373135313838373b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('6jmefao4b1s25g9hu606b8bjl1vstmtu', '::1', 1718090233, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383039303233333b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('6o5b18vrgt60epskh79jgus285k04vh5', '::1', 1717906139, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373930363133393b5f707265765f75726c7c733a33353a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('7fgnjh09d5jonkiq38rpj4f8s1s93im1', '::1', 1716830815, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363833303831353b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('1ci0kcobue2oc4g4llu792hq3d6950e0', '172.68.79.160', 1718105941, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130353934313b5f707265765f75726c7c733a36313a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e74732f636c69656e742f31223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('1m0e1iv1dnud0h1km1uhd9f1tre4fqn3', '172.71.202.172', 1717530642, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373533303634323b5f707265765f75726c7c733a36353a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f6163636f756e74696e672f64617368626f617264223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('24lau9ueugp3cqsn3v7jsmbbdt2d8sgd', '172.68.79.143', 1717394742, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373339343734323b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
+('2qsve4lpk1qth1p6e54718pmiagivaap', '172.68.79.168', 1717188715, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373138383731353b5f707265765f75726c7c733a35323a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('3am50ei002ncd2ep86ai05t7jchen5lg', '172.69.94.203', 1717878523, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373837383532333b5f707265765f75726c7c733a34343a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('3igh76cr1p1ul0h181mcejg7ciip0k7v', '172.69.179.41', 1717316568, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373331363536383b5f707265765f75726c7c733a35373a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f726f6c65732f726f6c652f32223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
+('3mldlkkecl0aih9vr1l6mnbkkir9bk16', '172.69.94.232', 1718106787, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130363738373b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('3o5ced49a53eqbq09co5mpvd33j66uus', '172.68.79.144', 1718110879, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131303837393b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('4g15i5i4csp4u1tckath9up4uec0is92', '172.68.79.144', 1718179214, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383137393231343b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
+('57rm0dhkeja1f5sbeump630jdj4981js', '172.68.79.181', 1718182564, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383138323536343b5f707265765f75726c7c733a35303a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f726f6c6573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
+('6quq8l3f91bqilrln25786fdb5jb8qb2', '172.69.178.191', 1718105547, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130353534373b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('6r69kig6gmidk2oiicte4kmpt2o094c2', '172.68.79.181', 1718108614, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130383631343b5f707265765f75726c7c733a35323a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('7570asll9e49h0t15ku1m0qhdro6e7jd', '172.69.178.30', 1717269513, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373236393531333b7265645f75726c7c733a34343a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e223b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
+('7aj49ghqf4f66g2f417bcujjgeurjvl0', '172.71.202.6', 1718115625, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131353632353b5f707265765f75726c7c733a35303a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f6c65616473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
 ('7m2n0ffecc80mvppsrrb0vjn870lam0t', '172.69.86.35', 1716731742, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363733313639323b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('7rluu50vlhvq7rel7ldo3abv7omgncnp', '::1', 1716820883, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363832303838333b5f707265765f75726c7c733a36373a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e742f313f67726f75703d636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('7smgicgt375g21l6vkrkse2hjuee5mi3', '::1', 1718091465, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383039313436353b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f616c6c5f636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('7u18eh0cka4o5iqg0fg1gqsp1neqmt52', '::1', 1717154106, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373135343130363b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('813tj025td6u2p3to23vr4i8e5cviinl', '::1', 1717422034, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373432323033343b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f6d656e755f73657475702f6d61696e5f6d656e75223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('81lutvo8l7h367v2inpfh8giqfkbn33e', '::1', 1717268402, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373236383430323b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f61757468656e7469636174696f6e223b),
-('85m1qjiidj8b3ln80e1l6eudmads0fcb', '::1', 1717089921, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373038393838363b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('8rvank5tn7i24hej9fv5afvrev7r9j9e', '::1', 1717414650, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373431343635303b5f707265765f75726c7c733a33353a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('90thl6rfdj586dj7ick8jj0adodtg9b8', '::1', 1718087317, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383038373331373b7265645f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b61676573223b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f61757468656e7469636174696f6e223b),
-('95ral8q8orelrvlnl3ideamkkuc8u2tb', '::1', 1716831238, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363833313233383b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('8615tqs3ru0470kvvb45tejadasdpg3j', '172.69.94.9', 1718182474, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383138323334353b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f73746166662f6d656d6265722f32223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('8bc78kgn1rvr5e74p7ku6u5fikcg2uq9', '172.68.79.142', 1718179762, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383137393736323b5f707265765f75726c7c733a36353a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f6d656e755f73657475702f6d61696e5f6d656e75223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
+('9fop8tdejtmnu0e0ur3lknd1bcekr4qh', '172.68.79.180', 1717900431, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373930303433313b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
 ('9jtqcr67qhkf9d59uf9g9i4c76tbnkmo', '172.71.134.76', 1716712415, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363731323431353b5f707265765f75726c7c733a38313a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f696e766f6963652f322f6330313061663530396131646662373864373731353663353932656631336436223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('9spmr24nhurmhihtr6n70msli00j2m3k', '::1', 1716822214, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363832323231343b5f707265765f75726c7c733a36363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e742f313f67726f75703d70726f66696c65223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('9va21kecv8hfjab34tn4ogv6h297jiqt', '::1', 1716746617, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363734363337343b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f696e766f69636573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('adj7d7lk9im44ahvcespp677h0n0fj57', '::1', 1718110226, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131303232363b5f707265765f75726c7c733a35343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b616765732f7061636b6167652f34223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('aehka3gap6psdjl97g7g1f4mpqagolj5', '::1', 1717146709, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134363730393b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('agolblsvo69omm9l449hvfdgmll7t2hs', '::1', 1718107619, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130373631393b5f707265765f75726c7c733a35323a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b616765732f5061636b616765223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('arepn8sl24kmp5nkekj6odrn2s9mskjr', '::1', 1717909441, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373930393434313b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f70726f6a65637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('as5c35i59bu1leiuimflrnvujhjkuq3d', '::1', 1717856804, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373835363830343b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f70726f6a65637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('b1804jnkvv6j9m0hg6q4m3647nq1aulu', '::1', 1717415062, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373431353036323b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f70726f6a65637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('b2pi32jv319m4n74ai4qlqmsesjfp7hf', '::1', 1717907449, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373930373434393b5f707265765f75726c7c733a33353a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('b3h2bo8do79pk5o026uogvf37tgvh7jo', '::1', 1717168343, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373136383334333b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f70726f6a65637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('b8baphtfupiki3nos4q1q1h50e7ra51p', '::1', 1718180364, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383138303336343b5f707265765f75726c7c733a33353a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('b9avtvm7o9bvjq78jt8einuj4pm23mld', '::1', 1716874849, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363837343834393b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('9mursf430q6b90j0abgg6sg4obfl0r0u', '172.68.79.148', 1717188302, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373138383330323b5f707265765f75726c7c733a35323a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('a9fm5udh3ul3k7khve9t6377j3aepv5p', '172.68.79.161', 1718182259, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383138323235393b5f707265765f75726c7c733a34343a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('afhi2l417b5s96fipcqpalvkce39inst', '172.68.79.144', 1717268386, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373236383338363b7265645f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f70726f6a65637473223b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
+('b4n01gdl6p0bcp910of3p0ipftb45qhb', '172.68.79.181', 1718102946, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130323934363b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('bdigtsj85fm20iggqvt3bnr72vs3bvr5', '172.68.79.160', 1718113730, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131333733303b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
 ('bka0dhdrjj2gmrn8n5a3dm28rjujv9dr', '172.69.130.246', 1716727871, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363732373837313b69735f6d6f62696c657c623a313b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
+('bkmrg2k587ms96hobvb8tk3660a1jcbb', '172.68.79.144', 1717268386, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373236383338363b7265645f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f70726f6a65637473223b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
 ('boc71lu7iar3t1ecogri8nfnprtk51pf', '162.158.22.137', 1716711406, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363731313430363b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f696e766f69636573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('bttotv24tg2d57t0o95mgln7tf8fc037', '::1', 1717422208, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373432323033343b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f70726f6a65637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('c8bpf8nh1h2ig8mhb7dd7cil08ui95qp', '::1', 1716805631, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363830353633313b5f707265765f75726c7c733a37323a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e742f313f7461623d637573746f6d65725f61646d696e73223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b6d6573736167652d737563636573737c733a33303a22437573746f6d65722075706461746564207375636365737366756c6c792e223b5f5f63695f766172737c613a313a7b733a31353a226d6573736167652d73756363657373223b733a333a226f6c64223b7d),
-('cdt31gb2tpgf0kj3dutomknc7ulge8oo', '::1', 1718180483, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383138303336343b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b616765732f686f74656c223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('cf3cmq6k9qpb5kqnhldhg4dtl4n6qfe6', '::1', 1716813621, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363831333632313b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('c0iapc8hh4pibpp649oj23curs3d2prq', '172.71.198.111', 1717877132, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373837373133323b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
 ('cm3e385k93cvldljphv55u84br2eska0', '172.71.134.76', 1716714020, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363731343032303b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
-('co5g6gl0h08gb8mvbajjg44hqfcoaf8s', '::1', 1718090998, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383039303939383b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('cr3btblu1ofk19fo2vq4ju14ecld2u56', '::1', 1716820019, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363832303031393b5f707265765f75726c7c733a36373a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e742f313f67726f75703d636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('d029inhg4l9fcob7dbmre7o0nk7hm5lt', '::1', 1717149638, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134393633383b5f707265765f75726c7c733a34383a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f6372656469745f6e6f746573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('dd8urks655lj1qmsj4vv4ik7coeas9l7', '::1', 1717151201, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373135313230313b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('dvfq9jdt590ap2ftg0j3einncdqd14uu', '::1', 1718102840, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130323834303b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('eadtfomase32n0jerva92rk4101s4egj', '::1', 1716830066, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363833303036363b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('ehhqp7tfl23o8s4gbhorqit0s11id3bv', '::1', 1716820371, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363832303337313b5f707265765f75726c7c733a36373a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e742f313f67726f75703d636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('ejcd36nm9d3kohagg9vlm6koem940f8b', '::1', 1718109913, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130393931333b5f707265765f75726c7c733a35343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b616765732f7061636b6167652f34223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('emgaegvlo1hge99s6o3inunj2jqvdelj', '::1', 1717177428, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373137373432383b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f70726f6a65637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
-('f4n81mpuni0d584emojljb3d7e103bdj', '::1', 1717153733, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373135333733333b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('fn4m0bbtjs12j2esrapmprqb0mtlri4t', '::1', 1718106925, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130363932353b5f707265765f75726c7c733a35323a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b616765732f5061636b616765223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('fr5fjmut98233914v56tuilo6ktuc2fu', '::1', 1717085228, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373038353232383b7265645f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f61757468656e7469636174696f6e223b),
-('frt3e7oupv346dfh3ciu4cf8pmd142uo', '::1', 1716815398, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363831353339383b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('fsju2r1digchca7d9dgdoad84i5lp0d8', '::1', 1717900983, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373930303938333b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f61757468656e7469636174696f6e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('emapk7r6bropd0ef1kb4adlpaf7bnsin', '172.68.79.145', 1717215316, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373231353035373b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f70726f6a65637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('es4l5dq2td2501rb7ifk8kq6qcmf96pc', '172.68.79.145', 1718104570, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130343537303b5f707265765f75726c7c733a36313a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b616765732f5061636b616765223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
 ('fstoi9d7vbrlkclh1ijqb3v6t3aoitua', '172.71.198.102', 1716731692, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363733313639323b5f707265765f75726c7c733a35323a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f6d6f64756c6573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('g077h0i6abkrq2eagqjiur2nkgsjljp8', '::1', 1717150074, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373135303037343b5f707265765f75726c7c733a34383a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f6372656469745f6e6f746573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('guhhhrl8gn71us5bdphdskhkis89ihq3', '::1', 1717147869, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134373836393b5f707265765f75726c7c733a34383a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f6372656469745f6e6f746573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('guq60djququeakr8vigjpmhvjfdhbemd', '::1', 1717167069, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373136373036393b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f616c6c5f636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('h1ig5sb7u18ntsua98vo1293fses40sp', '::1', 1717414082, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373431343038323b5f707265765f75726c7c733a33353a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('h4tueu09ho8icoamg4q05s3fgg7hq33c', '::1', 1717143563, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134333536333b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
-('h5odje3hru4d4bqi3u15op5tt5b0j21q', '::1', 1717089886, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373038393838363b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('h5ofk17fie4jg8hq12g0t1i4pog2tem5', '::1', 1717909967, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373930393936373b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('h5ujdemfgqhv349lim1nt6igog27kcp7', '::1', 1717146388, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134363338383b5f707265765f75726c7c733a34383a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f6372656469745f6e6f746573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('h992f8bbt0ffvq1s07kid644ppfgkhc1', '::1', 1716798195, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363739383139353b7265645f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f696e766f69636573223b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61757468656e7469636174696f6e2f6c6f67696e223b),
-('hkjfkn5hniqgbp7kf58j7d7tsmb7c722', '::1', 1717144187, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134343138373b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('hoobvu6tl9us6mlimu6ahco325q0jnfe', '::1', 1717142785, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134323738353b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('hrk6n1hndbmvuev3uqhdsaeenijs8lm3', '::1', 1716813947, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363831333934373b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('i0htcsm6t350ce27gv0ocu7d66nkmqd9', '::1', 1718093603, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383039333630333b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f616c6c5f636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('iep2267n0s2iogj6qkdpu7fb7h3l25fk', '::1', 1716833413, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363833333431333b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('into57ovvka7icguqpdov2es5vrdtcoe', '::1', 1717419565, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373431393536353b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f6d656e755f73657475702f6d61696e5f6d656e75223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
-('ipgdv9fjavf0lvm8hc2259uhilg8o97d', '::1', 1716815750, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363831353735303b5f707265765f75726c7c733a35323a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e742f31223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('j5uv5p9bplbt1adghofek06cu42qqess', '::1', 1717154438, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373135343433383b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('j65lclj4uncps08qhdo3ru1p5s7s9cgi', '::1', 1718179925, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383137393932353b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f6d656e755f73657475702f6d61696e5f6d656e75223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
-('jdenrst9ekb1e41pmbqg49oocjuc4jeg', '::1', 1717169076, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373136393037363b5f707265765f75726c7c733a35323a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f70726f6a656374732f70726f6a656374223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
-('jdnb5hvno6si9uenq2dq4s10dlp22cid', '::1', 1717150836, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373135303833363b5f707265765f75726c7c733a34383a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f6372656469745f6e6f746573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('jgdl8lc54o6102dumso4bqltmq1ir6gn', '::1', 1717416066, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373431363036363b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f70726f6a65637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('jl9v174ncc389sniv95d6ci792a7r6be', '::1', 1717165232, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373136353233323b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f616c6c5f636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('jo0u19ki8s4bdhsno6ft2sp46m2goekl', '::1', 1717167720, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373136373732303b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f616c6c5f636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('jq1csvcpd50dv608p24pq2tn9givobj9', '::1', 1718093091, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383039333039313b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('gjabphr0l86ga5440h3bkoporp5rhbib', '172.68.79.145', 1717214497, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373231343439373b5f707265765f75726c7c733a35323a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('gl2ce30b2pn2ek91p5e0r7n8hs2jc6ua', '172.69.87.221', 1718113835, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131333833353b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('gt2tnv18lprb1l72r8gt7p7qgni2qtri', '172.68.79.180', 1718113839, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131333733303b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('iobfbermnguivpvrlc0cm3d1ifb7t6p2', '172.68.79.145', 1717187878, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373138373837383b5f707265765f75726c7c733a35323a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('jq0a3gkfpid45mcrhpq529cao1e62mqr', '172.69.94.179', 1718105895, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130353839353b5f707265765f75726c7c733a36313a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f70726f6a656374732f70726f6a656374223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
 ('k221grfm5ups6oku8jjp0tetnron67rs', '141.101.76.236', 1716727889, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363732373836373b69735f6d6f62696c657c623a313b7265645f75726c7c733a34363a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f636c69656e7473223b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61757468656e7469636174696f6e2f6c6f67696e223b),
-('kfmd4njoldka99t315jul0f0ibe7f8mg', '::1', 1717139275, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373133393237353b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('kpd6h1va3tjqapr1f9rov7665see04m6', '::1', 1718092675, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383039323637353b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f616c6c5f636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('lqfs3qi6ivh1q75g94arhfsvlq9r2o61', '::1', 1717400335, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373430303333353b5f707265765f75726c7c733a33353a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('lrrijdhf7a7bla5fgt64sii1alut734p', '::1', 1717177891, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373137373839313b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f70726f6a65637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('lv6gfmu3p9vsjclgekum0dn2suaiel73', '::1', 1717401510, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373430313531303b5f707265765f75726c7c733a33353a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('m0d2k64uma7k5mh7ig66rqe3fku0e2bs', '::1', 1718178760, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383137383736303b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('m320nk21j4okrb2prcia3opl3fu37p8f', '::1', 1718110773, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131303737333b5f707265765f75726c7c733a35343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b616765732f7061636b6167652f34223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('m5v4r4592msp11adssb0dtda27t1t0f5', '::1', 1717145276, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134353237363b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('mb4ccthuo1ha23ch0ql15ti6l1smfq14', '::1', 1718089900, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383038393930303b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f616c6c5f636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('mm3s0op87mob3f21g58tnmpbofnd4sr3', '::1', 1717397087, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373339373038373b5f707265765f75726c7c733a33353a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('n5li7tv70q8p2rh72rhnqecupgnsaoa3', '::1', 1717177937, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373137373839313b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('n6apu243ksn9v74iqeoksdl37cs47pnr', '::1', 1717147131, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134373133313b5f707265765f75726c7c733a34383a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f6372656469745f6e6f746573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('nb6s7ep1aqejvd424b7gqib7uda4atd2', '::1', 1718106024, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130363032343b5f707265765f75726c7c733a35323a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b616765732f5061636b616765223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('ncmgcnsmgt887rl94t7892a9a52tkd9t', '::1', 1718110929, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131303737333b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('ninur4hr209l8a8e6ie40u522djvugjg', '::1', 1717145929, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134353932393b5f707265765f75726c7c733a36383a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f6372656469745f6e6f7465732f6c6973745f6372656469745f6e6f7465732f31223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('nn110hdhtei2ujiomapo6e63fubs1tct', '::1', 1718094021, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383039343032313b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f616c6c5f636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('nn5svelinbjnh3dmj44g4q8sma8tnkpo', '::1', 1718106571, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130363537313b5f707265765f75726c7c733a35323a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b616765732f5061636b616765223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('of8lcjrt6ge2vj873m9c7ddmqct2qsq1', '::1', 1717870075, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373836393839373b5f707265765f75726c7c733a35323a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f70726f6a656374732f70726f6a656374223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('k817gl064i1nppbf5h23fp8rt9tae3hf', '172.68.79.181', 1717213202, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373231333230323b5f707265765f75726c7c733a35323a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('l292agfi3cv4ikvvoj01cbdetehv8lsl', '108.162.227.90', 1718104639, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130343633353b7265645f75726c7c733a36313a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e74732f636c69656e742f31223b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
+('leqt58di2v3ul58foh0eokjuehifvaq9', '172.69.86.56', 1717313900, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373331333930303b5f707265765f75726c7c733a36333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f73657474696e67733f67726f75703d706466223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
+('liffiri64ldpm1ngbkelbn2tk0m97u3f', '172.68.79.160', 1717420330, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373432303333303b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
+('m50q3m1jle4kke6ol0o2vit9pqvi2jp9', '172.68.79.180', 1718111240, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131313234303b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('mjjs47on0qclvchpq85vrepe8m7aqcok', '172.69.178.7', 1718107431, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130373433313b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('ndhmf3f6nedkl38pa84l41spo9bfekg9', '172.69.178.6', 1718113531, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131333533313b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('nrhnk8q5v76lv81a9ql14hdhf50i7iin', '172.71.202.73', 1717316860, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373331363536383b5f707265765f75726c7c733a34343a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('o05okdhuopfre9g1hq0voeumg608r933', '172.69.87.200', 1717314641, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373331343634313b5f707265765f75726c7c733a35303a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f6c65616473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('o5fauceu6uo4njt0lpq9iuf14nccqo68', '172.71.202.173', 1717269326, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373236393332363b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61757468656e7469636174696f6e2f6c6f67696e223b),
+('o5m4k7ri6k22pfhinsm5ap2jv3gfc8js', '172.68.79.143', 1718178871, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383137383837313b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('ogjpu73k6o70t20e9c8gqr2bgnsqgcv9', '172.68.79.180', 1718113307, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131333330373b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
 ('oj4470dvosd3rkqnrfn0qt5hf75ggrdn', '162.158.186.193', 1716713514, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363731333531343b5f707265765f75726c7c733a35303a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f6c65616473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('p19vcnf6i1nbtivm1bd703rkauldp8qv', '::1', 1716873141, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363837333134313b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('p9g50n9o2r0enu9iqrojn0683q5vrv2j', '::1', 1716819063, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363831393036333b5f707265765f75726c7c733a36373a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e742f313f67726f75703d636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('pj13ob6uvk9dhspfdrm6svtr0gp38pfs', '::1', 1717164164, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373136343136343b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('pq35ubb24g7ra48n4lbukn48hqf1g12j', '::1', 1718087644, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383038373634343b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('pstnft7hid87jvmcnohuuek0fsn2bhqo', '::1', 1716829378, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363832393337383b5f707265765f75726c7c733a36363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e742f333f67726f75703d70726f66696c65223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('pvrvact3qm1fpsiftssrtm1e41tnismu', '::1', 1718104720, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130343732303b5f707265765f75726c7c733a35323a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b616765732f5061636b616765223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('q6nopblo7su2f885sut63ueo5caepfe5', '::1', 1716830389, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363833303338393b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b);
-INSERT INTO `tblsessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES
-('q7bfj99khm17it6b3u6ssh9m32114q6j', '::1', 1717213202, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373231333230313b7265645f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f61757468656e7469636174696f6e223b),
-('qkg2dqer08t0r0cp271ur9op34ivrlg3', '::1', 1716832643, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363833323634333b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('oj7oe69vuhfjbi0g1hjrm0k20gnmki5j', '172.68.79.144', 1718174274, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383137343237343b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('otisujec7jgslddfb1111d4tt8u4jlsk', '172.69.179.218', 1718115929, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131353932393b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f696e766f69636573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('ovh3i0ai6lga3bohf52krtlmke9v2ajq', '172.68.79.180', 1718112285, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131323238353b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('p32lvgas4th8van3cvino64loot97lo6', '172.69.86.122', 1718114268, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131343236383b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('p9t0ict8602fv7a1f8opdh0anbfh1v40', '172.68.79.145', 1717856325, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373835363332353b7265645f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f70726f6a65637473223b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
+('pujbf6t4fdofor2t598nrbaeljau3dgv', '172.69.86.81', 1717269513, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373236393531333b7265645f75726c7c733a34343a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e223b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
+('q0lrrcb22ba0ho0h8auafhchrji00qon', '172.68.79.142', 1718106324, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130363332343b5f707265765f75726c7c733a36313a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b616765732f5061636b616765223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('q427tmd5kobdrv2r1tskgrg16arsupgs', '172.68.79.145', 1717214082, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373231343038323b5f707265765f75726c7c733a35323a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('qhjsq4gopgcohll0gfitrni090r2j52j', '172.68.79.180', 1718112988, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131323938383b5f707265765f75726c7c733a35323a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('qhs660r7588ifqjgq4ueespkh85jmllf', '172.68.79.143', 1717186531, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373138363533313b5f707265765f75726c7c733a35323a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('qhspj0vv781ck3li34ru1lbkq9es2n16', '172.68.79.160', 1718182564, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383138323536343b5f707265765f75726c7c733a35373a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f726f6c65732f726f6c652f32223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
+('r3f1d4hd4nek37d98ul2o8821n54ttpk', '172.69.179.92', 1717530890, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373533303839303b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
+('r99hp3400kfre8dht8mejluq5hual72o', '172.71.82.87', 1717187146, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373138373134363b5f707265765f75726c7c733a35323a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
 ('rg2dunl80qokm64rlkh3994j7rqjgnt0', '172.70.143.180', 1716727869, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363732373836383b69735f6d6f62696c657c623a313b7265645f75726c7c733a34343a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e223b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
-('rnjatfc6rdvmcfefrdn5u95p3cp0djtv', '::1', 1718090680, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383039303638303b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('s0e56fgqp79vskt75tkn4tqf24tn73bs', '::1', 1716831852, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363833313835323b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('saiimlv9pjuv5iu5m66n5ajpbdg462qd', '::1', 1716834122, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363833343132323b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('she39mgulua7n8p6o4s03ae8s45lu7e0', '::1', 1717088676, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373038383637363b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('sq0i6cn2nn4ulpab539r78k6a2u1ffr0', '::1', 1717144892, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134343839323b5f707265765f75726c7c733a36343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f637573746f6d7461626c65733f67726f75703d637573746f6d657273223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
-('t0elac8uk7h6bfn5s90m8qol3t8tdrmr', '::1', 1716808407, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363830383430373b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('t68t94alam83h66u372m8n8hmu3122o8', '::1', 1717152423, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373135323432333b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('t8k7l8bnhsd274t5qbuupnk35ukqifok', '::1', 1716806700, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363830363730303b5f707265765f75726c7c733a35303a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e74223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('tgjud1e86cveit806lfvttnnk8p4ke5j', '::1', 1718179194, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383137393139343b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
-('thrmpgjoe38o9jtdhhums85cvqbpfgvj', '::1', 1717164536, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373136343533363b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f616c6c5f636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('tme5c6qfi0uetqck8bva9sfv62m3i9or', '::1', 1716876435, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363837363433353b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('ts1id7luvq1oca9h2skah2tktk38orj6', '::1', 1716833075, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363833333037353b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('ttlotgph3bgb2cbsk8mtqj61chnenb39', '::1', 1716834123, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363833343132323b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('tuu96heuuq5vlrg78m2s8p0rmh09402q', '::1', 1717409883, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373430393838333b5f707265765f75726c7c733a33353a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('u146nra8gvb7j70fbsun962d9vsqqsd8', '::1', 1716819616, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363831393631363b5f707265765f75726c7c733a36373a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e742f313f67726f75703d636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('ualgt3l5ls6d8afh2dorlcva3o99qjjm', '::1', 1717176981, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373137363938313b5f707265765f75726c7c733a34343a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f70726f6a65637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('uehqpup8ums446ofbtao95klvacts2df', '::1', 1717167382, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373136373338323b5f707265765f75726c7c733a36373a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e742f313f67726f75703d636f6e7461637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('uq8mtv7ka8tg6qtb5uslij0p10l2rjld', '::1', 1716804499, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363830343439393b5f707265765f75726c7c733a36363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e742f313f67726f75703d70726f66696c65223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('uu7dvm6jhm4qg7eiqgsoqte49hckla9f', '::1', 1717409371, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373430393337313b5f707265765f75726c7c733a33353a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('v7uv26ctq818oqnj9cujau1oka250m9n', '::1', 1717412647, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373431323634373b5f707265765f75726c7c733a33353a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('vesar9q2ccuoiqbisnja2if22ufetfnj', '::1', 1717421670, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373432313637303b5f707265765f75726c7c733a35363a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f6d656e755f73657475702f6d61696e5f6d656e75223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('vhkj0fef9192v34aelrq7pigfl07iu2t', '172.69.130.145', 1716714020, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363731343032303b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f657870656e736573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('vmdqo9q5998fi6rhu1gcnrrm6ta8gmvj', '::1', 1716818083, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363831383038333b5f707265765f75726c7c733a35323a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e74732f636c69656e742f31223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
-('vnl1b5mak72fm2v2lj2j4rr5ijrlhqo8', '::1', 1717143146, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373134333134363b5f707265765f75726c7c733a34333a22687474703a2f2f6c6f63616c686f73742f74726176656c706f7274616c2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b);
+('rpdsojqn0kkg82rq451bh36f21nfnmok', '172.69.95.132', 1717879693, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373837383532333b5f707265765f75726c7c733a35303a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f6c65616473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('rtc425t7gdo43obu65lhuo4pn42rrr4j', '172.68.79.144', 1717186148, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373138363134383b5f707265765f75726c7c733a35323a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('s1l0r43kb962vqpphfopnh14k8k4ah7s', '172.69.87.173', 1717315830, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373331353833303b5f707265765f75726c7c733a35383a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f696e766f6963655f6974656d73223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('s7f6sd8qq0qbstjkohqk74uu5sgh3gsm', '172.68.79.180', 1718111606, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131313630363b5f707265765f75726c7c733a35323a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f636c69656e7473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('s9u4brc6tvmo48hlr2ilnf2q2v8acdd0', '172.68.79.180', 1718111927, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131313932373b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('sku18q0ffrpnvapfju0e7ifhut2k5snl', '172.69.94.178', 1718106481, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383130363438313b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('stv29m40t5trfpv0tl6j98jhri26efv9', '172.68.79.142', 1717422155, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373432323034393b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f70726f6a65637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('svping5fkuf6i9215n1krog006o65mp9', '172.68.79.142', 1718095670, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383039353637303b5f707265765f75726c7c733a35393a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f61757468656e7469636174696f6e223b),
+('uqinte21ap2qkqk42ltk8ltg6m33h0aa', '172.70.219.139', 1718182345, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383138323334353b5f707265765f75726c7c733a35303a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f6c65616473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
+('usru0cbpq8t3jqdcq2la15l479vmo468', '172.69.179.92', 1717314315, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373331343331353b5f707265765f75726c7c733a35353a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f726f6c65732f726f6c65223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c623a313b),
+('v3s3b8oalb10ln2dlse5espinbaqbigl', '172.69.94.8', 1718116072, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731383131353932393b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f7061636b61676573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('vhe2i4gpl3qgj3tde85epam7ullhrac7', '172.68.79.145', 1717422049, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731373432323034393b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f70726f6a65637473223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b),
+('vhkj0fef9192v34aelrq7pigfl07iu2t', '172.69.130.145', 1716714020, 0x5f5f63695f6c6173745f726567656e65726174657c693a313731363731343032303b5f707265765f75726c7c733a35333a2268747470733a2f2f6469676974616c75706d6f76652e636f6d2f70726f6a656374732f63726d2f61646d696e2f657870656e736573223b73746166665f757365725f69647c733a313a2231223b73746166665f6c6f676765645f696e7c623a313b73657475702d6d656e752d6f70656e7c733a303a22223b);
 
 -- --------------------------------------------------------
 
@@ -5872,10 +5571,9 @@ INSERT INTO `tblsessions` (`id`, `ip_address`, `timestamp`, `data`) VALUES
 -- Table structure for table `tblshared_customer_files`
 --
 
-DROP TABLE IF EXISTS `tblshared_customer_files`;
-CREATE TABLE IF NOT EXISTS `tblshared_customer_files` (
-  `file_id` int NOT NULL,
-  `contact_id` int NOT NULL
+CREATE TABLE `tblshared_customer_files` (
+  `file_id` int(11) NOT NULL,
+  `contact_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5884,13 +5582,11 @@ CREATE TABLE IF NOT EXISTS `tblshared_customer_files` (
 -- Table structure for table `tblspam_filters`
 --
 
-DROP TABLE IF EXISTS `tblspam_filters`;
-CREATE TABLE IF NOT EXISTS `tblspam_filters` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `type` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `rel_type` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblspam_filters` (
+  `id` int(11) NOT NULL,
+  `type` varchar(40) NOT NULL,
+  `rel_type` varchar(10) NOT NULL,
+  `value` mediumtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5899,53 +5595,49 @@ CREATE TABLE IF NOT EXISTS `tblspam_filters` (
 -- Table structure for table `tblstaff`
 --
 
-DROP TABLE IF EXISTS `tblstaff`;
-CREATE TABLE IF NOT EXISTS `tblstaff` (
-  `staffid` int NOT NULL AUTO_INCREMENT,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `firstname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lastname` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `facebook` longtext COLLATE utf8mb4_unicode_ci,
-  `linkedin` longtext COLLATE utf8mb4_unicode_ci,
-  `phonenumber` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `skype` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` varchar(250) COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE `tblstaff` (
+  `staffid` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `firstname` varchar(50) NOT NULL,
+  `lastname` varchar(50) NOT NULL,
+  `facebook` longtext DEFAULT NULL,
+  `linkedin` longtext DEFAULT NULL,
+  `phonenumber` varchar(30) DEFAULT NULL,
+  `skype` varchar(50) DEFAULT NULL,
+  `password` varchar(250) NOT NULL,
   `datecreated` datetime NOT NULL,
-  `profile_image` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `last_ip` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `profile_image` varchar(191) DEFAULT NULL,
+  `last_ip` varchar(40) DEFAULT NULL,
   `last_login` datetime DEFAULT NULL,
   `last_activity` datetime DEFAULT NULL,
   `last_password_change` datetime DEFAULT NULL,
-  `new_pass_key` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `new_pass_key` varchar(32) DEFAULT NULL,
   `new_pass_key_requested` datetime DEFAULT NULL,
-  `admin` int NOT NULL DEFAULT '0',
-  `role` int DEFAULT NULL,
-  `active` int NOT NULL DEFAULT '1',
-  `default_language` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `direction` varchar(3) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `media_path_slug` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `is_not_staff` int NOT NULL DEFAULT '0',
-  `hourly_rate` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `two_factor_auth_enabled` tinyint(1) DEFAULT '0',
-  `two_factor_auth_code` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `admin` int(11) NOT NULL DEFAULT 0,
+  `role` int(11) DEFAULT NULL,
+  `active` int(11) NOT NULL DEFAULT 1,
+  `default_language` varchar(40) DEFAULT NULL,
+  `direction` varchar(3) DEFAULT NULL,
+  `media_path_slug` varchar(191) DEFAULT NULL,
+  `is_not_staff` int(11) NOT NULL DEFAULT 0,
+  `hourly_rate` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `two_factor_auth_enabled` tinyint(1) DEFAULT 0,
+  `two_factor_auth_code` varchar(100) DEFAULT NULL,
   `two_factor_auth_code_requested` datetime DEFAULT NULL,
-  `email_signature` mediumtext COLLATE utf8mb4_unicode_ci,
-  `google_auth_secret` mediumtext COLLATE utf8mb4_unicode_ci,
-  `whatsapp_auth_enabled` tinyint(1) NOT NULL DEFAULT '0',
-  `whatsapp_auth_code` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `whatsapp_auth_code_requested` datetime DEFAULT NULL,
-  PRIMARY KEY (`staffid`),
-  KEY `firstname` (`firstname`),
-  KEY `lastname` (`lastname`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `email_signature` mediumtext DEFAULT NULL,
+  `google_auth_secret` mediumtext DEFAULT NULL,
+  `whatsapp_auth_enabled` tinyint(1) NOT NULL DEFAULT 0,
+  `whatsapp_auth_code` varchar(100) DEFAULT NULL,
+  `whatsapp_auth_code_requested` datetime DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblstaff`
 --
 
 INSERT INTO `tblstaff` (`staffid`, `email`, `firstname`, `lastname`, `facebook`, `linkedin`, `phonenumber`, `skype`, `password`, `datecreated`, `profile_image`, `last_ip`, `last_login`, `last_activity`, `last_password_change`, `new_pass_key`, `new_pass_key_requested`, `admin`, `role`, `active`, `default_language`, `direction`, `media_path_slug`, `is_not_staff`, `hourly_rate`, `two_factor_auth_enabled`, `two_factor_auth_code`, `two_factor_auth_code_requested`, `email_signature`, `google_auth_secret`, `whatsapp_auth_enabled`, `whatsapp_auth_code`, `whatsapp_auth_code_requested`) VALUES
-(1, 'prodip.dutta@gmail.com', 'Pradip ', 'Dutta', NULL, NULL, NULL, NULL, '$2a$08$EC8JqePizrFfIDHLIcPV0eB.3qvKUxsMSiHr8JYsRNn1UfW5D18c2', '2024-04-11 19:23:56', NULL, '::1', '2024-06-12 11:21:52', '2024-06-12 13:51:23', NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 0, 0.00, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL),
-(2, 'talktochiranjit@gmail.com', 'Chiranjit', 'Gayen', '', '', '', '', '$2a$08$CBLyMUeyMR.a2XPWj6VfJORVLXstU85tJ.9KU14DDZi3FKzvErLIq', '2024-04-12 01:31:14', NULL, '172.71.198.101', '2024-04-12 01:33:41', '2024-04-12 01:34:16', NULL, NULL, NULL, 0, 1, 1, NULL, '', 'chiranjit-gayen', 0, 0.00, 0, NULL, NULL, '', NULL, 0, NULL, NULL);
+(1, 'prodip.dutta@gmail.com', 'Pradip ', 'Dutta', NULL, NULL, NULL, NULL, '$2a$08$EC8JqePizrFfIDHLIcPV0eB.3qvKUxsMSiHr8JYsRNn1UfW5D18c2', '2024-04-11 19:23:56', NULL, '172.69.87.200', '2024-06-12 14:17:38', '2024-06-12 14:26:04', NULL, NULL, NULL, 1, NULL, 1, NULL, NULL, NULL, 0, 0.00, 0, NULL, NULL, NULL, NULL, 0, NULL, NULL),
+(2, 'talktochiranjit@gmail.com', 'Chiranjit', 'Gayen', '', '', '', '', '$2a$08$CBLyMUeyMR.a2XPWj6VfJORVLXstU85tJ.9KU14DDZi3FKzvErLIq', '2024-04-12 01:31:14', NULL, '172.71.198.101', '2024-04-12 01:33:41', '2024-04-12 01:34:16', NULL, NULL, NULL, 0, 3, 1, NULL, '', 'chiranjit-gayen', 0, 0.00, 0, NULL, NULL, '', NULL, 0, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -5953,12 +5645,10 @@ INSERT INTO `tblstaff` (`staffid`, `email`, `firstname`, `lastname`, `facebook`,
 -- Table structure for table `tblstaff_departments`
 --
 
-DROP TABLE IF EXISTS `tblstaff_departments`;
-CREATE TABLE IF NOT EXISTS `tblstaff_departments` (
-  `staffdepartmentid` int NOT NULL AUTO_INCREMENT,
-  `staffid` int NOT NULL,
-  `departmentid` int NOT NULL,
-  PRIMARY KEY (`staffdepartmentid`)
+CREATE TABLE `tblstaff_departments` (
+  `staffdepartmentid` int(11) NOT NULL,
+  `staffid` int(11) NOT NULL,
+  `departmentid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5967,12 +5657,31 @@ CREATE TABLE IF NOT EXISTS `tblstaff_departments` (
 -- Table structure for table `tblstaff_permissions`
 --
 
-DROP TABLE IF EXISTS `tblstaff_permissions`;
-CREATE TABLE IF NOT EXISTS `tblstaff_permissions` (
-  `staff_id` int NOT NULL,
-  `feature` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `capability` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL
+CREATE TABLE `tblstaff_permissions` (
+  `staff_id` int(11) NOT NULL,
+  `feature` varchar(40) NOT NULL,
+  `capability` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `tblstaff_permissions`
+--
+
+INSERT INTO `tblstaff_permissions` (`staff_id`, `feature`, `capability`) VALUES
+(2, 'contracts', 'view_own'),
+(2, 'contracts', 'create'),
+(2, 'contracts', 'edit'),
+(2, 'customers', 'create'),
+(2, 'customers', 'edit'),
+(2, 'expenses', 'view_own'),
+(2, 'expenses', 'create'),
+(2, 'expenses', 'edit'),
+(2, 'invoices', 'view_own'),
+(2, 'invoices', 'create'),
+(2, 'invoices', 'edit'),
+(2, 'proposals', 'view_own'),
+(2, 'proposals', 'create'),
+(2, 'proposals', 'edit');
 
 -- --------------------------------------------------------
 
@@ -5980,37 +5689,32 @@ CREATE TABLE IF NOT EXISTS `tblstaff_permissions` (
 -- Table structure for table `tblsubscriptions`
 --
 
-DROP TABLE IF EXISTS `tblsubscriptions`;
-CREATE TABLE IF NOT EXISTS `tblsubscriptions` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `description_in_item` tinyint(1) NOT NULL DEFAULT '0',
-  `clientid` int NOT NULL,
+CREATE TABLE `tblsubscriptions` (
+  `id` int(11) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `description` mediumtext DEFAULT NULL,
+  `description_in_item` tinyint(1) NOT NULL DEFAULT 0,
+  `clientid` int(11) NOT NULL,
   `date` date DEFAULT NULL,
-  `terms` mediumtext COLLATE utf8mb4_unicode_ci,
-  `currency` int NOT NULL,
-  `tax_id` int NOT NULL DEFAULT '0',
-  `stripe_tax_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `tax_id_2` int NOT NULL DEFAULT '0',
-  `stripe_tax_id_2` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `stripe_plan_id` mediumtext COLLATE utf8mb4_unicode_ci,
-  `stripe_subscription_id` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `next_billing_cycle` bigint DEFAULT NULL,
-  `ends_at` bigint DEFAULT NULL,
-  `status` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `quantity` int NOT NULL DEFAULT '1',
-  `project_id` int NOT NULL DEFAULT '0',
-  `hash` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `terms` mediumtext DEFAULT NULL,
+  `currency` int(11) NOT NULL,
+  `tax_id` int(11) NOT NULL DEFAULT 0,
+  `stripe_tax_id` varchar(50) DEFAULT NULL,
+  `tax_id_2` int(11) NOT NULL DEFAULT 0,
+  `stripe_tax_id_2` varchar(50) DEFAULT NULL,
+  `stripe_plan_id` mediumtext DEFAULT NULL,
+  `stripe_subscription_id` mediumtext NOT NULL,
+  `next_billing_cycle` bigint(20) DEFAULT NULL,
+  `ends_at` bigint(20) DEFAULT NULL,
+  `status` varchar(50) DEFAULT NULL,
+  `quantity` int(11) NOT NULL DEFAULT 1,
+  `project_id` int(11) NOT NULL DEFAULT 0,
+  `hash` varchar(32) NOT NULL,
   `created` datetime NOT NULL,
-  `created_from` int NOT NULL,
+  `created_from` int(11) NOT NULL,
   `date_subscribed` datetime DEFAULT NULL,
-  `in_test_environment` int DEFAULT NULL,
-  `last_sent_at` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `clientid` (`clientid`),
-  KEY `currency` (`currency`),
-  KEY `tax_id` (`tax_id`)
+  `in_test_environment` int(11) DEFAULT NULL,
+  `last_sent_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6019,14 +5723,12 @@ CREATE TABLE IF NOT EXISTS `tblsubscriptions` (
 -- Table structure for table `tblsurveyresultsets`
 --
 
-DROP TABLE IF EXISTS `tblsurveyresultsets`;
-CREATE TABLE IF NOT EXISTS `tblsurveyresultsets` (
-  `resultsetid` int NOT NULL AUTO_INCREMENT,
-  `surveyid` int NOT NULL,
-  `ip` varchar(40) COLLATE utf8mb4_general_ci NOT NULL,
-  `useragent` varchar(150) COLLATE utf8mb4_general_ci NOT NULL,
-  `date` datetime NOT NULL,
-  PRIMARY KEY (`resultsetid`)
+CREATE TABLE `tblsurveyresultsets` (
+  `resultsetid` int(11) NOT NULL,
+  `surveyid` int(11) NOT NULL,
+  `ip` varchar(40) NOT NULL,
+  `useragent` varchar(150) NOT NULL,
+  `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -6035,22 +5737,20 @@ CREATE TABLE IF NOT EXISTS `tblsurveyresultsets` (
 -- Table structure for table `tblsurveys`
 --
 
-DROP TABLE IF EXISTS `tblsurveys`;
-CREATE TABLE IF NOT EXISTS `tblsurveys` (
-  `surveyid` int NOT NULL AUTO_INCREMENT,
-  `subject` mediumtext COLLATE utf8mb4_general_ci NOT NULL,
-  `slug` mediumtext COLLATE utf8mb4_general_ci NOT NULL,
-  `description` text COLLATE utf8mb4_general_ci NOT NULL,
-  `viewdescription` text COLLATE utf8mb4_general_ci,
+CREATE TABLE `tblsurveys` (
+  `surveyid` int(11) NOT NULL,
+  `subject` mediumtext NOT NULL,
+  `slug` mediumtext NOT NULL,
+  `description` text NOT NULL,
+  `viewdescription` text DEFAULT NULL,
   `datecreated` datetime NOT NULL,
-  `redirect_url` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `send` tinyint(1) NOT NULL DEFAULT '0',
-  `onlyforloggedin` int DEFAULT '0',
-  `fromname` varchar(100) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `redirect_url` varchar(100) DEFAULT NULL,
+  `send` tinyint(1) NOT NULL DEFAULT 0,
+  `onlyforloggedin` int(11) DEFAULT 0,
+  `fromname` varchar(100) DEFAULT NULL,
   `iprestrict` tinyint(1) NOT NULL,
-  `active` tinyint(1) NOT NULL DEFAULT '1',
-  `hash` varchar(32) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`surveyid`)
+  `active` tinyint(1) NOT NULL DEFAULT 1,
+  `hash` varchar(32) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -6059,15 +5759,13 @@ CREATE TABLE IF NOT EXISTS `tblsurveys` (
 -- Table structure for table `tblsurveysemailsendcron`
 --
 
-DROP TABLE IF EXISTS `tblsurveysemailsendcron`;
-CREATE TABLE IF NOT EXISTS `tblsurveysemailsendcron` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `surveyid` int NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `emailid` int DEFAULT NULL,
-  `listid` varchar(11) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `log_id` int NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblsurveysemailsendcron` (
+  `id` int(11) NOT NULL,
+  `surveyid` int(11) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `emailid` int(11) DEFAULT NULL,
+  `listid` varchar(11) DEFAULT NULL,
+  `log_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -6076,15 +5774,13 @@ CREATE TABLE IF NOT EXISTS `tblsurveysemailsendcron` (
 -- Table structure for table `tblsurveysendlog`
 --
 
-DROP TABLE IF EXISTS `tblsurveysendlog`;
-CREATE TABLE IF NOT EXISTS `tblsurveysendlog` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `surveyid` int NOT NULL,
-  `total` int NOT NULL,
+CREATE TABLE `tblsurveysendlog` (
+  `id` int(11) NOT NULL,
+  `surveyid` int(11) NOT NULL,
+  `total` int(11) NOT NULL,
   `date` datetime NOT NULL,
-  `iscronfinished` int NOT NULL DEFAULT '0',
-  `send_to_mail_lists` text COLLATE utf8mb4_general_ci,
-  PRIMARY KEY (`id`)
+  `iscronfinished` int(11) NOT NULL DEFAULT 0,
+  `send_to_mail_lists` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -6093,15 +5789,11 @@ CREATE TABLE IF NOT EXISTS `tblsurveysendlog` (
 -- Table structure for table `tbltaggables`
 --
 
-DROP TABLE IF EXISTS `tbltaggables`;
-CREATE TABLE IF NOT EXISTS `tbltaggables` (
-  `rel_id` int NOT NULL,
-  `rel_type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tag_id` int NOT NULL,
-  `tag_order` int NOT NULL DEFAULT '0',
-  KEY `rel_id` (`rel_id`),
-  KEY `rel_type` (`rel_type`),
-  KEY `tag_id` (`tag_id`)
+CREATE TABLE `tbltaggables` (
+  `rel_id` int(11) NOT NULL,
+  `rel_type` varchar(20) NOT NULL,
+  `tag_id` int(11) NOT NULL,
+  `tag_order` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6110,12 +5802,9 @@ CREATE TABLE IF NOT EXISTS `tbltaggables` (
 -- Table structure for table `tbltags`
 --
 
-DROP TABLE IF EXISTS `tbltags`;
-CREATE TABLE IF NOT EXISTS `tbltags` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `name` (`name`)
+CREATE TABLE `tbltags` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6124,45 +5813,38 @@ CREATE TABLE IF NOT EXISTS `tbltags` (
 -- Table structure for table `tbltasks`
 --
 
-DROP TABLE IF EXISTS `tbltasks`;
-CREATE TABLE IF NOT EXISTS `tbltasks` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` longtext COLLATE utf8mb4_unicode_ci,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `priority` int DEFAULT NULL,
+CREATE TABLE `tbltasks` (
+  `id` int(11) NOT NULL,
+  `name` longtext DEFAULT NULL,
+  `description` mediumtext DEFAULT NULL,
+  `priority` int(11) DEFAULT NULL,
   `dateadded` datetime NOT NULL,
   `startdate` date NOT NULL,
   `duedate` date DEFAULT NULL,
   `datefinished` datetime DEFAULT NULL,
-  `addedfrom` int NOT NULL,
-  `is_added_from_contact` tinyint(1) NOT NULL DEFAULT '0',
-  `status` int NOT NULL DEFAULT '0',
-  `recurring_type` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `repeat_every` int DEFAULT NULL,
-  `recurring` int NOT NULL DEFAULT '0',
-  `is_recurring_from` int DEFAULT NULL,
-  `cycles` int NOT NULL DEFAULT '0',
-  `total_cycles` int NOT NULL DEFAULT '0',
-  `custom_recurring` tinyint(1) NOT NULL DEFAULT '0',
+  `addedfrom` int(11) NOT NULL,
+  `is_added_from_contact` tinyint(1) NOT NULL DEFAULT 0,
+  `status` int(11) NOT NULL DEFAULT 0,
+  `recurring_type` varchar(10) DEFAULT NULL,
+  `repeat_every` int(11) DEFAULT NULL,
+  `recurring` int(11) NOT NULL DEFAULT 0,
+  `is_recurring_from` int(11) DEFAULT NULL,
+  `cycles` int(11) NOT NULL DEFAULT 0,
+  `total_cycles` int(11) NOT NULL DEFAULT 0,
+  `custom_recurring` tinyint(1) NOT NULL DEFAULT 0,
   `last_recurring_date` date DEFAULT NULL,
-  `rel_id` int DEFAULT NULL,
-  `rel_type` varchar(30) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `is_public` tinyint(1) NOT NULL DEFAULT '0',
-  `billable` tinyint(1) NOT NULL DEFAULT '0',
-  `billed` tinyint(1) NOT NULL DEFAULT '0',
-  `invoice_id` int NOT NULL DEFAULT '0',
-  `hourly_rate` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `milestone` int DEFAULT '0',
-  `kanban_order` int DEFAULT '1',
-  `milestone_order` int NOT NULL DEFAULT '0',
-  `visible_to_client` tinyint(1) NOT NULL DEFAULT '0',
-  `deadline_notified` int NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `rel_id` (`rel_id`),
-  KEY `rel_type` (`rel_type`),
-  KEY `milestone` (`milestone`),
-  KEY `kanban_order` (`kanban_order`),
-  KEY `status` (`status`)
+  `rel_id` int(11) DEFAULT NULL,
+  `rel_type` varchar(30) DEFAULT NULL,
+  `is_public` tinyint(1) NOT NULL DEFAULT 0,
+  `billable` tinyint(1) NOT NULL DEFAULT 0,
+  `billed` tinyint(1) NOT NULL DEFAULT 0,
+  `invoice_id` int(11) NOT NULL DEFAULT 0,
+  `hourly_rate` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `milestone` int(11) DEFAULT 0,
+  `kanban_order` int(11) DEFAULT 1,
+  `milestone_order` int(11) NOT NULL DEFAULT 0,
+  `visible_to_client` tinyint(1) NOT NULL DEFAULT 0,
+  `deadline_notified` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6171,18 +5853,14 @@ CREATE TABLE IF NOT EXISTS `tbltasks` (
 -- Table structure for table `tbltaskstimers`
 --
 
-DROP TABLE IF EXISTS `tbltaskstimers`;
-CREATE TABLE IF NOT EXISTS `tbltaskstimers` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `task_id` int NOT NULL,
-  `start_time` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `end_time` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `staff_id` int NOT NULL,
-  `hourly_rate` decimal(15,2) NOT NULL DEFAULT '0.00',
-  `note` mediumtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`),
-  KEY `task_id` (`task_id`),
-  KEY `staff_id` (`staff_id`)
+CREATE TABLE `tbltaskstimers` (
+  `id` int(11) NOT NULL,
+  `task_id` int(11) NOT NULL,
+  `start_time` varchar(64) NOT NULL,
+  `end_time` varchar(64) DEFAULT NULL,
+  `staff_id` int(11) NOT NULL,
+  `hourly_rate` decimal(15,2) NOT NULL DEFAULT 0.00,
+  `note` mediumtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6191,11 +5869,9 @@ CREATE TABLE IF NOT EXISTS `tbltaskstimers` (
 -- Table structure for table `tbltasks_checklist_templates`
 --
 
-DROP TABLE IF EXISTS `tbltasks_checklist_templates`;
-CREATE TABLE IF NOT EXISTS `tbltasks_checklist_templates` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tbltasks_checklist_templates` (
+  `id` int(11) NOT NULL,
+  `description` mediumtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6204,16 +5880,12 @@ CREATE TABLE IF NOT EXISTS `tbltasks_checklist_templates` (
 -- Table structure for table `tbltask_assigned`
 --
 
-DROP TABLE IF EXISTS `tbltask_assigned`;
-CREATE TABLE IF NOT EXISTS `tbltask_assigned` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `staffid` int NOT NULL,
-  `taskid` int NOT NULL,
-  `assigned_from` int NOT NULL DEFAULT '0',
-  `is_assigned_from_contact` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `taskid` (`taskid`),
-  KEY `staffid` (`staffid`)
+CREATE TABLE `tbltask_assigned` (
+  `id` int(11) NOT NULL,
+  `staffid` int(11) NOT NULL,
+  `taskid` int(11) NOT NULL,
+  `assigned_from` int(11) NOT NULL DEFAULT 0,
+  `is_assigned_from_contact` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6222,19 +5894,16 @@ CREATE TABLE IF NOT EXISTS `tbltask_assigned` (
 -- Table structure for table `tbltask_checklist_items`
 --
 
-DROP TABLE IF EXISTS `tbltask_checklist_items`;
-CREATE TABLE IF NOT EXISTS `tbltask_checklist_items` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `taskid` int NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `finished` int NOT NULL DEFAULT '0',
+CREATE TABLE `tbltask_checklist_items` (
+  `id` int(11) NOT NULL,
+  `taskid` int(11) NOT NULL,
+  `description` mediumtext NOT NULL,
+  `finished` int(11) NOT NULL DEFAULT 0,
   `dateadded` datetime NOT NULL,
-  `addedfrom` int NOT NULL,
-  `finished_from` int DEFAULT '0',
-  `list_order` int NOT NULL DEFAULT '0',
-  `assigned` int DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `taskid` (`taskid`)
+  `addedfrom` int(11) NOT NULL,
+  `finished_from` int(11) DEFAULT 0,
+  `list_order` int(11) NOT NULL DEFAULT 0,
+  `assigned` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6243,18 +5912,14 @@ CREATE TABLE IF NOT EXISTS `tbltask_checklist_items` (
 -- Table structure for table `tbltask_comments`
 --
 
-DROP TABLE IF EXISTS `tbltask_comments`;
-CREATE TABLE IF NOT EXISTS `tbltask_comments` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `content` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `taskid` int NOT NULL,
-  `staffid` int NOT NULL,
-  `contact_id` int NOT NULL DEFAULT '0',
-  `file_id` int NOT NULL DEFAULT '0',
-  `dateadded` datetime NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `file_id` (`file_id`),
-  KEY `taskid` (`taskid`)
+CREATE TABLE `tbltask_comments` (
+  `id` int(11) NOT NULL,
+  `content` mediumtext NOT NULL,
+  `taskid` int(11) NOT NULL,
+  `staffid` int(11) NOT NULL,
+  `contact_id` int(11) NOT NULL DEFAULT 0,
+  `file_id` int(11) NOT NULL DEFAULT 0,
+  `dateadded` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6263,12 +5928,10 @@ CREATE TABLE IF NOT EXISTS `tbltask_comments` (
 -- Table structure for table `tbltask_followers`
 --
 
-DROP TABLE IF EXISTS `tbltask_followers`;
-CREATE TABLE IF NOT EXISTS `tbltask_followers` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `staffid` int NOT NULL,
-  `taskid` int NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tbltask_followers` (
+  `id` int(11) NOT NULL,
+  `staffid` int(11) NOT NULL,
+  `taskid` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6277,13 +5940,11 @@ CREATE TABLE IF NOT EXISTS `tbltask_followers` (
 -- Table structure for table `tbltaxes`
 --
 
-DROP TABLE IF EXISTS `tbltaxes`;
-CREATE TABLE IF NOT EXISTS `tbltaxes` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `taxrate` decimal(15,2) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tbltaxes` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `taxrate` decimal(15,2) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbltaxes`
@@ -6299,14 +5960,12 @@ INSERT INTO `tbltaxes` (`id`, `name`, `taxrate`) VALUES
 -- Table structure for table `tbltemplates`
 --
 
-DROP TABLE IF EXISTS `tbltemplates`;
-CREATE TABLE IF NOT EXISTS `tbltemplates` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `addedfrom` int NOT NULL,
-  `content` longtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tbltemplates` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `type` varchar(100) NOT NULL,
+  `addedfrom` int(11) NOT NULL,
+  `content` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6315,39 +5974,30 @@ CREATE TABLE IF NOT EXISTS `tbltemplates` (
 -- Table structure for table `tbltickets`
 --
 
-DROP TABLE IF EXISTS `tbltickets`;
-CREATE TABLE IF NOT EXISTS `tbltickets` (
-  `ticketid` int NOT NULL AUTO_INCREMENT,
-  `adminreplying` int NOT NULL DEFAULT '0',
-  `userid` int NOT NULL,
-  `contactid` int NOT NULL DEFAULT '0',
-  `merged_ticket_id` int DEFAULT NULL,
-  `email` mediumtext COLLATE utf8mb4_unicode_ci,
-  `name` mediumtext COLLATE utf8mb4_unicode_ci,
-  `department` int NOT NULL,
-  `priority` int NOT NULL,
-  `status` int NOT NULL,
-  `service` int DEFAULT NULL,
-  `ticketkey` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subject` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` mediumtext COLLATE utf8mb4_unicode_ci,
-  `admin` int DEFAULT NULL,
+CREATE TABLE `tbltickets` (
+  `ticketid` int(11) NOT NULL,
+  `adminreplying` int(11) NOT NULL DEFAULT 0,
+  `userid` int(11) NOT NULL,
+  `contactid` int(11) NOT NULL DEFAULT 0,
+  `merged_ticket_id` int(11) DEFAULT NULL,
+  `email` mediumtext DEFAULT NULL,
+  `name` mediumtext DEFAULT NULL,
+  `department` int(11) NOT NULL,
+  `priority` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
+  `service` int(11) DEFAULT NULL,
+  `ticketkey` varchar(32) NOT NULL,
+  `subject` varchar(191) NOT NULL,
+  `message` mediumtext DEFAULT NULL,
+  `admin` int(11) DEFAULT NULL,
   `date` datetime NOT NULL,
-  `project_id` int NOT NULL DEFAULT '0',
+  `project_id` int(11) NOT NULL DEFAULT 0,
   `lastreply` datetime DEFAULT NULL,
-  `clientread` int NOT NULL DEFAULT '0',
-  `adminread` int NOT NULL DEFAULT '0',
-  `assigned` int NOT NULL DEFAULT '0',
-  `staff_id_replying` int DEFAULT NULL,
-  `cc` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`ticketid`),
-  KEY `service` (`service`),
-  KEY `department` (`department`),
-  KEY `status` (`status`),
-  KEY `userid` (`userid`),
-  KEY `priority` (`priority`),
-  KEY `project_id` (`project_id`),
-  KEY `contactid` (`contactid`)
+  `clientread` int(11) NOT NULL DEFAULT 0,
+  `adminread` int(11) NOT NULL DEFAULT 0,
+  `assigned` int(11) NOT NULL DEFAULT 0,
+  `staff_id_replying` int(11) DEFAULT NULL,
+  `cc` varchar(191) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6356,17 +6006,15 @@ CREATE TABLE IF NOT EXISTS `tbltickets` (
 -- Table structure for table `tbltickets_pipe_log`
 --
 
-DROP TABLE IF EXISTS `tbltickets_pipe_log`;
-CREATE TABLE IF NOT EXISTS `tbltickets_pipe_log` (
-  `id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tbltickets_pipe_log` (
+  `id` int(11) NOT NULL,
   `date` datetime NOT NULL,
-  `email_to` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `subject` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+  `email_to` varchar(100) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `subject` varchar(191) NOT NULL,
+  `message` longtext NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `status` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6375,12 +6023,10 @@ CREATE TABLE IF NOT EXISTS `tbltickets_pipe_log` (
 -- Table structure for table `tbltickets_predefined_replies`
 --
 
-DROP TABLE IF EXISTS `tbltickets_predefined_replies`;
-CREATE TABLE IF NOT EXISTS `tbltickets_predefined_replies` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tbltickets_predefined_replies` (
+  `id` int(11) NOT NULL,
+  `name` varchar(191) NOT NULL,
+  `message` mediumtext NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6389,12 +6035,10 @@ CREATE TABLE IF NOT EXISTS `tbltickets_predefined_replies` (
 -- Table structure for table `tbltickets_priorities`
 --
 
-DROP TABLE IF EXISTS `tbltickets_priorities`;
-CREATE TABLE IF NOT EXISTS `tbltickets_priorities` (
-  `priorityid` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`priorityid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tbltickets_priorities` (
+  `priorityid` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbltickets_priorities`
@@ -6411,15 +6055,13 @@ INSERT INTO `tbltickets_priorities` (`priorityid`, `name`) VALUES
 -- Table structure for table `tbltickets_status`
 --
 
-DROP TABLE IF EXISTS `tbltickets_status`;
-CREATE TABLE IF NOT EXISTS `tbltickets_status` (
-  `ticketstatusid` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `isdefault` int NOT NULL DEFAULT '0',
-  `statuscolor` varchar(7) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `statusorder` int DEFAULT NULL,
-  PRIMARY KEY (`ticketstatusid`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tbltickets_status` (
+  `ticketstatusid` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `isdefault` int(11) NOT NULL DEFAULT 0,
+  `statuscolor` varchar(7) DEFAULT NULL,
+  `statusorder` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbltickets_status`
@@ -6438,15 +6080,13 @@ INSERT INTO `tbltickets_status` (`ticketstatusid`, `name`, `isdefault`, `statusc
 -- Table structure for table `tblticket_attachments`
 --
 
-DROP TABLE IF EXISTS `tblticket_attachments`;
-CREATE TABLE IF NOT EXISTS `tblticket_attachments` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `ticketid` int NOT NULL,
-  `replyid` int DEFAULT NULL,
-  `file_name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `filetype` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `dateadded` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblticket_attachments` (
+  `id` int(11) NOT NULL,
+  `ticketid` int(11) NOT NULL,
+  `replyid` int(11) DEFAULT NULL,
+  `file_name` varchar(191) NOT NULL,
+  `filetype` varchar(50) DEFAULT NULL,
+  `dateadded` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6455,19 +6095,17 @@ CREATE TABLE IF NOT EXISTS `tblticket_attachments` (
 -- Table structure for table `tblticket_replies`
 --
 
-DROP TABLE IF EXISTS `tblticket_replies`;
-CREATE TABLE IF NOT EXISTS `tblticket_replies` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `ticketid` int NOT NULL,
-  `userid` int DEFAULT NULL,
-  `contactid` int NOT NULL DEFAULT '0',
-  `name` mediumtext COLLATE utf8mb4_unicode_ci,
-  `email` mediumtext COLLATE utf8mb4_unicode_ci,
+CREATE TABLE `tblticket_replies` (
+  `id` int(11) NOT NULL,
+  `ticketid` int(11) NOT NULL,
+  `userid` int(11) DEFAULT NULL,
+  `contactid` int(11) NOT NULL DEFAULT 0,
+  `name` mediumtext DEFAULT NULL,
+  `email` mediumtext DEFAULT NULL,
   `date` datetime NOT NULL,
-  `message` mediumtext COLLATE utf8mb4_unicode_ci,
-  `attachment` int DEFAULT NULL,
-  `admin` int DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `message` mediumtext DEFAULT NULL,
+  `attachment` int(11) DEFAULT NULL,
+  `admin` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6476,16 +6114,14 @@ CREATE TABLE IF NOT EXISTS `tblticket_replies` (
 -- Table structure for table `tbltodos`
 --
 
-DROP TABLE IF EXISTS `tbltodos`;
-CREATE TABLE IF NOT EXISTS `tbltodos` (
-  `todoid` int NOT NULL AUTO_INCREMENT,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `staffid` int NOT NULL,
+CREATE TABLE `tbltodos` (
+  `todoid` int(11) NOT NULL,
+  `description` mediumtext NOT NULL,
+  `staffid` int(11) NOT NULL,
   `dateadded` datetime NOT NULL,
   `finished` tinyint(1) NOT NULL,
   `datefinished` datetime DEFAULT NULL,
-  `item_order` int DEFAULT NULL,
-  PRIMARY KEY (`todoid`)
+  `item_order` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6494,18 +6130,16 @@ CREATE TABLE IF NOT EXISTS `tbltodos` (
 -- Table structure for table `tbltracked_mails`
 --
 
-DROP TABLE IF EXISTS `tbltracked_mails`;
-CREATE TABLE IF NOT EXISTS `tbltracked_mails` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `uid` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `rel_id` int NOT NULL,
-  `rel_type` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE `tbltracked_mails` (
+  `id` int(11) NOT NULL,
+  `uid` varchar(32) NOT NULL,
+  `rel_id` int(11) NOT NULL,
+  `rel_type` varchar(40) NOT NULL,
   `date` datetime NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `opened` tinyint(1) NOT NULL DEFAULT '0',
+  `email` varchar(100) NOT NULL,
+  `opened` tinyint(1) NOT NULL DEFAULT 0,
   `date_opened` datetime DEFAULT NULL,
-  `subject` longtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`id`)
+  `subject` longtext DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6514,16 +6148,13 @@ CREATE TABLE IF NOT EXISTS `tbltracked_mails` (
 -- Table structure for table `tbltwocheckout_log`
 --
 
-DROP TABLE IF EXISTS `tbltwocheckout_log`;
-CREATE TABLE IF NOT EXISTS `tbltwocheckout_log` (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `reference` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `invoice_id` int NOT NULL,
-  `amount` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE `tbltwocheckout_log` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `reference` varchar(64) NOT NULL,
+  `invoice_id` int(11) NOT NULL,
+  `amount` varchar(25) NOT NULL,
   `created_at` datetime NOT NULL,
-  `attempt_reference` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `invoice_id` (`invoice_id`)
+  `attempt_reference` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6532,14 +6163,13 @@ CREATE TABLE IF NOT EXISTS `tbltwocheckout_log` (
 -- Table structure for table `tbluser_auto_login`
 --
 
-DROP TABLE IF EXISTS `tbluser_auto_login`;
-CREATE TABLE IF NOT EXISTS `tbluser_auto_login` (
-  `key_id` char(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `user_id` int NOT NULL,
-  `user_agent` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_ip` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_login` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `staff` int NOT NULL
+CREATE TABLE `tbluser_auto_login` (
+  `key_id` char(32) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `user_agent` varchar(150) NOT NULL,
+  `last_ip` varchar(40) NOT NULL,
+  `last_login` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `staff` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -6547,7 +6177,7 @@ CREATE TABLE IF NOT EXISTS `tbluser_auto_login` (
 --
 
 INSERT INTO `tbluser_auto_login` (`key_id`, `user_id`, `user_agent`, `last_ip`, `last_login`, `staff`) VALUES
-('743dc690a8b7737016a730193fc89551', 1, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36', '::1', '2024-06-12 05:51:52', 1);
+('3f941f5958ae7ec144c2313ff4899c30', 1, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36', '172.68.79.181', '2024-06-12 05:52:03', 1);
 
 -- --------------------------------------------------------
 
@@ -6555,16 +6185,14 @@ INSERT INTO `tbluser_auto_login` (`key_id`, `user_id`, `user_agent`, `last_ip`, 
 -- Table structure for table `tbluser_meta`
 --
 
-DROP TABLE IF EXISTS `tbluser_meta`;
-CREATE TABLE IF NOT EXISTS `tbluser_meta` (
-  `umeta_id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
-  `staff_id` bigint UNSIGNED NOT NULL DEFAULT '0',
-  `client_id` bigint UNSIGNED NOT NULL DEFAULT '0',
-  `contact_id` bigint UNSIGNED NOT NULL DEFAULT '0',
-  `meta_key` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `meta_value` longtext COLLATE utf8mb4_unicode_ci,
-  PRIMARY KEY (`umeta_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+CREATE TABLE `tbluser_meta` (
+  `umeta_id` bigint(20) UNSIGNED NOT NULL,
+  `staff_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `client_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `contact_id` bigint(20) UNSIGNED NOT NULL DEFAULT 0,
+  `meta_key` varchar(191) DEFAULT NULL,
+  `meta_value` longtext DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tbluser_meta`
@@ -6572,9 +6200,7 @@ CREATE TABLE IF NOT EXISTS `tbluser_meta` (
 
 INSERT INTO `tbluser_meta` (`umeta_id`, `staff_id`, `client_id`, `contact_id`, `meta_key`, `meta_value`) VALUES
 (1, 0, 0, 1, 'consent_key', '172d8dbce8662758f74bc0f8b1252c3b-6df1630032b60d2bbedd2761900ee952'),
-(2, 1, 0, 0, 'dashboard_widgets_visibility', 'a:11:{i:0;a:2:{s:2:\"id\";s:9:\"top_stats\";s:7:\"visible\";s:1:\"1\";}i:1;a:2:{s:2:\"id\";s:16:\"finance_overview\";s:7:\"visible\";s:1:\"1\";}i:2;a:2:{s:2:\"id\";s:9:\"user_data\";s:7:\"visible\";s:1:\"0\";}i:3;a:2:{s:2:\"id\";s:8:\"calendar\";s:7:\"visible\";s:1:\"0\";}i:4;a:2:{s:2:\"id\";s:14:\"payments_chart\";s:7:\"visible\";s:1:\"1\";}i:5;a:2:{s:2:\"id\";s:18:\"contracts_expiring\";s:7:\"visible\";s:1:\"0\";}i:6;a:2:{s:2:\"id\";s:14:\"tickets_report\";s:7:\"visible\";s:1:\"0\";}i:7;a:2:{s:2:\"id\";s:5:\"todos\";s:7:\"visible\";s:1:\"1\";}i:8;a:2:{s:2:\"id\";s:11:\"leads_chart\";s:7:\"visible\";s:1:\"1\";}i:9;a:2:{s:2:\"id\";s:14:\"projects_chart\";s:7:\"visible\";s:1:\"0\";}i:10;a:2:{s:2:\"id\";s:17:\"projects_activity\";s:7:\"visible\";s:1:\"0\";}}'),
-(5, 0, 0, 4, 'consent_key', '223569b1f15cc8e7e448350c22dfccea-1f37bd7b15af6fadf39d254062ac52f8'),
-(6, 0, 0, 5, 'consent_key', '9d473b6469cd318ede4e3b2b44676408-825f76ba4bc8f61b5d1bfa6edd754a72');
+(2, 1, 0, 0, 'dashboard_widgets_visibility', 'a:11:{i:0;a:2:{s:2:\"id\";s:9:\"top_stats\";s:7:\"visible\";s:1:\"1\";}i:1;a:2:{s:2:\"id\";s:16:\"finance_overview\";s:7:\"visible\";s:1:\"1\";}i:2;a:2:{s:2:\"id\";s:9:\"user_data\";s:7:\"visible\";s:1:\"0\";}i:3;a:2:{s:2:\"id\";s:8:\"calendar\";s:7:\"visible\";s:1:\"0\";}i:4;a:2:{s:2:\"id\";s:14:\"payments_chart\";s:7:\"visible\";s:1:\"1\";}i:5;a:2:{s:2:\"id\";s:18:\"contracts_expiring\";s:7:\"visible\";s:1:\"0\";}i:6;a:2:{s:2:\"id\";s:14:\"tickets_report\";s:7:\"visible\";s:1:\"0\";}i:7;a:2:{s:2:\"id\";s:5:\"todos\";s:7:\"visible\";s:1:\"1\";}i:8;a:2:{s:2:\"id\";s:11:\"leads_chart\";s:7:\"visible\";s:1:\"1\";}i:9;a:2:{s:2:\"id\";s:14:\"projects_chart\";s:7:\"visible\";s:1:\"0\";}i:10;a:2:{s:2:\"id\";s:17:\"projects_activity\";s:7:\"visible\";s:1:\"0\";}}');
 
 -- --------------------------------------------------------
 
@@ -6582,23 +6208,21 @@ INSERT INTO `tbluser_meta` (`umeta_id`, `staff_id`, `client_id`, `contact_id`, `
 -- Table structure for table `tblvault`
 --
 
-DROP TABLE IF EXISTS `tblvault`;
-CREATE TABLE IF NOT EXISTS `tblvault` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `customer_id` int NOT NULL,
-  `server_address` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `port` int DEFAULT NULL,
-  `username` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_ci,
-  `creator` int NOT NULL,
-  `creator_name` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `visibility` tinyint(1) NOT NULL DEFAULT '1',
-  `share_in_projects` tinyint(1) NOT NULL DEFAULT '0',
+CREATE TABLE `tblvault` (
+  `id` int(11) NOT NULL,
+  `customer_id` int(11) NOT NULL,
+  `server_address` varchar(191) NOT NULL,
+  `port` int(11) DEFAULT NULL,
+  `username` varchar(191) NOT NULL,
+  `password` mediumtext NOT NULL,
+  `description` mediumtext DEFAULT NULL,
+  `creator` int(11) NOT NULL,
+  `creator_name` varchar(100) DEFAULT NULL,
+  `visibility` tinyint(1) NOT NULL DEFAULT 1,
+  `share_in_projects` tinyint(1) NOT NULL DEFAULT 0,
   `last_updated` datetime DEFAULT NULL,
-  `last_updated_from` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `date_created` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+  `last_updated_from` varchar(100) DEFAULT NULL,
+  `date_created` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6607,15 +6231,13 @@ CREATE TABLE IF NOT EXISTS `tblvault` (
 -- Table structure for table `tblviews_tracking`
 --
 
-DROP TABLE IF EXISTS `tblviews_tracking`;
-CREATE TABLE IF NOT EXISTS `tblviews_tracking` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `rel_id` int NOT NULL,
-  `rel_type` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
+CREATE TABLE `tblviews_tracking` (
+  `id` int(11) NOT NULL,
+  `rel_id` int(11) NOT NULL,
+  `rel_type` varchar(40) NOT NULL,
   `date` datetime NOT NULL,
-  `view_ip` varchar(40) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+  `view_ip` varchar(40) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `tblviews_tracking`
@@ -6630,34 +6252,32 @@ INSERT INTO `tblviews_tracking` (`id`, `rel_id`, `rel_type`, `date`, `view_ip`) 
 -- Table structure for table `tblweb_to_lead`
 --
 
-DROP TABLE IF EXISTS `tblweb_to_lead`;
-CREATE TABLE IF NOT EXISTS `tblweb_to_lead` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `form_key` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `lead_source` int NOT NULL,
-  `lead_status` int NOT NULL,
-  `notify_lead_imported` int NOT NULL DEFAULT '1',
-  `notify_type` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `notify_ids` longtext COLLATE utf8mb4_unicode_ci,
-  `responsible` int NOT NULL DEFAULT '0',
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `form_data` longtext COLLATE utf8mb4_unicode_ci,
-  `recaptcha` int NOT NULL DEFAULT '0',
-  `submit_btn_name` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `submit_btn_text_color` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '#ffffff',
-  `submit_btn_bg_color` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT '#84c529',
-  `success_submit_msg` mediumtext COLLATE utf8mb4_unicode_ci,
-  `submit_action` int DEFAULT '0',
-  `lead_name_prefix` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `submit_redirect_url` longtext COLLATE utf8mb4_unicode_ci,
-  `language` varchar(40) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `allow_duplicate` int NOT NULL DEFAULT '1',
-  `mark_public` int NOT NULL DEFAULT '0',
-  `track_duplicate_field` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `track_duplicate_field_and` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `create_task_on_duplicate` int NOT NULL DEFAULT '0',
-  `dateadded` datetime NOT NULL,
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblweb_to_lead` (
+  `id` int(11) NOT NULL,
+  `form_key` varchar(32) NOT NULL,
+  `lead_source` int(11) NOT NULL,
+  `lead_status` int(11) NOT NULL,
+  `notify_lead_imported` int(11) NOT NULL DEFAULT 1,
+  `notify_type` varchar(20) DEFAULT NULL,
+  `notify_ids` longtext DEFAULT NULL,
+  `responsible` int(11) NOT NULL DEFAULT 0,
+  `name` varchar(191) NOT NULL,
+  `form_data` longtext DEFAULT NULL,
+  `recaptcha` int(11) NOT NULL DEFAULT 0,
+  `submit_btn_name` varchar(40) DEFAULT NULL,
+  `submit_btn_text_color` varchar(10) DEFAULT '#ffffff',
+  `submit_btn_bg_color` varchar(10) DEFAULT '#84c529',
+  `success_submit_msg` mediumtext DEFAULT NULL,
+  `submit_action` int(11) DEFAULT 0,
+  `lead_name_prefix` varchar(255) DEFAULT NULL,
+  `submit_redirect_url` longtext DEFAULT NULL,
+  `language` varchar(40) DEFAULT NULL,
+  `allow_duplicate` int(11) NOT NULL DEFAULT 1,
+  `mark_public` int(11) NOT NULL DEFAULT 0,
+  `track_duplicate_field` varchar(20) DEFAULT NULL,
+  `track_duplicate_field_and` varchar(20) DEFAULT NULL,
+  `create_task_on_duplicate` int(11) NOT NULL DEFAULT 0,
+  `dateadded` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -6666,22 +6286,20 @@ CREATE TABLE IF NOT EXISTS `tblweb_to_lead` (
 -- Table structure for table `tblwhatsapp_api_debug_log`
 --
 
-DROP TABLE IF EXISTS `tblwhatsapp_api_debug_log`;
-CREATE TABLE IF NOT EXISTS `tblwhatsapp_api_debug_log` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `api_endpoint` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `phone_number_id` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `access_token` text COLLATE utf8mb4_general_ci,
-  `business_account_id` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `response_code` varchar(4) COLLATE utf8mb4_general_ci NOT NULL,
-  `response_data` text COLLATE utf8mb4_general_ci NOT NULL,
-  `send_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `message_category` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `category_params` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `merge_field_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
-  `recorded_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
-) ;
+CREATE TABLE `tblwhatsapp_api_debug_log` (
+  `id` int(11) NOT NULL,
+  `api_endpoint` varchar(255) DEFAULT NULL,
+  `phone_number_id` varchar(255) DEFAULT NULL,
+  `access_token` text DEFAULT NULL,
+  `business_account_id` varchar(255) DEFAULT NULL,
+  `response_code` varchar(4) NOT NULL,
+  `response_data` text NOT NULL,
+  `send_json` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`send_json`)),
+  `message_category` varchar(50) NOT NULL,
+  `category_params` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`category_params`)),
+  `merge_field_data` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`merge_field_data`)),
+  `recorded_at` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -6689,24 +6307,21 @@ CREATE TABLE IF NOT EXISTS `tblwhatsapp_api_debug_log` (
 -- Table structure for table `tblwhatsapp_templates`
 --
 
-DROP TABLE IF EXISTS `tblwhatsapp_templates`;
-CREATE TABLE IF NOT EXISTS `tblwhatsapp_templates` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `template_id` bigint UNSIGNED NOT NULL COMMENT 'id from api',
-  `template_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  `language` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `status` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `category` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `header_data_format` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  `header_data_text` text COLLATE utf8mb4_general_ci,
-  `header_params_count` int NOT NULL,
-  `body_data` text COLLATE utf8mb4_general_ci NOT NULL,
-  `body_params_count` int NOT NULL,
-  `footer_data` text COLLATE utf8mb4_general_ci,
-  `footer_params_count` int NOT NULL,
-  `buttons_data` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `template_id` (`template_id`)
+CREATE TABLE `tblwhatsapp_templates` (
+  `id` int(11) NOT NULL,
+  `template_id` bigint(20) UNSIGNED NOT NULL COMMENT 'id from api',
+  `template_name` varchar(255) NOT NULL,
+  `language` varchar(50) NOT NULL,
+  `status` varchar(50) NOT NULL,
+  `category` varchar(100) NOT NULL,
+  `header_data_format` varchar(10) NOT NULL,
+  `header_data_text` text DEFAULT NULL,
+  `header_params_count` int(11) NOT NULL,
+  `body_data` text NOT NULL,
+  `body_params_count` int(11) NOT NULL,
+  `footer_data` text DEFAULT NULL,
+  `footer_params_count` int(11) NOT NULL,
+  `buttons_data` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -6715,19 +6330,1833 @@ CREATE TABLE IF NOT EXISTS `tblwhatsapp_templates` (
 -- Table structure for table `tblwhatsapp_templates_mapping`
 --
 
-DROP TABLE IF EXISTS `tblwhatsapp_templates_mapping`;
-CREATE TABLE IF NOT EXISTS `tblwhatsapp_templates_mapping` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `template_id` int NOT NULL,
-  `category` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `send_to` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `header_params` text COLLATE utf8mb4_general_ci NOT NULL,
-  `body_params` text COLLATE utf8mb4_general_ci NOT NULL,
-  `footer_params` text COLLATE utf8mb4_general_ci NOT NULL,
-  `active` tinyint NOT NULL DEFAULT '1',
-  `debug_mode` tinyint NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+CREATE TABLE `tblwhatsapp_templates_mapping` (
+  `id` int(11) NOT NULL,
+  `template_id` int(11) NOT NULL,
+  `category` varchar(100) NOT NULL,
+  `send_to` varchar(50) NOT NULL,
+  `header_params` text NOT NULL,
+  `body_params` text NOT NULL,
+  `footer_params` text NOT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT 1,
+  `debug_mode` tinyint(4) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `tblacc_accounts`
+--
+ALTER TABLE `tblacc_accounts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_account_history`
+--
+ALTER TABLE `tblacc_account_history`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_account_type_details`
+--
+ALTER TABLE `tblacc_account_type_details`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_banking_rules`
+--
+ALTER TABLE `tblacc_banking_rules`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_banking_rule_details`
+--
+ALTER TABLE `tblacc_banking_rule_details`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_budgets`
+--
+ALTER TABLE `tblacc_budgets`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_budget_details`
+--
+ALTER TABLE `tblacc_budget_details`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_expense_category_mappings`
+--
+ALTER TABLE `tblacc_expense_category_mappings`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_item_automatics`
+--
+ALTER TABLE `tblacc_item_automatics`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_journal_entries`
+--
+ALTER TABLE `tblacc_journal_entries`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_matched_transactions`
+--
+ALTER TABLE `tblacc_matched_transactions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_payment_mode_mappings`
+--
+ALTER TABLE `tblacc_payment_mode_mappings`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_plaid_transaction_logs`
+--
+ALTER TABLE `tblacc_plaid_transaction_logs`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_reconciles`
+--
+ALTER TABLE `tblacc_reconciles`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_tax_mappings`
+--
+ALTER TABLE `tblacc_tax_mappings`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_transaction_bankings`
+--
+ALTER TABLE `tblacc_transaction_bankings`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblacc_transfers`
+--
+ALTER TABLE `tblacc_transfers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblactivity_log`
+--
+ALTER TABLE `tblactivity_log`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `staffid` (`staffid`);
+
+--
+-- Indexes for table `tblannouncements`
+--
+ALTER TABLE `tblannouncements`
+  ADD PRIMARY KEY (`announcementid`);
+
+--
+-- Indexes for table `tblclients`
+--
+ALTER TABLE `tblclients`
+  ADD PRIMARY KEY (`userid`),
+  ADD KEY `country` (`country`),
+  ADD KEY `leadid` (`leadid`),
+  ADD KEY `company` (`company`),
+  ADD KEY `active` (`active`);
+
+--
+-- Indexes for table `tblconsents`
+--
+ALTER TABLE `tblconsents`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `purpose_id` (`purpose_id`),
+  ADD KEY `contact_id` (`contact_id`),
+  ADD KEY `lead_id` (`lead_id`);
+
+--
+-- Indexes for table `tblconsent_purposes`
+--
+ALTER TABLE `tblconsent_purposes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblcontacts`
+--
+ALTER TABLE `tblcontacts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `userid` (`userid`),
+  ADD KEY `firstname` (`firstname`),
+  ADD KEY `lastname` (`lastname`),
+  ADD KEY `email` (`email`),
+  ADD KEY `is_primary` (`is_primary`);
+
+--
+-- Indexes for table `tblcontact_permissions`
+--
+ALTER TABLE `tblcontact_permissions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblcontracts`
+--
+ALTER TABLE `tblcontracts`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `client` (`client`),
+  ADD KEY `contract_type` (`contract_type`);
+
+--
+-- Indexes for table `tblcontracts_types`
+--
+ALTER TABLE `tblcontracts_types`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblcontract_comments`
+--
+ALTER TABLE `tblcontract_comments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblcontract_renewals`
+--
+ALTER TABLE `tblcontract_renewals`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblcountries`
+--
+ALTER TABLE `tblcountries`
+  ADD PRIMARY KEY (`country_id`);
+
+--
+-- Indexes for table `tblcreditnotes`
+--
+ALTER TABLE `tblcreditnotes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `currency` (`currency`),
+  ADD KEY `clientid` (`clientid`),
+  ADD KEY `project_id` (`project_id`);
+
+--
+-- Indexes for table `tblcreditnote_refunds`
+--
+ALTER TABLE `tblcreditnote_refunds`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblcredits`
+--
+ALTER TABLE `tblcredits`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblcurrencies`
+--
+ALTER TABLE `tblcurrencies`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblcustomers_groups`
+--
+ALTER TABLE `tblcustomers_groups`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `name` (`name`);
+
+--
+-- Indexes for table `tblcustomer_admins`
+--
+ALTER TABLE `tblcustomer_admins`
+  ADD KEY `customer_id` (`customer_id`),
+  ADD KEY `staff_id` (`staff_id`);
+
+--
+-- Indexes for table `tblcustomer_groups`
+--
+ALTER TABLE `tblcustomer_groups`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `groupid` (`groupid`),
+  ADD KEY `customer_id` (`customer_id`);
+
+--
+-- Indexes for table `tblcustomfields`
+--
+ALTER TABLE `tblcustomfields`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblcustomfieldsvalues`
+--
+ALTER TABLE `tblcustomfieldsvalues`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `relid` (`relid`),
+  ADD KEY `fieldto` (`fieldto`),
+  ADD KEY `fieldid` (`fieldid`);
+
+--
+-- Indexes for table `tbldepartments`
+--
+ALTER TABLE `tbldepartments`
+  ADD PRIMARY KEY (`departmentid`),
+  ADD KEY `name` (`name`);
+
+--
+-- Indexes for table `tbldismissed_announcements`
+--
+ALTER TABLE `tbldismissed_announcements`
+  ADD PRIMARY KEY (`dismissedannouncementid`),
+  ADD KEY `announcementid` (`announcementid`),
+  ADD KEY `staff` (`staff`),
+  ADD KEY `userid` (`userid`);
+
+--
+-- Indexes for table `tblemaillists`
+--
+ALTER TABLE `tblemaillists`
+  ADD PRIMARY KEY (`listid`);
+
+--
+-- Indexes for table `tblemailtemplates`
+--
+ALTER TABLE `tblemailtemplates`
+  ADD PRIMARY KEY (`emailtemplateid`);
+
+--
+-- Indexes for table `tblestimates`
+--
+ALTER TABLE `tblestimates`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `clientid` (`clientid`),
+  ADD KEY `currency` (`currency`),
+  ADD KEY `project_id` (`project_id`),
+  ADD KEY `sale_agent` (`sale_agent`),
+  ADD KEY `status` (`status`);
+
+--
+-- Indexes for table `tblestimate_requests`
+--
+ALTER TABLE `tblestimate_requests`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblestimate_request_forms`
+--
+ALTER TABLE `tblestimate_request_forms`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblestimate_request_status`
+--
+ALTER TABLE `tblestimate_request_status`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblevents`
+--
+ALTER TABLE `tblevents`
+  ADD PRIMARY KEY (`eventid`);
+
+--
+-- Indexes for table `tblexpenses`
+--
+ALTER TABLE `tblexpenses`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `clientid` (`clientid`),
+  ADD KEY `project_id` (`project_id`),
+  ADD KEY `category` (`category`),
+  ADD KEY `currency` (`currency`);
+
+--
+-- Indexes for table `tblexpenses_categories`
+--
+ALTER TABLE `tblexpenses_categories`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblfiles`
+--
+ALTER TABLE `tblfiles`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rel_id` (`rel_id`),
+  ADD KEY `rel_type` (`rel_type`);
+
+--
+-- Indexes for table `tblfilters`
+--
+ALTER TABLE `tblfilters`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblfilter_defaults`
+--
+ALTER TABLE `tblfilter_defaults`
+  ADD KEY `filter_id` (`filter_id`),
+  ADD KEY `staff_id` (`staff_id`);
+
+--
+-- Indexes for table `tblform_questions`
+--
+ALTER TABLE `tblform_questions`
+  ADD PRIMARY KEY (`questionid`);
+
+--
+-- Indexes for table `tblform_question_box`
+--
+ALTER TABLE `tblform_question_box`
+  ADD PRIMARY KEY (`boxid`);
+
+--
+-- Indexes for table `tblform_question_box_description`
+--
+ALTER TABLE `tblform_question_box_description`
+  ADD PRIMARY KEY (`questionboxdescriptionid`);
+
+--
+-- Indexes for table `tblform_results`
+--
+ALTER TABLE `tblform_results`
+  ADD PRIMARY KEY (`resultid`);
+
+--
+-- Indexes for table `tblgdpr_requests`
+--
+ALTER TABLE `tblgdpr_requests`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblgoals`
+--
+ALTER TABLE `tblgoals`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `staff_id` (`staff_id`);
+
+--
+-- Indexes for table `tblinvoicepaymentrecords`
+--
+ALTER TABLE `tblinvoicepaymentrecords`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `invoiceid` (`invoiceid`),
+  ADD KEY `paymentmethod` (`paymentmethod`);
+
+--
+-- Indexes for table `tblinvoices`
+--
+ALTER TABLE `tblinvoices`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `currency` (`currency`),
+  ADD KEY `clientid` (`clientid`),
+  ADD KEY `project_id` (`project_id`),
+  ADD KEY `sale_agent` (`sale_agent`),
+  ADD KEY `total` (`total`),
+  ADD KEY `status` (`status`);
+
+--
+-- Indexes for table `tblitemable`
+--
+ALTER TABLE `tblitemable`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rel_id` (`rel_id`),
+  ADD KEY `rel_type` (`rel_type`),
+  ADD KEY `qty` (`qty`),
+  ADD KEY `rate` (`rate`);
+
+--
+-- Indexes for table `tblitems`
+--
+ALTER TABLE `tblitems`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `tax` (`tax`),
+  ADD KEY `tax2` (`tax2`),
+  ADD KEY `group_id` (`group_id`);
+
+--
+-- Indexes for table `tblitems_groups`
+--
+ALTER TABLE `tblitems_groups`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblitem_tax`
+--
+ALTER TABLE `tblitem_tax`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `itemid` (`itemid`),
+  ADD KEY `rel_id` (`rel_id`);
+
+--
+-- Indexes for table `tblknowedge_base_article_feedback`
+--
+ALTER TABLE `tblknowedge_base_article_feedback`
+  ADD PRIMARY KEY (`articleanswerid`);
+
+--
+-- Indexes for table `tblknowledge_base`
+--
+ALTER TABLE `tblknowledge_base`
+  ADD PRIMARY KEY (`articleid`);
+
+--
+-- Indexes for table `tblknowledge_base_groups`
+--
+ALTER TABLE `tblknowledge_base_groups`
+  ADD PRIMARY KEY (`groupid`);
+
+--
+-- Indexes for table `tblleads`
+--
+ALTER TABLE `tblleads`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `name` (`name`),
+  ADD KEY `company` (`company`),
+  ADD KEY `email` (`email`),
+  ADD KEY `assigned` (`assigned`),
+  ADD KEY `status` (`status`),
+  ADD KEY `source` (`source`),
+  ADD KEY `lastcontact` (`lastcontact`),
+  ADD KEY `dateadded` (`dateadded`),
+  ADD KEY `leadorder` (`leadorder`),
+  ADD KEY `from_form_id` (`from_form_id`);
+
+--
+-- Indexes for table `tblleads_email_integration`
+--
+ALTER TABLE `tblleads_email_integration`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblleads_sources`
+--
+ALTER TABLE `tblleads_sources`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `name` (`name`);
+
+--
+-- Indexes for table `tblleads_status`
+--
+ALTER TABLE `tblleads_status`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `name` (`name`);
+
+--
+-- Indexes for table `tbllead_activity_log`
+--
+ALTER TABLE `tbllead_activity_log`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbllead_integration_emails`
+--
+ALTER TABLE `tbllead_integration_emails`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbllistemails`
+--
+ALTER TABLE `tbllistemails`
+  ADD PRIMARY KEY (`emailid`);
+
+--
+-- Indexes for table `tblmaillistscustomfields`
+--
+ALTER TABLE `tblmaillistscustomfields`
+  ADD PRIMARY KEY (`customfieldid`);
+
+--
+-- Indexes for table `tblmaillistscustomfieldvalues`
+--
+ALTER TABLE `tblmaillistscustomfieldvalues`
+  ADD PRIMARY KEY (`customfieldvalueid`),
+  ADD KEY `listid` (`listid`),
+  ADD KEY `customfieldid` (`customfieldid`);
+
+--
+-- Indexes for table `tblmail_queue`
+--
+ALTER TABLE `tblmail_queue`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblmilestones`
+--
+ALTER TABLE `tblmilestones`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblmodules`
+--
+ALTER TABLE `tblmodules`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblnewsfeed_comment_likes`
+--
+ALTER TABLE `tblnewsfeed_comment_likes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblnewsfeed_posts`
+--
+ALTER TABLE `tblnewsfeed_posts`
+  ADD PRIMARY KEY (`postid`);
+
+--
+-- Indexes for table `tblnewsfeed_post_comments`
+--
+ALTER TABLE `tblnewsfeed_post_comments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblnewsfeed_post_likes`
+--
+ALTER TABLE `tblnewsfeed_post_likes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblnotes`
+--
+ALTER TABLE `tblnotes`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rel_id` (`rel_id`),
+  ADD KEY `rel_type` (`rel_type`);
+
+--
+-- Indexes for table `tblnotifications`
+--
+ALTER TABLE `tblnotifications`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbloptions`
+--
+ALTER TABLE `tbloptions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `name` (`name`);
+
+--
+-- Indexes for table `tblpackages`
+--
+ALTER TABLE `tblpackages`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblpayment_attempts`
+--
+ALTER TABLE `tblpayment_attempts`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblpayment_modes`
+--
+ALTER TABLE `tblpayment_modes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblpinned_projects`
+--
+ALTER TABLE `tblpinned_projects`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `project_id` (`project_id`);
+
+--
+-- Indexes for table `tblprojectdiscussioncomments`
+--
+ALTER TABLE `tblprojectdiscussioncomments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblprojectdiscussions`
+--
+ALTER TABLE `tblprojectdiscussions`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblprojects`
+--
+ALTER TABLE `tblprojects`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `clientid` (`clientid`),
+  ADD KEY `name` (`name`);
+
+--
+-- Indexes for table `tblproject_activity`
+--
+ALTER TABLE `tblproject_activity`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblproject_files`
+--
+ALTER TABLE `tblproject_files`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblproject_members`
+--
+ALTER TABLE `tblproject_members`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `project_id` (`project_id`),
+  ADD KEY `staff_id` (`staff_id`);
+
+--
+-- Indexes for table `tblproject_notes`
+--
+ALTER TABLE `tblproject_notes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblproject_settings`
+--
+ALTER TABLE `tblproject_settings`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `project_id` (`project_id`);
+
+--
+-- Indexes for table `tblproposals`
+--
+ALTER TABLE `tblproposals`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `status` (`status`);
+
+--
+-- Indexes for table `tblproposal_comments`
+--
+ALTER TABLE `tblproposal_comments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblrelated_items`
+--
+ALTER TABLE `tblrelated_items`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblreminders`
+--
+ALTER TABLE `tblreminders`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rel_id` (`rel_id`),
+  ADD KEY `rel_type` (`rel_type`),
+  ADD KEY `staff` (`staff`);
+
+--
+-- Indexes for table `tblroles`
+--
+ALTER TABLE `tblroles`
+  ADD PRIMARY KEY (`roleid`);
+
+--
+-- Indexes for table `tblsales_activity`
+--
+ALTER TABLE `tblsales_activity`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblscheduled_emails`
+--
+ALTER TABLE `tblscheduled_emails`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblservices`
+--
+ALTER TABLE `tblservices`
+  ADD PRIMARY KEY (`serviceid`);
+
+--
+-- Indexes for table `tblsessions`
+--
+ALTER TABLE `tblsessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ci_sessions_timestamp` (`timestamp`);
+
+--
+-- Indexes for table `tblspam_filters`
+--
+ALTER TABLE `tblspam_filters`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblstaff`
+--
+ALTER TABLE `tblstaff`
+  ADD PRIMARY KEY (`staffid`),
+  ADD KEY `firstname` (`firstname`),
+  ADD KEY `lastname` (`lastname`);
+
+--
+-- Indexes for table `tblstaff_departments`
+--
+ALTER TABLE `tblstaff_departments`
+  ADD PRIMARY KEY (`staffdepartmentid`);
+
+--
+-- Indexes for table `tblsubscriptions`
+--
+ALTER TABLE `tblsubscriptions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `clientid` (`clientid`),
+  ADD KEY `currency` (`currency`),
+  ADD KEY `tax_id` (`tax_id`);
+
+--
+-- Indexes for table `tblsurveyresultsets`
+--
+ALTER TABLE `tblsurveyresultsets`
+  ADD PRIMARY KEY (`resultsetid`);
+
+--
+-- Indexes for table `tblsurveys`
+--
+ALTER TABLE `tblsurveys`
+  ADD PRIMARY KEY (`surveyid`);
+
+--
+-- Indexes for table `tblsurveysemailsendcron`
+--
+ALTER TABLE `tblsurveysemailsendcron`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblsurveysendlog`
+--
+ALTER TABLE `tblsurveysendlog`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbltaggables`
+--
+ALTER TABLE `tbltaggables`
+  ADD KEY `rel_id` (`rel_id`),
+  ADD KEY `rel_type` (`rel_type`),
+  ADD KEY `tag_id` (`tag_id`);
+
+--
+-- Indexes for table `tbltags`
+--
+ALTER TABLE `tbltags`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `name` (`name`);
+
+--
+-- Indexes for table `tbltasks`
+--
+ALTER TABLE `tbltasks`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rel_id` (`rel_id`),
+  ADD KEY `rel_type` (`rel_type`),
+  ADD KEY `milestone` (`milestone`),
+  ADD KEY `kanban_order` (`kanban_order`),
+  ADD KEY `status` (`status`);
+
+--
+-- Indexes for table `tbltaskstimers`
+--
+ALTER TABLE `tbltaskstimers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `task_id` (`task_id`),
+  ADD KEY `staff_id` (`staff_id`);
+
+--
+-- Indexes for table `tbltasks_checklist_templates`
+--
+ALTER TABLE `tbltasks_checklist_templates`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbltask_assigned`
+--
+ALTER TABLE `tbltask_assigned`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `taskid` (`taskid`),
+  ADD KEY `staffid` (`staffid`);
+
+--
+-- Indexes for table `tbltask_checklist_items`
+--
+ALTER TABLE `tbltask_checklist_items`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `taskid` (`taskid`);
+
+--
+-- Indexes for table `tbltask_comments`
+--
+ALTER TABLE `tbltask_comments`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `file_id` (`file_id`),
+  ADD KEY `taskid` (`taskid`);
+
+--
+-- Indexes for table `tbltask_followers`
+--
+ALTER TABLE `tbltask_followers`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbltaxes`
+--
+ALTER TABLE `tbltaxes`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbltemplates`
+--
+ALTER TABLE `tbltemplates`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbltickets`
+--
+ALTER TABLE `tbltickets`
+  ADD PRIMARY KEY (`ticketid`),
+  ADD KEY `service` (`service`),
+  ADD KEY `department` (`department`),
+  ADD KEY `status` (`status`),
+  ADD KEY `userid` (`userid`),
+  ADD KEY `priority` (`priority`),
+  ADD KEY `project_id` (`project_id`),
+  ADD KEY `contactid` (`contactid`);
+
+--
+-- Indexes for table `tbltickets_pipe_log`
+--
+ALTER TABLE `tbltickets_pipe_log`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbltickets_predefined_replies`
+--
+ALTER TABLE `tbltickets_predefined_replies`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbltickets_priorities`
+--
+ALTER TABLE `tbltickets_priorities`
+  ADD PRIMARY KEY (`priorityid`);
+
+--
+-- Indexes for table `tbltickets_status`
+--
+ALTER TABLE `tbltickets_status`
+  ADD PRIMARY KEY (`ticketstatusid`);
+
+--
+-- Indexes for table `tblticket_attachments`
+--
+ALTER TABLE `tblticket_attachments`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblticket_replies`
+--
+ALTER TABLE `tblticket_replies`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbltodos`
+--
+ALTER TABLE `tbltodos`
+  ADD PRIMARY KEY (`todoid`);
+
+--
+-- Indexes for table `tbltracked_mails`
+--
+ALTER TABLE `tbltracked_mails`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tbltwocheckout_log`
+--
+ALTER TABLE `tbltwocheckout_log`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `invoice_id` (`invoice_id`);
+
+--
+-- Indexes for table `tbluser_meta`
+--
+ALTER TABLE `tbluser_meta`
+  ADD PRIMARY KEY (`umeta_id`);
+
+--
+-- Indexes for table `tblvault`
+--
+ALTER TABLE `tblvault`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblviews_tracking`
+--
+ALTER TABLE `tblviews_tracking`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblweb_to_lead`
+--
+ALTER TABLE `tblweb_to_lead`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblwhatsapp_api_debug_log`
+--
+ALTER TABLE `tblwhatsapp_api_debug_log`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `tblwhatsapp_templates`
+--
+ALTER TABLE `tblwhatsapp_templates`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `template_id` (`template_id`);
+
+--
+-- Indexes for table `tblwhatsapp_templates_mapping`
+--
+ALTER TABLE `tblwhatsapp_templates_mapping`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `tblacc_accounts`
+--
+ALTER TABLE `tblacc_accounts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+
+--
+-- AUTO_INCREMENT for table `tblacc_account_history`
+--
+ALTER TABLE `tblacc_account_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+
+--
+-- AUTO_INCREMENT for table `tblacc_account_type_details`
+--
+ALTER TABLE `tblacc_account_type_details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=200;
+
+--
+-- AUTO_INCREMENT for table `tblacc_banking_rules`
+--
+ALTER TABLE `tblacc_banking_rules`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblacc_banking_rule_details`
+--
+ALTER TABLE `tblacc_banking_rule_details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblacc_budgets`
+--
+ALTER TABLE `tblacc_budgets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblacc_budget_details`
+--
+ALTER TABLE `tblacc_budget_details`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblacc_expense_category_mappings`
+--
+ALTER TABLE `tblacc_expense_category_mappings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblacc_item_automatics`
+--
+ALTER TABLE `tblacc_item_automatics`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblacc_journal_entries`
+--
+ALTER TABLE `tblacc_journal_entries`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblacc_matched_transactions`
+--
+ALTER TABLE `tblacc_matched_transactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblacc_payment_mode_mappings`
+--
+ALTER TABLE `tblacc_payment_mode_mappings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblacc_plaid_transaction_logs`
+--
+ALTER TABLE `tblacc_plaid_transaction_logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblacc_reconciles`
+--
+ALTER TABLE `tblacc_reconciles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblacc_tax_mappings`
+--
+ALTER TABLE `tblacc_tax_mappings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblacc_transaction_bankings`
+--
+ALTER TABLE `tblacc_transaction_bankings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblacc_transfers`
+--
+ALTER TABLE `tblacc_transfers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblactivity_log`
+--
+ALTER TABLE `tblactivity_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=75;
+
+--
+-- AUTO_INCREMENT for table `tblannouncements`
+--
+ALTER TABLE `tblannouncements`
+  MODIFY `announcementid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblclients`
+--
+ALTER TABLE `tblclients`
+  MODIFY `userid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tblconsents`
+--
+ALTER TABLE `tblconsents`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblconsent_purposes`
+--
+ALTER TABLE `tblconsent_purposes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblcontacts`
+--
+ALTER TABLE `tblcontacts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tblcontact_permissions`
+--
+ALTER TABLE `tblcontact_permissions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `tblcontracts`
+--
+ALTER TABLE `tblcontracts`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblcontracts_types`
+--
+ALTER TABLE `tblcontracts_types`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblcontract_comments`
+--
+ALTER TABLE `tblcontract_comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblcontract_renewals`
+--
+ALTER TABLE `tblcontract_renewals`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblcountries`
+--
+ALTER TABLE `tblcountries`
+  MODIFY `country_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
+
+--
+-- AUTO_INCREMENT for table `tblcreditnotes`
+--
+ALTER TABLE `tblcreditnotes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblcreditnote_refunds`
+--
+ALTER TABLE `tblcreditnote_refunds`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblcredits`
+--
+ALTER TABLE `tblcredits`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblcurrencies`
+--
+ALTER TABLE `tblcurrencies`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tblcustomers_groups`
+--
+ALTER TABLE `tblcustomers_groups`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tblcustomer_groups`
+--
+ALTER TABLE `tblcustomer_groups`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblcustomfields`
+--
+ALTER TABLE `tblcustomfields`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tblcustomfieldsvalues`
+--
+ALTER TABLE `tblcustomfieldsvalues`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tbldepartments`
+--
+ALTER TABLE `tbldepartments`
+  MODIFY `departmentid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbldismissed_announcements`
+--
+ALTER TABLE `tbldismissed_announcements`
+  MODIFY `dismissedannouncementid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblemaillists`
+--
+ALTER TABLE `tblemaillists`
+  MODIFY `listid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblemailtemplates`
+--
+ALTER TABLE `tblemailtemplates`
+  MODIFY `emailtemplateid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2133;
+
+--
+-- AUTO_INCREMENT for table `tblestimates`
+--
+ALTER TABLE `tblestimates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblestimate_requests`
+--
+ALTER TABLE `tblestimate_requests`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblestimate_request_forms`
+--
+ALTER TABLE `tblestimate_request_forms`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblestimate_request_status`
+--
+ALTER TABLE `tblestimate_request_status`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tblevents`
+--
+ALTER TABLE `tblevents`
+  MODIFY `eventid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblexpenses`
+--
+ALTER TABLE `tblexpenses`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblexpenses_categories`
+--
+ALTER TABLE `tblexpenses_categories`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblfiles`
+--
+ALTER TABLE `tblfiles`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblfilters`
+--
+ALTER TABLE `tblfilters`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblform_questions`
+--
+ALTER TABLE `tblform_questions`
+  MODIFY `questionid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblform_question_box`
+--
+ALTER TABLE `tblform_question_box`
+  MODIFY `boxid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblform_question_box_description`
+--
+ALTER TABLE `tblform_question_box_description`
+  MODIFY `questionboxdescriptionid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblform_results`
+--
+ALTER TABLE `tblform_results`
+  MODIFY `resultid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblgdpr_requests`
+--
+ALTER TABLE `tblgdpr_requests`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblgoals`
+--
+ALTER TABLE `tblgoals`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblinvoicepaymentrecords`
+--
+ALTER TABLE `tblinvoicepaymentrecords`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tblinvoices`
+--
+ALTER TABLE `tblinvoices`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tblitemable`
+--
+ALTER TABLE `tblitemable`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tblitems`
+--
+ALTER TABLE `tblitems`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tblitems_groups`
+--
+ALTER TABLE `tblitems_groups`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tblitem_tax`
+--
+ALTER TABLE `tblitem_tax`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `tblknowedge_base_article_feedback`
+--
+ALTER TABLE `tblknowedge_base_article_feedback`
+  MODIFY `articleanswerid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblknowledge_base`
+--
+ALTER TABLE `tblknowledge_base`
+  MODIFY `articleid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblknowledge_base_groups`
+--
+ALTER TABLE `tblknowledge_base_groups`
+  MODIFY `groupid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblleads`
+--
+ALTER TABLE `tblleads`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tblleads_email_integration`
+--
+ALTER TABLE `tblleads_email_integration`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'the ID always must be 1', AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tblleads_sources`
+--
+ALTER TABLE `tblleads_sources`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `tblleads_status`
+--
+ALTER TABLE `tblleads_status`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tbllead_activity_log`
+--
+ALTER TABLE `tbllead_activity_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `tbllead_integration_emails`
+--
+ALTER TABLE `tbllead_integration_emails`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbllistemails`
+--
+ALTER TABLE `tbllistemails`
+  MODIFY `emailid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblmaillistscustomfields`
+--
+ALTER TABLE `tblmaillistscustomfields`
+  MODIFY `customfieldid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblmaillistscustomfieldvalues`
+--
+ALTER TABLE `tblmaillistscustomfieldvalues`
+  MODIFY `customfieldvalueid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblmail_queue`
+--
+ALTER TABLE `tblmail_queue`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblmilestones`
+--
+ALTER TABLE `tblmilestones`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblmodules`
+--
+ALTER TABLE `tblmodules`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `tblnewsfeed_comment_likes`
+--
+ALTER TABLE `tblnewsfeed_comment_likes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblnewsfeed_posts`
+--
+ALTER TABLE `tblnewsfeed_posts`
+  MODIFY `postid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblnewsfeed_post_comments`
+--
+ALTER TABLE `tblnewsfeed_post_comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblnewsfeed_post_likes`
+--
+ALTER TABLE `tblnewsfeed_post_likes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblnotes`
+--
+ALTER TABLE `tblnotes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblnotifications`
+--
+ALTER TABLE `tblnotifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tbloptions`
+--
+ALTER TABLE `tbloptions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=551;
+
+--
+-- AUTO_INCREMENT for table `tblpackages`
+--
+ALTER TABLE `tblpackages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tblpayment_attempts`
+--
+ALTER TABLE `tblpayment_attempts`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblpayment_modes`
+--
+ALTER TABLE `tblpayment_modes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tblpinned_projects`
+--
+ALTER TABLE `tblpinned_projects`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblprojectdiscussioncomments`
+--
+ALTER TABLE `tblprojectdiscussioncomments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblprojectdiscussions`
+--
+ALTER TABLE `tblprojectdiscussions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblprojects`
+--
+ALTER TABLE `tblprojects`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tblproject_activity`
+--
+ALTER TABLE `tblproject_activity`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tblproject_files`
+--
+ALTER TABLE `tblproject_files`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblproject_members`
+--
+ALTER TABLE `tblproject_members`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tblproject_notes`
+--
+ALTER TABLE `tblproject_notes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblproject_settings`
+--
+ALTER TABLE `tblproject_settings`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT for table `tblproposals`
+--
+ALTER TABLE `tblproposals`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblproposal_comments`
+--
+ALTER TABLE `tblproposal_comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblrelated_items`
+--
+ALTER TABLE `tblrelated_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblreminders`
+--
+ALTER TABLE `tblreminders`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblroles`
+--
+ALTER TABLE `tblroles`
+  MODIFY `roleid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tblsales_activity`
+--
+ALTER TABLE `tblsales_activity`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `tblscheduled_emails`
+--
+ALTER TABLE `tblscheduled_emails`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblservices`
+--
+ALTER TABLE `tblservices`
+  MODIFY `serviceid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblspam_filters`
+--
+ALTER TABLE `tblspam_filters`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblstaff`
+--
+ALTER TABLE `tblstaff`
+  MODIFY `staffid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tblstaff_departments`
+--
+ALTER TABLE `tblstaff_departments`
+  MODIFY `staffdepartmentid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblsubscriptions`
+--
+ALTER TABLE `tblsubscriptions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblsurveyresultsets`
+--
+ALTER TABLE `tblsurveyresultsets`
+  MODIFY `resultsetid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblsurveys`
+--
+ALTER TABLE `tblsurveys`
+  MODIFY `surveyid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblsurveysemailsendcron`
+--
+ALTER TABLE `tblsurveysemailsendcron`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblsurveysendlog`
+--
+ALTER TABLE `tblsurveysendlog`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltags`
+--
+ALTER TABLE `tbltags`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltasks`
+--
+ALTER TABLE `tbltasks`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltaskstimers`
+--
+ALTER TABLE `tbltaskstimers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltasks_checklist_templates`
+--
+ALTER TABLE `tbltasks_checklist_templates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltask_assigned`
+--
+ALTER TABLE `tbltask_assigned`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltask_checklist_items`
+--
+ALTER TABLE `tbltask_checklist_items`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltask_comments`
+--
+ALTER TABLE `tbltask_comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltask_followers`
+--
+ALTER TABLE `tbltask_followers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltaxes`
+--
+ALTER TABLE `tbltaxes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tbltemplates`
+--
+ALTER TABLE `tbltemplates`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltickets`
+--
+ALTER TABLE `tbltickets`
+  MODIFY `ticketid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltickets_pipe_log`
+--
+ALTER TABLE `tbltickets_pipe_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltickets_predefined_replies`
+--
+ALTER TABLE `tbltickets_predefined_replies`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltickets_priorities`
+--
+ALTER TABLE `tbltickets_priorities`
+  MODIFY `priorityid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `tbltickets_status`
+--
+ALTER TABLE `tbltickets_status`
+  MODIFY `ticketstatusid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `tblticket_attachments`
+--
+ALTER TABLE `tblticket_attachments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblticket_replies`
+--
+ALTER TABLE `tblticket_replies`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltodos`
+--
+ALTER TABLE `tbltodos`
+  MODIFY `todoid` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltracked_mails`
+--
+ALTER TABLE `tbltracked_mails`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbltwocheckout_log`
+--
+ALTER TABLE `tbltwocheckout_log`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tbluser_meta`
+--
+ALTER TABLE `tbluser_meta`
+  MODIFY `umeta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `tblvault`
+--
+ALTER TABLE `tblvault`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblviews_tracking`
+--
+ALTER TABLE `tblviews_tracking`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `tblweb_to_lead`
+--
+ALTER TABLE `tblweb_to_lead`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblwhatsapp_api_debug_log`
+--
+ALTER TABLE `tblwhatsapp_api_debug_log`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblwhatsapp_templates`
+--
+ALTER TABLE `tblwhatsapp_templates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `tblwhatsapp_templates_mapping`
+--
+ALTER TABLE `tblwhatsapp_templates_mapping`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
