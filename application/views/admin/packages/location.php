@@ -7,10 +7,10 @@
                 <div class="col-md-12">
                     <div class="_buttons tw-mb-2 sm:tw-mb-4">
                         <?php if (staff_can('create',  'projects')) { ?>
-                        <a href="<?php echo admin_url('packages/addhotel'); ?>"
+                        <a href="<?php echo admin_url('packages/addlocation'); ?>"
                             class="btn btn-primary pull-left display-block mright5">
                             <i class="fa-regular fa-plus tw-mr-1"></i>
-                            <?php echo 'New Hotel Name'; ?>
+                            <?php echo 'New Location Name'; ?>
                         </a>
                         <?php } ?>
                         
@@ -29,7 +29,7 @@
                             </div>                         
                             <hr class="hr-panel-separator" />
                             <div class="panel-table-full">
-                                <?php $this->load->view('admin/packages/hotel_table_html'); ?>
+                                <?php $this->load->view('admin/packages/location_table_html'); ?>
                             </div>
                         </div>
                     </div>
@@ -45,7 +45,7 @@ $(function() {
 	var optionsHeading = [];    
 	var allContactsServerParams = {        "custom_view": "[name='custom_view']",    };
 	
-    initDataTable('.table-all-hotel', admin_url + 'packages/hoteltable', optionsHeading, optionsHeading, allContactsServerParams, [0, 'asc'] );
+    initDataTable('.table-all-location', admin_url + 'packages/locationtable', optionsHeading, optionsHeading, allContactsServerParams, [0, 'asc'] );
 
     //init_ajax_search('customer', '#clientid_copy_project.ajax-search');
 });

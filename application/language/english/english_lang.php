@@ -2775,7 +2775,7 @@ $lang['lead_title']                              = 'Position';
 $lang['lead_address']                            = 'Address';
 $lang['lead_city']                               = 'City';
 $lang['lead_state']                              = 'State';
-$lang['lead_country']                            = 'Country';
+$lang['lead_country']                            = 'Country';$lang['hotel_location']                          = 'Location';
 $lang['lead_zip']                                = 'Zip Code';
 $lang['lead_is_public_yes']                      = 'Yes';
 $lang['lead_is_public_no']                       = 'No';

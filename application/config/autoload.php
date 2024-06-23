@@ -126,7 +126,7 @@ $autoload['helper'] = [
         'user_meta',
         'emails_tracking',
         'staff',
-        'countries',
+        'countries',				'locations',
         'payment_gateways',
         'general',
         'misc',
