@@ -56,9 +56,12 @@ class Packages extends AdminController
             $package = $this->packages_model->get($id);
 			//die(print_r($package));
 			$data['package_name'] = $package->package_name;
+			$data['pickup'] = $package->pickup;
+			$data['droplo'] = $package->droplo;
+			$data['sightseeing'] = $package->sightseeing;
 		}
 		$data['bodyclass'] = 'package dynamic-create-groups';
-
+		$data['package_id'] = $id;
         $data['title']     = $title;
 
         $this->load->view('admin/packages/package', $data);
@@ -299,5 +302,26 @@ class Packages extends AdminController
         }
         redirect(admin_url('packages/hotel'));
     }
+	
+	public function addpickup(){
+		if ($this->input->post()){
+			$data = $this->input->post();				 
+			$this->packages_model->addpickup($data);
+		}
+	}
+	
+	public function adddrop(){
+		if ($this->input->post()){
+			$data = $this->input->post();				 
+			$this->packages_model->adddrop($data);
+		}
+	}
+	
+	public function addsight(){
+		if ($this->input->post()){
+			$data = $this->input->post();				 
+			$this->packages_model->addsight($data);
+		}
+	}
 	
 }

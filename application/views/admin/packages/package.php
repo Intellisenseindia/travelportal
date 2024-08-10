@@ -18,7 +18,7 @@
             <?php } ?>
 
             <div class="tw-mt-12 sm:tw-mt-0 <?php echo isset($client) ? 'col-md-9' : 'col-md-8 col-md-offset-2'; ?>">
-            
+            <input type="hidden" id="packageid" value="<?php echo $package_id; ?>" />
             <h4 class="tw-mt-0 tw-font-semibold tw-text-lg tw-text-neutral-700"><?php echo $title; ?></h4>
                 <div class="panel_s">
                     <div class="panel-body">                         
@@ -43,6 +43,44 @@
                             <?php echo _l('submit'); ?>
                         </button>
                     </div>
+					
+					<?php if($title == "Update package"){ ?>
+					<div>
+						<div class="form-group" app-field-wrapper="company">										
+                           <label for="company" class="control-label">Pickup</label>										
+                           <input type="text" id="pickupname" name="pickupname" class="form-control" value="">
+                        </div>
+						<div class="panel-footer text-right tw-space-x-1" id="pickup-save-section">                        
+							<button class="btn btn-primary only-save pickup-form-submiter">
+								<?php echo _l('submit'); ?>
+							</button>
+						</div>
+					</div>
+					
+					<div>
+						<div class="form-group" app-field-wrapper="company">										
+                           <label for="company" class="control-label">Drop</label>										
+                           <input type="text" id="dropname" name="dropname" class="form-control" value="">
+                        </div>
+						<div class="panel-footer text-right tw-space-x-1" id="drop-save-section">                        
+							<button class="btn btn-primary only-save drop-form-submiter">
+								<?php echo _l('submit'); ?>
+							</button>
+						</div>
+					</div>
+					
+					<div>
+						<div class="form-group" app-field-wrapper="company">										
+                           <label for="company" class="control-label">Sight seening</label>										
+                           <input type="text" id="sightname" name="sightname" class="form-control" value="">
+                        </div>
+						<div class="panel-footer text-right tw-space-x-1" id="sight-save-section">                        
+							<button class="btn btn-primary only-save sight-form-submiter">
+								<?php echo _l('submit'); ?>
+							</button>
+						</div>
+					</div>
+					<?php } ?>
                   
                 </div>
             </div>
@@ -57,14 +95,52 @@
 $(function() {
 
      $('.package-form-submiter').on('click', function() {
-
-        var form = $('.package-form');
-		
-		form.submit();       
-
+        var form = $('.package-form');		
+		form.submit(); 
+    });
+	
+	$('.pickup-form-submiter').on('click', function() {
+         $.ajax({
+			type: 'POST',
+			url: admin_url + 'packages/addpickup',
+			data: {packageid:$('#packageid').val(), pickupname:$('#pickupname').val()},
+			mimeType: "multipart/form-data",
+			success: function(comment) {
+				alert('Pickup Added..');
+				location.reload();
+			}        
+		});
+    });
+	
+	$('.drop-form-submiter').on('click', function() {
+        $.ajax({
+			type: 'POST',
+			url: admin_url + 'packages/adddrop',
+			data: {packageid:$('#packageid').val(), dropname:$('#dropname').val()},
+			mimeType: "multipart/form-data",
+			success: function(comment) {
+				alert('Drop Added..');
+				location.reload();
+			}        
+		});
+    });
+	
+	$('.sight-form-submiter').on('click', function() {
+        $.ajax({
+			type: 'POST',
+			url: admin_url + 'packages/addsight',
+			data: {packageid:$('#packageid').val(), sightname:$('#sightname').val()},
+			mimeType: "multipart/form-data",
+			success: function(comment) {
+				alert('Sight Added..');
+				location.reload();
+			}        
+		});
     });
 
 });
+
+
 
 </script>
 

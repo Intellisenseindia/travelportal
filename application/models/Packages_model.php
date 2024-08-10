@@ -236,5 +236,46 @@ class packages_model extends App_Model
         return false;
     }
 	
+	public function addpickup($data){
+		$this->db->where('id', $data['packageid']);
+		$this->db->select('pickup');
+		$pickup = $this->db->get(db_prefix() . 'packages')->row();		
+		$all_pickup = explode(',', $pickup->pickup);		
+		$all_pickup[] = $data['pickupname'];
+		
+		$pickup = implode(',', $all_pickup);
+		$rowupdate['pickup'] = $pickup;
+		
+		$this->db->where('id', $data['packageid']);
+        $this->db->update(db_prefix() . 'packages', $rowupdate);
+	}
+	
+	public function adddrop($data){
+		$this->db->where('id', $data['packageid']);
+		$this->db->select('droplo');
+		$result = $this->db->get(db_prefix() . 'packages')->row();		
+		$all_pickup = explode(',', $result->droplo);		
+		$all_pickup[] = $data['dropname'];
+		
+		$result = implode(',', $all_pickup);
+		$rowupdate['droplo'] = $result;
+		
+		$this->db->where('id', $data['packageid']);
+        $this->db->update(db_prefix() . 'packages', $rowupdate);
+	}
+	
+	public function addsight($data){
+		$this->db->where('id', $data['packageid']);
+		$this->db->select('sightseeing');
+		$result = $this->db->get(db_prefix() . 'packages')->row();		
+		$all_pickup = explode(',', $result->sightseeing);		
+		$all_pickup[] = $data['sightname'];
+		
+		$result = implode(',', $all_pickup);
+		$rowupdate['sightseeing'] = $result;
+		
+		$this->db->where('id', $data['packageid']);
+        $this->db->update(db_prefix() . 'packages', $rowupdate);
+	}
 	
 }

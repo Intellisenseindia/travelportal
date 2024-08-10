@@ -53,3 +53,29 @@
 		
 		return $data;
 	}
+	
+	function getCurrency(){
+		$CI = & get_instance();
+		$CI->load->model('currencies_model');
+		return $CI->currencies_model->get_base_currency();
+	}
+	
+	function get_all_packages(){
+		$CI = & get_instance(); 
+		return $CI->db->order_by('package_name	', 'asc')->get(db_prefix().'packages')->result_array();
+	}
+	
+	function get_package($id)
+	{
+		$CI = & get_instance();
+
+		$package = $CI->app_object_cache->get('db-package-' . $id);
+
+		if (!$package) {
+			$CI->db->where('id', $id);
+			$package = $CI->db->get(db_prefix().'packages')->row();
+			$CI->app_object_cache->add('db-package-' . $id, $package);
+		}
+
+		return $package;
+	}
